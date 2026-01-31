@@ -235,7 +235,11 @@ export default function AccountsPage() {
 
     // Handlers
     const handleCreateAccount = () => {
-        openDrawer("Create New Account", <CreateAccountForm />, "Add a new customer account");
+        openDrawer({
+            title: "Create New Account",
+            content: <CreateAccountForm />,
+            description: "Add a new customer account"
+        });
     };
 
     const handleDelete = (account: Account) => {

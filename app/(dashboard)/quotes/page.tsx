@@ -207,7 +207,11 @@ export default function QuotesPage() {
 
     // Handlers
     const handleCreateQuote = () => {
-        openDrawer("Create New Quote", <CreateQuoteForm />, "Create a quote for a client");
+        openDrawer({
+            title: "Create New Quote",
+            content: <CreateQuoteForm />,
+            description: "Create a quote for a client"
+        });
     };
 
     const handleDuplicate = (quote: Quote) => {

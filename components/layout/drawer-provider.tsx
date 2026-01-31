@@ -12,7 +12,7 @@ interface DrawerState {
 
 interface DrawerContextType {
   drawerState: DrawerState;
-  openDrawer: (title: string, content: ReactNode, description?: string) => void;
+  openDrawer: (options: Omit<DrawerState, "isOpen">) => void;
   closeDrawer: () => void;
 }
 
@@ -34,8 +34,8 @@ export function DrawerProvider({ children }: { children: ReactNode }) {
     content: null,
   });
 
-  const openDrawer = (title: string, content: ReactNode, description?: string) => {
-    setDrawerState({ isOpen: true, title, description, content });
+  const openDrawer = (options: Omit<DrawerState, "isOpen">) => {
+    setDrawerState({ ...options, isOpen: true });
   };
 
   const closeDrawer = () => {

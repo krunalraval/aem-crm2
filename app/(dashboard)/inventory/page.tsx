@@ -220,8 +220,8 @@ export default function InventoryPage() {
     const handleAddItem = () => {
         openDrawer({
             title: "Add Inventory Item",
-            description: "Register a new part or material to stock control",
             content: <AddItemForm />,
+            description: "Register a new part or material to stock control"
         });
     };
 

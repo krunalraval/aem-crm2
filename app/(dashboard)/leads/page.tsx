@@ -504,7 +504,11 @@ export default function LeadsPage() {
 
     // Handlers
     const handleCreateLead = () => {
-        openDrawer("Create New Lead", <CreateLeadForm />, "Add a new lead to your pipeline");
+        openDrawer({
+            title: "Create New Lead",
+            content: <CreateLeadForm />,
+            description: "Add a new lead to your pipeline"
+        });
     };
 
     const formatCurrency = (value: number) => {

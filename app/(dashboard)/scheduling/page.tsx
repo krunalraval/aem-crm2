@@ -560,7 +560,7 @@ export default function SchedulingPage() {
                                         dayNumber={date.getDate()}
                                         jobs={dayJobs}
                                         isToday={today}
-                                        onClickJob={(job) => openDrawer(job.title, <JobDetailDrawer job={job} />, `Job ${job.id}`)}
+                                        onClickJob={(job) => openDrawer({ title: job.title, content: <JobDetailDrawer job={job} />, description: `Job ${job.id}` })}
                                     />
                                 );
                             })}

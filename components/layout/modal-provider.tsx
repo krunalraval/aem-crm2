@@ -19,6 +19,7 @@ interface ModalState {
     onConfirm?: () => void;
     confirmText?: string;
     cancelText?: string;
+    size?: "sm" | "md" | "lg" | "xl" | "full";
 }
 
 interface ModalContextType {
@@ -78,11 +79,19 @@ export function ModalProvider({ children }: { children: ReactNode }) {
         closeModal();
     };
 
+    const sizeClasses = {
+        sm: "max-w-sm",
+        md: "max-w-md",
+        lg: "max-w-2xl",
+        xl: "max-w-4xl",
+        full: "max-w-[95vw] h-[95vh]",
+    };
+
     return (
         <ModalContext.Provider value={{ openModal, closeModal, openConfirmation }}>
             {children}
             <Dialog open={modalState.isOpen} onOpenChange={(open) => !open && closeModal()}>
-                <DialogContent>
+                <DialogContent className={modalState.size ? sizeClasses[modalState.size] : ""}>
                     <DialogHeader>
                         <DialogTitle>{modalState.title}</DialogTitle>
                         {modalState.description && (

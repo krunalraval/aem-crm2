@@ -202,7 +202,11 @@ export default function ProjectsPage() {
 
     // Handlers
     const handleCreateProject = () => {
-        openDrawer("Create New Project", <CreateProjectForm />, "Start a new project for a customer");
+        openDrawer({
+            title: "Create New Project",
+            content: <CreateProjectForm />,
+            description: "Start a new project for a customer"
+        });
     };
 
     const handleDelete = (project: Project) => {
