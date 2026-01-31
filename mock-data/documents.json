@@ -1,0 +1,47 @@
+[
+    {
+        "id": "DOC-001",
+        "accountId": "ACC-001",
+        "name": "Service Agreement 2024",
+        "type": "contract",
+        "size": "2.4 MB",
+        "uploadedBy": "John Doe",
+        "uploadedAt": "2024-01-15"
+    },
+    {
+        "id": "DOC-002",
+        "accountId": "ACC-001",
+        "name": "Insurance Certificate",
+        "type": "certificate",
+        "size": "1.1 MB",
+        "uploadedBy": "Jane Smith",
+        "uploadedAt": "2024-01-10"
+    },
+    {
+        "id": "DOC-003",
+        "accountId": "ACC-001",
+        "name": "Invoice INV-2024-0045",
+        "type": "invoice",
+        "size": "156 KB",
+        "uploadedBy": "System",
+        "uploadedAt": "2024-01-28"
+    },
+    {
+        "id": "DOC-004",
+        "accountId": "ACC-001",
+        "name": "Health & Safety Compliance",
+        "type": "certificate",
+        "size": "890 KB",
+        "uploadedBy": "Mike Johnson",
+        "uploadedAt": "2023-12-20"
+    },
+    {
+        "id": "DOC-005",
+        "accountId": "ACC-002",
+        "name": "Master Services Agreement",
+        "type": "contract",
+        "size": "3.2 MB",
+        "uploadedBy": "John Doe",
+        "uploadedAt": "2023-04-10"
+    }
+]

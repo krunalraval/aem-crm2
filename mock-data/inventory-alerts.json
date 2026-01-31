@@ -1,0 +1,29 @@
+[
+    {
+        "id": "MAT-002",
+        "name": "Aluminum Flashing",
+        "category": "Roofing",
+        "currentQty": 150,
+        "reorderPoint": 200,
+        "unit": "ft",
+        "severity": "warning"
+    },
+    {
+        "id": "MAT-004",
+        "name": "Ice & Water Shield",
+        "category": "Underlayment",
+        "currentQty": 0,
+        "reorderPoint": 50,
+        "unit": "rolls",
+        "severity": "critical"
+    },
+    {
+        "id": "MAT-008",
+        "name": "Roof Sealant",
+        "category": "Adhesives",
+        "currentQty": 12,
+        "reorderPoint": 25,
+        "unit": "tubes",
+        "severity": "warning"
+    }
+]

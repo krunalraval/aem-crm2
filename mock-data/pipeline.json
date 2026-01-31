@@ -1,0 +1,32 @@
+[
+    {
+        "stage": "New Leads",
+        "count": 24,
+        "value": 480000,
+        "color": "bg-blue-500"
+    },
+    {
+        "stage": "Contacted",
+        "count": 18,
+        "value": 360000,
+        "color": "bg-indigo-500"
+    },
+    {
+        "stage": "Qualified",
+        "count": 12,
+        "value": 540000,
+        "color": "bg-purple-500"
+    },
+    {
+        "stage": "Proposal",
+        "count": 8,
+        "value": 720000,
+        "color": "bg-orange-500"
+    },
+    {
+        "stage": "Negotiation",
+        "count": 5,
+        "value": 450000,
+        "color": "bg-green-500"
+    }
+]

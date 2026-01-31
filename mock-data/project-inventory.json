@@ -1,0 +1,47 @@
+[
+    {
+        "id": "INV-001",
+        "projectId": "P-2024-001",
+        "item": "Clay Roof Tiles",
+        "quantity": 500,
+        "unit": "tiles",
+        "unitCost": 45,
+        "status": "delivered"
+    },
+    {
+        "id": "INV-002",
+        "projectId": "P-2024-001",
+        "item": "Underlayment Membrane",
+        "quantity": 150,
+        "unit": "m²",
+        "unitCost": 12,
+        "status": "delivered"
+    },
+    {
+        "id": "INV-003",
+        "projectId": "P-2024-001",
+        "item": "Ridge Tiles",
+        "quantity": 25,
+        "unit": "tiles",
+        "unitCost": 28,
+        "status": "delivered"
+    },
+    {
+        "id": "INV-004",
+        "projectId": "P-2024-001",
+        "item": "Scaffolding Hire",
+        "quantity": 2,
+        "unit": "weeks",
+        "unitCost": 850,
+        "status": "in_use"
+    },
+    {
+        "id": "INV-005",
+        "projectId": "P-2024-001",
+        "item": "Fixings & Fasteners",
+        "quantity": 5,
+        "unit": "boxes",
+        "unitCost": 35,
+        "status": "ordered"
+    }
+]

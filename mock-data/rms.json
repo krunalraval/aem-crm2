@@ -1,0 +1,330 @@
+{
+    "sites": [
+        {
+            "id": "RMS-001",
+            "siteId": "P-2024-001",
+            "siteName": "Johnson Residence - Roof Installation",
+            "address": "45 Industrial Estate, Birmingham, B12 0HT",
+            "cameraCount": 4,
+            "status": "connected",
+            "lastSync": "2024-01-31T10:30:00Z",
+            "cameras": [
+                {
+                    "id": "CAM-001",
+                    "name": "Front Entrance",
+                    "status": "online",
+                    "lastActive": "2024-01-31T10:30:00Z"
+                },
+                {
+                    "id": "CAM-002",
+                    "name": "Roof Area North",
+                    "status": "online",
+                    "lastActive": "2024-01-31T10:30:00Z"
+                },
+                {
+                    "id": "CAM-003",
+                    "name": "Roof Area South",
+                    "status": "online",
+                    "lastActive": "2024-01-31T10:28:00Z"
+                },
+                {
+                    "id": "CAM-004",
+                    "name": "Materials Storage",
+                    "status": "offline",
+                    "lastActive": "2024-01-30T18:45:00Z"
+                }
+            ]
+        },
+        {
+            "id": "RMS-002",
+            "siteId": "P-2024-002",
+            "siteName": "Acme HQ - Emergency Repair",
+            "address": "123 Business Park, Manchester, M1 4BT",
+            "cameraCount": 2,
+            "status": "connected",
+            "lastSync": "2024-01-31T09:45:00Z",
+            "cameras": [
+                {
+                    "id": "CAM-005",
+                    "name": "Roof Access Point",
+                    "status": "online",
+                    "lastActive": "2024-01-31T09:45:00Z"
+                },
+                {
+                    "id": "CAM-006",
+                    "name": "Work Area",
+                    "status": "online",
+                    "lastActive": "2024-01-31T09:44:00Z"
+                }
+            ]
+        },
+        {
+            "id": "RMS-003",
+            "siteId": "P-2024-003",
+            "siteName": "Heritage Building Restoration",
+            "address": "78 High Street, Oxford, OX1 4AZ",
+            "cameraCount": 6,
+            "status": "syncing",
+            "lastSync": "2024-01-31T10:00:00Z",
+            "cameras": [
+                {
+                    "id": "CAM-007",
+                    "name": "Main Entrance",
+                    "status": "online",
+                    "lastActive": "2024-01-31T10:00:00Z"
+                },
+                {
+                    "id": "CAM-008",
+                    "name": "East Wing Roof",
+                    "status": "online",
+                    "lastActive": "2024-01-31T10:00:00Z"
+                },
+                {
+                    "id": "CAM-009",
+                    "name": "West Wing Roof",
+                    "status": "online",
+                    "lastActive": "2024-01-31T09:58:00Z"
+                },
+                {
+                    "id": "CAM-010",
+                    "name": "Scaffold Area",
+                    "status": "online",
+                    "lastActive": "2024-01-31T09:55:00Z"
+                },
+                {
+                    "id": "CAM-011",
+                    "name": "Materials Yard",
+                    "status": "offline",
+                    "lastActive": "2024-01-30T17:00:00Z"
+                },
+                {
+                    "id": "CAM-012",
+                    "name": "Site Office",
+                    "status": "online",
+                    "lastActive": "2024-01-31T09:59:00Z"
+                }
+            ]
+        },
+        {
+            "id": "RMS-004",
+            "siteId": "P-2024-004",
+            "siteName": "New Build Estate Phase 2",
+            "address": "Plot 15-20, Newtown Development, Leeds, LS1 3EZ",
+            "cameraCount": 8,
+            "status": "connected",
+            "lastSync": "2024-01-31T10:25:00Z",
+            "cameras": [
+                {
+                    "id": "CAM-013",
+                    "name": "Site Entrance Gate",
+                    "status": "online",
+                    "lastActive": "2024-01-31T10:25:00Z"
+                },
+                {
+                    "id": "CAM-014",
+                    "name": "Plot 15 Roof",
+                    "status": "online",
+                    "lastActive": "2024-01-31T10:24:00Z"
+                },
+                {
+                    "id": "CAM-015",
+                    "name": "Plot 16 Roof",
+                    "status": "online",
+                    "lastActive": "2024-01-31T10:24:00Z"
+                },
+                {
+                    "id": "CAM-016",
+                    "name": "Plot 17 Roof",
+                    "status": "online",
+                    "lastActive": "2024-01-31T10:23:00Z"
+                },
+                {
+                    "id": "CAM-017",
+                    "name": "Plot 18 Roof",
+                    "status": "online",
+                    "lastActive": "2024-01-31T10:23:00Z"
+                },
+                {
+                    "id": "CAM-018",
+                    "name": "Plot 19 Roof",
+                    "status": "online",
+                    "lastActive": "2024-01-31T10:22:00Z"
+                },
+                {
+                    "id": "CAM-019",
+                    "name": "Plot 20 Roof",
+                    "status": "online",
+                    "lastActive": "2024-01-31T10:22:00Z"
+                },
+                {
+                    "id": "CAM-020",
+                    "name": "Materials Compound",
+                    "status": "online",
+                    "lastActive": "2024-01-31T10:25:00Z"
+                }
+            ]
+        },
+        {
+            "id": "RMS-005",
+            "siteId": "P-2024-005",
+            "siteName": "Commercial Flat Roof",
+            "address": "Unit 5, Riverside Industrial Park, Bristol, BS1 6QH",
+            "cameraCount": 3,
+            "status": "offline",
+            "lastSync": "2024-01-29T16:30:00Z",
+            "cameras": [
+                {
+                    "id": "CAM-021",
+                    "name": "Roof Overview",
+                    "status": "offline",
+                    "lastActive": "2024-01-29T16:30:00Z"
+                },
+                {
+                    "id": "CAM-022",
+                    "name": "Access Ladder",
+                    "status": "offline",
+                    "lastActive": "2024-01-29T16:28:00Z"
+                },
+                {
+                    "id": "CAM-023",
+                    "name": "Plant Room",
+                    "status": "offline",
+                    "lastActive": "2024-01-29T16:25:00Z"
+                }
+            ]
+        },
+        {
+            "id": "RMS-006",
+            "siteId": "P-2024-006",
+            "siteName": "School Roof Replacement",
+            "address": "St. Mary's Primary School, 22 Church Lane, Cambridge, CB2 1LA",
+            "cameraCount": 5,
+            "status": "error",
+            "lastSync": "2024-01-30T08:00:00Z",
+            "cameras": [
+                {
+                    "id": "CAM-024",
+                    "name": "Main Building Roof",
+                    "status": "offline",
+                    "lastActive": "2024-01-30T08:00:00Z"
+                },
+                {
+                    "id": "CAM-025",
+                    "name": "Annex Roof",
+                    "status": "offline",
+                    "lastActive": "2024-01-30T07:58:00Z"
+                },
+                {
+                    "id": "CAM-026",
+                    "name": "Sports Hall Roof",
+                    "status": "offline",
+                    "lastActive": "2024-01-30T07:55:00Z"
+                },
+                {
+                    "id": "CAM-027",
+                    "name": "Playground View",
+                    "status": "offline",
+                    "lastActive": "2024-01-30T07:50:00Z"
+                },
+                {
+                    "id": "CAM-028",
+                    "name": "Site Access",
+                    "status": "offline",
+                    "lastActive": "2024-01-30T07:45:00Z"
+                }
+            ]
+        },
+        {
+            "id": "RMS-007",
+            "siteId": "P-2024-007",
+            "siteName": "Warehouse Re-roofing",
+            "address": "Distribution Centre, 150 Logistics Way, Coventry, CV6 5NX",
+            "cameraCount": 4,
+            "status": "connected",
+            "lastSync": "2024-01-31T10:20:00Z",
+            "cameras": [
+                {
+                    "id": "CAM-029",
+                    "name": "Bay 1 Roof",
+                    "status": "online",
+                    "lastActive": "2024-01-31T10:20:00Z"
+                },
+                {
+                    "id": "CAM-030",
+                    "name": "Bay 2 Roof",
+                    "status": "online",
+                    "lastActive": "2024-01-31T10:19:00Z"
+                },
+                {
+                    "id": "CAM-031",
+                    "name": "Loading Dock",
+                    "status": "online",
+                    "lastActive": "2024-01-31T10:18:00Z"
+                },
+                {
+                    "id": "CAM-032",
+                    "name": "Staff Parking",
+                    "status": "online",
+                    "lastActive": "2024-01-31T10:17:00Z"
+                }
+            ]
+        },
+        {
+            "id": "RMS-008",
+            "siteId": "P-2024-008",
+            "siteName": "Apartment Complex Repairs",
+            "address": "Harbour View Apartments, 88 Dockside Road, Liverpool, L3 4BB",
+            "cameraCount": 6,
+            "status": "connected",
+            "lastSync": "2024-01-31T10:15:00Z",
+            "cameras": [
+                {
+                    "id": "CAM-033",
+                    "name": "Block A Roof",
+                    "status": "online",
+                    "lastActive": "2024-01-31T10:15:00Z"
+                },
+                {
+                    "id": "CAM-034",
+                    "name": "Block B Roof",
+                    "status": "online",
+                    "lastActive": "2024-01-31T10:14:00Z"
+                },
+                {
+                    "id": "CAM-035",
+                    "name": "Block C Roof",
+                    "status": "online",
+                    "lastActive": "2024-01-31T10:13:00Z"
+                },
+                {
+                    "id": "CAM-036",
+                    "name": "Communal Area",
+                    "status": "online",
+                    "lastActive": "2024-01-31T10:12:00Z"
+                },
+                {
+                    "id": "CAM-037",
+                    "name": "Car Park",
+                    "status": "online",
+                    "lastActive": "2024-01-31T10:11:00Z"
+                },
+                {
+                    "id": "CAM-038",
+                    "name": "Entrance Gate",
+                    "status": "online",
+                    "lastActive": "2024-01-31T10:10:00Z"
+                }
+            ]
+        }
+    ],
+    "summary": {
+        "totalSites": 8,
+        "connectedSites": 5,
+        "offlineSites": 1,
+        "errorSites": 1,
+        "syncingSites": 1,
+        "totalCameras": 38,
+        "onlineCameras": 30,
+        "offlineCameras": 8
+    }
+}

@@ -1,0 +1,32 @@
+[
+    {
+        "id": "1",
+        "name": "John Doe",
+        "email": "john.doe@company.com",
+        "role": "admin"
+    },
+    {
+        "id": "2",
+        "name": "Jane Smith",
+        "email": "jane.smith@company.com",
+        "role": "sales"
+    },
+    {
+        "id": "3",
+        "name": "Mike Johnson",
+        "email": "mike.johnson@company.com",
+        "role": "project_manager"
+    },
+    {
+        "id": "4",
+        "name": "Sarah White",
+        "email": "sarah.white@company.com",
+        "role": "field_tech"
+    },
+    {
+        "id": "5",
+        "name": "Tom Brown",
+        "email": "tom.brown@company.com",
+        "role": "field_tech"
+    }
+]

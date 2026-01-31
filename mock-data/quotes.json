@@ -1,0 +1,102 @@
+[
+    {
+        "id": "Q-2024-0001",
+        "clientName": "Mike Thompson",
+        "clientCompany": "Johnson Roofing LLC",
+        "value": 45000,
+        "status": "draft",
+        "version": 1,
+        "createdAt": "2024-01-28",
+        "expiresAt": "2024-02-28"
+    },
+    {
+        "id": "Q-2024-0002",
+        "clientName": "Sarah Chen",
+        "clientCompany": "Acme Construction",
+        "value": 120000,
+        "status": "sent",
+        "version": 1,
+        "createdAt": "2024-01-25",
+        "expiresAt": "2024-02-25"
+    },
+    {
+        "id": "Q-2024-0003",
+        "clientName": "Tom Williams",
+        "clientCompany": "Premier Builders",
+        "value": 78000,
+        "status": "approved",
+        "version": 2,
+        "createdAt": "2024-01-20",
+        "expiresAt": "2024-02-20"
+    },
+    {
+        "id": "Q-2024-0004",
+        "clientName": "Emma Rodriguez",
+        "clientCompany": "Smith Residence",
+        "value": 32000,
+        "status": "rejected",
+        "version": 1,
+        "createdAt": "2024-01-18",
+        "expiresAt": "2024-02-18"
+    },
+    {
+        "id": "Q-2024-0005",
+        "clientName": "James Wilson",
+        "clientCompany": "Downtown Office Complex",
+        "value": 250000,
+        "status": "sent",
+        "version": 3,
+        "createdAt": "2024-01-15",
+        "expiresAt": "2024-02-15"
+    },
+    {
+        "id": "Q-2024-0006",
+        "clientName": "Lisa Park",
+        "clientCompany": "Greenfield Estates",
+        "value": 185000,
+        "status": "approved",
+        "version": 1,
+        "createdAt": "2024-01-12",
+        "expiresAt": "2024-02-12"
+    },
+    {
+        "id": "Q-2024-0007",
+        "clientName": "David Brown",
+        "clientCompany": "Metro Apartments",
+        "value": 95000,
+        "status": "expired",
+        "version": 2,
+        "createdAt": "2024-01-05",
+        "expiresAt": "2024-01-20"
+    },
+    {
+        "id": "Q-2024-0008",
+        "clientName": "Rachel Green",
+        "clientCompany": "Sunrise Commercial",
+        "value": 67000,
+        "status": "draft",
+        "version": 1,
+        "createdAt": "2024-01-30",
+        "expiresAt": "2024-03-01"
+    },
+    {
+        "id": "Q-2024-0009",
+        "clientName": "Kevin Martinez",
+        "clientCompany": "Highland Properties",
+        "value": 142000,
+        "status": "sent",
+        "version": 1,
+        "createdAt": "2024-01-29",
+        "expiresAt": "2024-02-28"
+    },
+    {
+        "id": "Q-2024-0010",
+        "clientName": "Amanda Foster",
+        "clientCompany": "Riverside Development",
+        "value": 210000,
+        "status": "approved",
+        "version": 2,
+        "createdAt": "2024-01-22",
+        "expiresAt": "2024-02-22"
+    }
+]

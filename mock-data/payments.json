@@ -1,0 +1,72 @@
+[
+    {
+        "id": "PAY-2024-0001",
+        "date": "2024-02-08",
+        "customerId": "ACC-001",
+        "customerName": "Johnson Roofing LLC",
+        "amount": 15000.00,
+        "method": "bank_transfer",
+        "invoiceId": "INV-2024-0001",
+        "reference": "BACS-78542"
+    },
+    {
+        "id": "PAY-2024-0002",
+        "date": "2024-01-30",
+        "customerId": "ACC-002",
+        "customerName": "Acme Construction",
+        "amount": 26400.00,
+        "method": "bank_transfer",
+        "invoiceId": "INV-2024-0004",
+        "reference": "BACS-78521"
+    },
+    {
+        "id": "PAY-2024-0003",
+        "date": "2024-01-27",
+        "customerId": "ACC-003",
+        "customerName": "Heritage Properties Ltd",
+        "amount": 8160.00,
+        "method": "card",
+        "invoiceId": "INV-2024-0005",
+        "reference": "CARD-9985"
+    },
+    {
+        "id": "PAY-2024-0004",
+        "date": "2024-01-22",
+        "customerId": "ACC-001",
+        "customerName": "Johnson Roofing LLC",
+        "amount": 22200.00,
+        "method": "bank_transfer",
+        "invoiceId": "INV-2024-0007",
+        "reference": "BACS-78498"
+    },
+    {
+        "id": "PAY-2024-0005",
+        "date": "2024-01-18",
+        "customerId": "ACC-005",
+        "customerName": "Newtown Developments",
+        "amount": 54000.00,
+        "method": "bank_transfer",
+        "invoiceId": "INV-2024-0009",
+        "reference": "BACS-78485"
+    },
+    {
+        "id": "PAY-2024-0006",
+        "date": "2024-01-15",
+        "customerId": "ACC-003",
+        "customerName": "Heritage Properties Ltd",
+        "amount": 11760.00,
+        "method": "cheque",
+        "invoiceId": "INV-2024-0010",
+        "reference": "CHQ-45621"
+    },
+    {
+        "id": "PAY-2024-0007",
+        "date": "2024-01-10",
+        "customerId": "ACC-004",
+        "customerName": "Smith & Sons Builders",
+        "amount": 5500.00,
+        "method": "cash",
+        "invoiceId": null,
+        "reference": "CASH-0012"
+    }
+]

@@ -1,0 +1,35 @@
+[
+    {
+        "id": "JS-001",
+        "projectId": "P-2024-001",
+        "date": "2024-01-28",
+        "engineer": "Mike Johnson",
+        "hoursWorked": 8,
+        "weather": "Clear",
+        "description": "Removed old tiles from west section. Inspected underlayment for damage.",
+        "materials": "None required",
+        "notes": "Found minor water damage in north corner, needs additional repair."
+    },
+    {
+        "id": "JS-002",
+        "projectId": "P-2024-001",
+        "date": "2024-01-27",
+        "engineer": "Mike Johnson",
+        "hoursWorked": 7.5,
+        "weather": "Overcast",
+        "description": "Set up scaffolding. Delivered materials to site.",
+        "materials": "500 roof tiles, underlayment rolls",
+        "notes": "All materials checked and stored on site."
+    },
+    {
+        "id": "JS-003",
+        "projectId": "P-2024-001",
+        "date": "2024-01-26",
+        "engineer": "David Brown",
+        "hoursWorked": 4,
+        "weather": "Light Rain",
+        "description": "Initial site survey and measurement. Documented existing damage.",
+        "materials": "None",
+        "notes": "Photos taken for records."
+    }
+]

@@ -1,0 +1,447 @@
+{
+    "profile": {
+        "id": "USR-001",
+        "name": "John Smith",
+        "email": "john.smith@roofingpro.co.uk",
+        "phone": "(0121) 555-0123",
+        "companyName": "RoofingPro Ltd",
+        "jobTitle": "Operations Manager",
+        "avatar": null
+    },
+    "notifications": {
+        "emailNotifications": true,
+        "pushNotifications": true,
+        "smsNotifications": false,
+        "frequency": "realtime"
+    },
+    "security": {
+        "twoFactorEnabled": false,
+        "lastPasswordChange": "2023-12-15",
+        "sessions": [
+            {
+                "id": "SES-001",
+                "device": "Chrome on MacOS",
+                "location": "Birmingham, UK",
+                "lastActive": "2024-01-31T10:30:00Z",
+                "current": true
+            },
+            {
+                "id": "SES-002",
+                "device": "Safari on iPhone",
+                "location": "Birmingham, UK",
+                "lastActive": "2024-01-30T18:45:00Z",
+                "current": false
+            }
+        ]
+    },
+    "roles": [
+        {
+            "id": "ROLE-001",
+            "name": "Admin",
+            "description": "Full access to all modules",
+            "usersCount": 2
+        },
+        {
+            "id": "ROLE-002",
+            "name": "Manager",
+            "description": "Can manage most modules except settings",
+            "usersCount": 3
+        },
+        {
+            "id": "ROLE-003",
+            "name": "Engineer",
+            "description": "Field operations and job access",
+            "usersCount": 8
+        },
+        {
+            "id": "ROLE-004",
+            "name": "Accountant",
+            "description": "Finance and reporting access",
+            "usersCount": 2
+        },
+        {
+            "id": "ROLE-005",
+            "name": "Read Only",
+            "description": "View-only access to all modules",
+            "usersCount": 1
+        }
+    ],
+    "permissions": {
+        "Admin": {
+            "Leads": {
+                "view": true,
+                "create": true,
+                "edit": true,
+                "delete": true
+            },
+            "Quotes": {
+                "view": true,
+                "create": true,
+                "edit": true,
+                "delete": true
+            },
+            "Jobs": {
+                "view": true,
+                "create": true,
+                "edit": true,
+                "delete": true
+            },
+            "Projects": {
+                "view": true,
+                "create": true,
+                "edit": true,
+                "delete": true
+            },
+            "Accounts": {
+                "view": true,
+                "create": true,
+                "edit": true,
+                "delete": true
+            },
+            "Finance": {
+                "view": true,
+                "create": true,
+                "edit": true,
+                "delete": true
+            },
+            "Inventory": {
+                "view": true,
+                "create": true,
+                "edit": true,
+                "delete": true
+            },
+            "Scheduling": {
+                "view": true,
+                "create": true,
+                "edit": true,
+                "delete": true
+            },
+            "Reports": {
+                "view": true,
+                "create": true,
+                "edit": true,
+                "delete": true
+            },
+            "RMS": {
+                "view": true,
+                "create": true,
+                "edit": true,
+                "delete": true
+            },
+            "Settings": {
+                "view": true,
+                "create": true,
+                "edit": true,
+                "delete": true
+            }
+        },
+        "Manager": {
+            "Leads": {
+                "view": true,
+                "create": true,
+                "edit": true,
+                "delete": true
+            },
+            "Quotes": {
+                "view": true,
+                "create": true,
+                "edit": true,
+                "delete": true
+            },
+            "Jobs": {
+                "view": true,
+                "create": true,
+                "edit": true,
+                "delete": true
+            },
+            "Projects": {
+                "view": true,
+                "create": true,
+                "edit": true,
+                "delete": true
+            },
+            "Accounts": {
+                "view": true,
+                "create": true,
+                "edit": true,
+                "delete": false
+            },
+            "Finance": {
+                "view": true,
+                "create": true,
+                "edit": true,
+                "delete": false
+            },
+            "Inventory": {
+                "view": true,
+                "create": true,
+                "edit": true,
+                "delete": true
+            },
+            "Scheduling": {
+                "view": true,
+                "create": true,
+                "edit": true,
+                "delete": true
+            },
+            "Reports": {
+                "view": true,
+                "create": false,
+                "edit": false,
+                "delete": false
+            },
+            "RMS": {
+                "view": true,
+                "create": false,
+                "edit": false,
+                "delete": false
+            },
+            "Settings": {
+                "view": true,
+                "create": false,
+                "edit": false,
+                "delete": false
+            }
+        },
+        "Engineer": {
+            "Leads": {
+                "view": true,
+                "create": false,
+                "edit": false,
+                "delete": false
+            },
+            "Quotes": {
+                "view": true,
+                "create": false,
+                "edit": false,
+                "delete": false
+            },
+            "Jobs": {
+                "view": true,
+                "create": false,
+                "edit": true,
+                "delete": false
+            },
+            "Projects": {
+                "view": true,
+                "create": false,
+                "edit": false,
+                "delete": false
+            },
+            "Accounts": {
+                "view": false,
+                "create": false,
+                "edit": false,
+                "delete": false
+            },
+            "Finance": {
+                "view": false,
+                "create": false,
+                "edit": false,
+                "delete": false
+            },
+            "Inventory": {
+                "view": true,
+                "create": false,
+                "edit": true,
+                "delete": false
+            },
+            "Scheduling": {
+                "view": true,
+                "create": false,
+                "edit": false,
+                "delete": false
+            },
+            "Reports": {
+                "view": false,
+                "create": false,
+                "edit": false,
+                "delete": false
+            },
+            "RMS": {
+                "view": true,
+                "create": false,
+                "edit": false,
+                "delete": false
+            },
+            "Settings": {
+                "view": false,
+                "create": false,
+                "edit": false,
+                "delete": false
+            }
+        },
+        "Accountant": {
+            "Leads": {
+                "view": true,
+                "create": false,
+                "edit": false,
+                "delete": false
+            },
+            "Quotes": {
+                "view": true,
+                "create": false,
+                "edit": false,
+                "delete": false
+            },
+            "Jobs": {
+                "view": true,
+                "create": false,
+                "edit": false,
+                "delete": false
+            },
+            "Projects": {
+                "view": true,
+                "create": false,
+                "edit": false,
+                "delete": false
+            },
+            "Accounts": {
+                "view": true,
+                "create": true,
+                "edit": true,
+                "delete": false
+            },
+            "Finance": {
+                "view": true,
+                "create": true,
+                "edit": true,
+                "delete": true
+            },
+            "Inventory": {
+                "view": true,
+                "create": false,
+                "edit": false,
+                "delete": false
+            },
+            "Scheduling": {
+                "view": false,
+                "create": false,
+                "edit": false,
+                "delete": false
+            },
+            "Reports": {
+                "view": true,
+                "create": true,
+                "edit": false,
+                "delete": false
+            },
+            "RMS": {
+                "view": false,
+                "create": false,
+                "edit": false,
+                "delete": false
+            },
+            "Settings": {
+                "view": false,
+                "create": false,
+                "edit": false,
+                "delete": false
+            }
+        },
+        "Read Only": {
+            "Leads": {
+                "view": true,
+                "create": false,
+                "edit": false,
+                "delete": false
+            },
+            "Quotes": {
+                "view": true,
+                "create": false,
+                "edit": false,
+                "delete": false
+            },
+            "Jobs": {
+                "view": true,
+                "create": false,
+                "edit": false,
+                "delete": false
+            },
+            "Projects": {
+                "view": true,
+                "create": false,
+                "edit": false,
+                "delete": false
+            },
+            "Accounts": {
+                "view": true,
+                "create": false,
+                "edit": false,
+                "delete": false
+            },
+            "Finance": {
+                "view": true,
+                "create": false,
+                "edit": false,
+                "delete": false
+            },
+            "Inventory": {
+                "view": true,
+                "create": false,
+                "edit": false,
+                "delete": false
+            },
+            "Scheduling": {
+                "view": true,
+                "create": false,
+                "edit": false,
+                "delete": false
+            },
+            "Reports": {
+                "view": true,
+                "create": false,
+                "edit": false,
+                "delete": false
+            },
+            "RMS": {
+                "view": true,
+                "create": false,
+                "edit": false,
+                "delete": false
+            },
+            "Settings": {
+                "view": true,
+                "create": false,
+                "edit": false,
+                "delete": false
+            }
+        }
+    },
+    "templates": [
+        {
+            "id": "TPL-001",
+            "name": "Invoice Template",
+            "type": "invoice",
+            "lastModified": "2024-01-15",
+            "status": "active"
+        },
+        {
+            "id": "TPL-002",
+            "name": "Quote Template",
+            "type": "quote",
+            "lastModified": "2024-01-10",
+            "status": "active"
+        },
+        {
+            "id": "TPL-003",
+            "name": "Email Reminder",
+            "type": "email",
+            "lastModified": "2024-01-20",
+            "status": "active"
+        },
+        {
+            "id": "TPL-004",
+            "name": "Job Sheet",
+            "type": "job_sheet",
+            "lastModified": "2024-01-08",
+            "status": "active"
+        }
+    ],
+    "systemPreferences": {
+        "dateFormat": "DD/MM/YYYY",
+        "currencyFormat": "GBP",
+        "timezone": "Europe/London",
+        "theme": "system"
+    }
+}

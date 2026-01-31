@@ -1,0 +1,65 @@
+[
+    {
+        "id": "LI-001",
+        "quoteId": "Q-2024-0001",
+        "description": "Roof tile replacement - Clay tiles",
+        "quantity": 500,
+        "unit": "tiles",
+        "unitPrice": 45,
+        "vatRate": 20
+    },
+    {
+        "id": "LI-002",
+        "quoteId": "Q-2024-0001",
+        "description": "Labour - Roof installation",
+        "quantity": 40,
+        "unit": "hours",
+        "unitPrice": 65,
+        "vatRate": 20
+    },
+    {
+        "id": "LI-003",
+        "quoteId": "Q-2024-0001",
+        "description": "Scaffolding hire",
+        "quantity": 2,
+        "unit": "weeks",
+        "unitPrice": 850,
+        "vatRate": 20
+    },
+    {
+        "id": "LI-004",
+        "quoteId": "Q-2024-0001",
+        "description": "Underlayment membrane",
+        "quantity": 150,
+        "unit": "m²",
+        "unitPrice": 12,
+        "vatRate": 20
+    },
+    {
+        "id": "LI-005",
+        "quoteId": "Q-2024-0001",
+        "description": "Ridge tiles",
+        "quantity": 25,
+        "unit": "tiles",
+        "unitPrice": 28,
+        "vatRate": 20
+    },
+    {
+        "id": "LI-006",
+        "quoteId": "Q-2024-0002",
+        "description": "Commercial roofing - Flat roof membrane",
+        "quantity": 800,
+        "unit": "m²",
+        "unitPrice": 85,
+        "vatRate": 20
+    },
+    {
+        "id": "LI-007",
+        "quoteId": "Q-2024-0002",
+        "description": "Insulation boards",
+        "quantity": 800,
+        "unit": "m²",
+        "unitPrice": 35,
+        "vatRate": 20
+    }
+]

@@ -1,0 +1,58 @@
+[
+    {
+        "id": "A-001",
+        "leadId": "L-001",
+        "type": "call",
+        "description": "Initial discovery call - discussed project requirements",
+        "author": "John Doe",
+        "date": "2024-01-30T14:30:00Z"
+    },
+    {
+        "id": "A-002",
+        "leadId": "L-001",
+        "type": "email",
+        "description": "Sent proposal document and pricing breakdown",
+        "author": "John Doe",
+        "date": "2024-01-28T10:15:00Z"
+    },
+    {
+        "id": "A-003",
+        "leadId": "L-001",
+        "type": "status_change",
+        "description": "Status changed from Contacted to Qualified",
+        "author": "System",
+        "date": "2024-01-27T09:00:00Z"
+    },
+    {
+        "id": "A-004",
+        "leadId": "L-001",
+        "type": "meeting",
+        "description": "On-site meeting to assess project scope",
+        "author": "Mike Johnson",
+        "date": "2024-01-25T11:00:00Z"
+    },
+    {
+        "id": "A-005",
+        "leadId": "L-001",
+        "type": "note",
+        "description": "Client prefers to start work in March due to weather conditions",
+        "author": "John Doe",
+        "date": "2024-01-24T16:45:00Z"
+    },
+    {
+        "id": "A-006",
+        "leadId": "L-002",
+        "type": "call",
+        "description": "Follow-up call scheduled for next week",
+        "author": "Jane Smith",
+        "date": "2024-01-29T09:30:00Z"
+    },
+    {
+        "id": "A-007",
+        "leadId": "L-002",
+        "type": "email",
+        "description": "Sent introductory email with company brochure",
+        "author": "Jane Smith",
+        "date": "2024-01-28T14:00:00Z"
+    }
+]

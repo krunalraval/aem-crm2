@@ -1,0 +1,32 @@
+[
+    {
+        "id": "ENG-001",
+        "projectId": "P-2024-001",
+        "name": "Mike Johnson",
+        "role": "Lead Roofer",
+        "hoursAllocated": 80,
+        "hoursWorked": 52,
+        "status": "active",
+        "phone": "(555) 111-2222"
+    },
+    {
+        "id": "ENG-002",
+        "projectId": "P-2024-001",
+        "name": "David Brown",
+        "role": "Roofer",
+        "hoursAllocated": 60,
+        "hoursWorked": 38,
+        "status": "active",
+        "phone": "(555) 333-4444"
+    },
+    {
+        "id": "ENG-003",
+        "projectId": "P-2024-001",
+        "name": "Tom Williams",
+        "role": "Apprentice",
+        "hoursAllocated": 40,
+        "hoursWorked": 20,
+        "status": "active",
+        "phone": "(555) 555-6666"
+    }
+]

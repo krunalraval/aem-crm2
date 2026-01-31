@@ -1,0 +1,26 @@
+[
+    {
+        "id": "N-001",
+        "leadId": "L-001",
+        "content": "Client prefers to start work in March due to weather conditions. They have flexibility on the exact dates.",
+        "author": "John Doe",
+        "createdAt": "2024-01-24T16:45:00Z",
+        "updatedAt": "2024-01-24T16:45:00Z"
+    },
+    {
+        "id": "N-002",
+        "leadId": "L-001",
+        "content": "Budget approved internally. Decision maker is Mike Thompson (CEO). Secondary contact is their operations manager.",
+        "author": "Jane Smith",
+        "createdAt": "2024-01-22T10:30:00Z",
+        "updatedAt": "2024-01-23T09:15:00Z"
+    },
+    {
+        "id": "N-003",
+        "leadId": "L-002",
+        "content": "Large enterprise client with multiple locations. Potential for ongoing maintenance contracts.",
+        "author": "Jane Smith",
+        "createdAt": "2024-01-28T14:30:00Z",
+        "updatedAt": "2024-01-28T14:30:00Z"
+    }
+]

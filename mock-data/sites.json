@@ -1,0 +1,47 @@
+[
+    {
+        "id": "SITE-001",
+        "accountId": "ACC-001",
+        "name": "Main Office",
+        "address": "123 Oak Street, Austin, TX 78701",
+        "status": "active",
+        "projectsCount": 5,
+        "createdAt": "2023-06-15"
+    },
+    {
+        "id": "SITE-002",
+        "accountId": "ACC-001",
+        "name": "Warehouse Facility",
+        "address": "456 Industrial Blvd, Austin, TX 78702",
+        "status": "active",
+        "projectsCount": 3,
+        "createdAt": "2023-08-20"
+    },
+    {
+        "id": "SITE-003",
+        "accountId": "ACC-001",
+        "name": "Branch Office - North",
+        "address": "789 North Ave, Round Rock, TX 78664",
+        "status": "active",
+        "projectsCount": 2,
+        "createdAt": "2024-01-05"
+    },
+    {
+        "id": "SITE-004",
+        "accountId": "ACC-002",
+        "name": "Headquarters",
+        "address": "456 Main Avenue, Dallas, TX 75201",
+        "status": "active",
+        "projectsCount": 15,
+        "createdAt": "2023-04-10"
+    },
+    {
+        "id": "SITE-005",
+        "accountId": "ACC-002",
+        "name": "Distribution Centre",
+        "address": "100 Logistics Way, Dallas, TX 75202",
+        "status": "active",
+        "projectsCount": 8,
+        "createdAt": "2023-06-01"
+    }
+]

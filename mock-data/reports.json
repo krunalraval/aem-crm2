@@ -1,0 +1,129 @@
+{
+    "salesFunnel": {
+        "leads": {
+            "count": 145,
+            "value": 580000
+        },
+        "quotes": {
+            "count": 98,
+            "value": 425000
+        },
+        "jobs": {
+            "count": 72,
+            "value": 312000
+        },
+        "completed": {
+            "count": 58,
+            "value": 248000
+        },
+        "paid": {
+            "count": 52,
+            "value": 218500
+        }
+    },
+    "engineerUtilization": [
+        {
+            "id": "ENG-001",
+            "name": "Mike Johnson",
+            "hoursAvailable": 160,
+            "hoursWorked": 148,
+            "billableHours": 132,
+            "jobsCompleted": 18,
+            "utilization": 92.5
+        },
+        {
+            "id": "ENG-002",
+            "name": "David Brown",
+            "hoursAvailable": 160,
+            "hoursWorked": 142,
+            "billableHours": 125,
+            "jobsCompleted": 15,
+            "utilization": 88.8
+        },
+        {
+            "id": "ENG-003",
+            "name": "Tom Williams",
+            "hoursAvailable": 160,
+            "hoursWorked": 136,
+            "billableHours": 118,
+            "jobsCompleted": 14,
+            "utilization": 85.0
+        },
+        {
+            "id": "ENG-004",
+            "name": "James Taylor",
+            "hoursAvailable": 160,
+            "hoursWorked": 128,
+            "billableHours": 108,
+            "jobsCompleted": 12,
+            "utilization": 80.0
+        },
+        {
+            "id": "ENG-005",
+            "name": "Robert Smith",
+            "hoursAvailable": 160,
+            "hoursWorked": 118,
+            "billableHours": 95,
+            "jobsCompleted": 10,
+            "utilization": 73.8
+        }
+    ],
+    "siteProfitability": [
+        {
+            "id": "P-2024-001",
+            "siteName": "Johnson Residence - Roof Installation",
+            "revenue": 45000,
+            "costs": 28500,
+            "profit": 16500,
+            "margin": 36.7
+        },
+        {
+            "id": "P-2024-002",
+            "siteName": "Acme HQ - Emergency Repair",
+            "revenue": 12500,
+            "costs": 7200,
+            "profit": 5300,
+            "margin": 42.4
+        },
+        {
+            "id": "P-2024-003",
+            "siteName": "Heritage Building Restoration",
+            "revenue": 85000,
+            "costs": 62000,
+            "profit": 23000,
+            "margin": 27.1
+        },
+        {
+            "id": "P-2024-004",
+            "siteName": "New Build Estate Phase 2",
+            "revenue": 125000,
+            "costs": 95000,
+            "profit": 30000,
+            "margin": 24.0
+        },
+        {
+            "id": "P-2024-005",
+            "siteName": "Commercial Flat Roof",
+            "revenue": 28000,
+            "costs": 15500,
+            "profit": 12500,
+            "margin": 44.6
+        },
+        {
+            "id": "P-2024-006",
+            "siteName": "School Roof Replacement",
+            "revenue": 68000,
+            "costs": 48000,
+            "profit": 20000,
+            "margin": 29.4
+        }
+    ],
+    "summary": {
+        "totalRevenue": 363500,
+        "totalCosts": 256200,
+        "totalProfit": 107300,
+        "avgMargin": 29.5,
+        "avgUtilization": 84.0,
+        "conversionRate": 35.9
+    }
+}

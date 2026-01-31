@@ -1,0 +1,67 @@
+[
+    {
+        "id": "P-2024-001",
+        "accountId": "ACC-001",
+        "siteId": "SITE-001",
+        "name": "Roof Replacement - Main Office",
+        "status": "in_progress",
+        "budget": 45000,
+        "spent": 28000,
+        "progress": 62,
+        "startDate": "2024-01-15",
+        "endDate": "2024-03-15",
+        "manager": "John Doe"
+    },
+    {
+        "id": "P-2024-002",
+        "accountId": "ACC-001",
+        "siteId": "SITE-002",
+        "name": "Warehouse Roof Inspection",
+        "status": "completed",
+        "budget": 5000,
+        "spent": 4800,
+        "progress": 100,
+        "startDate": "2024-01-05",
+        "endDate": "2024-01-10",
+        "manager": "Mike Johnson"
+    },
+    {
+        "id": "P-2024-003",
+        "accountId": "ACC-001",
+        "siteId": "SITE-001",
+        "name": "Gutter System Upgrade",
+        "status": "planning",
+        "budget": 12000,
+        "spent": 0,
+        "progress": 10,
+        "startDate": "2024-02-01",
+        "endDate": "2024-02-28",
+        "manager": "Jane Smith"
+    },
+    {
+        "id": "P-2024-004",
+        "accountId": "ACC-002",
+        "siteId": "SITE-004",
+        "name": "Emergency Leak Repair",
+        "status": "in_progress",
+        "budget": 15000,
+        "spent": 8500,
+        "progress": 45,
+        "startDate": "2024-01-20",
+        "endDate": "2024-02-05",
+        "manager": "John Doe"
+    },
+    {
+        "id": "P-2024-005",
+        "accountId": "ACC-002",
+        "siteId": "SITE-005",
+        "name": "Flat Roof Installation",
+        "status": "in_progress",
+        "budget": 85000,
+        "spent": 42000,
+        "progress": 35,
+        "startDate": "2024-01-10",
+        "endDate": "2024-04-30",
+        "manager": "Mike Johnson"
+    }
+]
