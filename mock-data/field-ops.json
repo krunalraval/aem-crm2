@@ -1,0 +1,164 @@
+{
+    "sites": [
+        {
+            "id": "SITE-001",
+            "name": "Main Office",
+            "address": "123 Oak Street, Austin, TX",
+            "region": "North Texas",
+            "bdm": "John Smith",
+            "x": 25,
+            "y": 30,
+            "status": "active",
+            "activeJob": true
+        },
+        {
+            "id": "SITE-002",
+            "name": "Warehouse Facility",
+            "address": "456 Industrial Ave, Dallas, TX",
+            "region": "Dallas Metro",
+            "bdm": "Jane Wilson",
+            "x": 45,
+            "y": 20,
+            "status": "active",
+            "activeJob": false
+        },
+        {
+            "id": "SITE-003",
+            "name": "Branch Office - North",
+            "address": "789 Commerce Dr, Plano, TX",
+            "region": "Central Texas",
+            "bdm": "John Smith",
+            "x": 65,
+            "y": 35,
+            "status": "active",
+            "activeJob": true
+        },
+        {
+            "id": "SITE-004",
+            "name": "Headquarters",
+            "address": "1000 Corporate Blvd, Houston, TX",
+            "region": "Houston Metro",
+            "bdm": "Mike Johnson",
+            "x": 75,
+            "y": 65,
+            "status": "active",
+            "activeJob": false
+        },
+        {
+            "id": "SITE-005",
+            "name": "Distribution Centre",
+            "address": "555 Logistics Way, San Antonio, TX",
+            "region": "South Texas",
+            "bdm": "Jane Wilson",
+            "x": 35,
+            "y": 70,
+            "status": "active",
+            "activeJob": true
+        },
+        {
+            "id": "SITE-006",
+            "name": "South Branch",
+            "address": "222 Sunset Blvd, Austin, TX",
+            "region": "Greater Austin",
+            "bdm": "Tom Williams",
+            "x": 30,
+            "y": 55,
+            "status": "inactive",
+            "activeJob": false
+        }
+    ],
+    "workOrders": [
+        {
+            "id": "WO-001",
+            "site": "Main Office",
+            "siteId": "SITE-001",
+            "task": "Roof Inspection",
+            "technician": "Mike Johnson",
+            "status": "in_progress",
+            "priority": "high",
+            "eta": "10:30 AM"
+        },
+        {
+            "id": "WO-002",
+            "site": "Branch Office - North",
+            "siteId": "SITE-003",
+            "task": "Material Delivery",
+            "technician": "Tom Brown",
+            "status": "pending",
+            "priority": "medium",
+            "eta": "11:00 AM"
+        },
+        {
+            "id": "WO-003",
+            "site": "Distribution Centre",
+            "siteId": "SITE-005",
+            "task": "Installation",
+            "technician": "Sarah White",
+            "status": "completed",
+            "priority": "low",
+            "eta": "Completed"
+        },
+        {
+            "id": "WO-004",
+            "site": "Main Office",
+            "siteId": "SITE-001",
+            "task": "Emergency Repair",
+            "technician": "John Doe",
+            "status": "in_progress",
+            "priority": "urgent",
+            "eta": "ASAP"
+        }
+    ],
+    "technicians": [
+        {
+            "id": "TECH-001",
+            "name": "Mike Johnson",
+            "status": "active",
+            "currentJob": "WO-001",
+            "currentSite": "Main Office",
+            "region": "North Texas",
+            "phone": "+1 512-555-0101",
+            "email": "mike.j@company.com"
+        },
+        {
+            "id": "TECH-002",
+            "name": "Tom Brown",
+            "status": "active",
+            "currentJob": "WO-002",
+            "currentSite": "Branch Office - North",
+            "region": "Central Texas",
+            "phone": "+1 512-555-0102",
+            "email": "tom.b@company.com"
+        },
+        {
+            "id": "TECH-003",
+            "name": "Sarah White",
+            "status": "available",
+            "currentJob": null,
+            "currentSite": null,
+            "region": "Greater Austin",
+            "phone": "+1 512-555-0103",
+            "email": "sarah.w@company.com"
+        },
+        {
+            "id": "TECH-004",
+            "name": "John Doe",
+            "status": "active",
+            "currentJob": "WO-004",
+            "currentSite": "Main Office",
+            "region": "North Texas",
+            "phone": "+1 512-555-0104",
+            "email": "john.d@company.com"
+        },
+        {
+            "id": "TECH-005",
+            "name": "Emily Davis",
+            "status": "off_duty",
+            "currentJob": null,
+            "currentSite": null,
+            "region": "Dallas Metro",
+            "phone": "+1 512-555-0105",
+            "email": "emily.d@company.com"
+        }
+    ]
+}

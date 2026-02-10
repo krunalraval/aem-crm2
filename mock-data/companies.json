@@ -1,0 +1,46 @@
+[
+    {
+        "id": "COMP-001",
+        "name": "Johnson Roofing Holdings",
+        "status": "active",
+        "industry": "Commercial Roofing",
+        "totalRegions": 2,
+        "totalSites": 5,
+        "revenue": 1250000,
+        "accountManager": "John Smith",
+        "createdAt": "2022-03-15"
+    },
+    {
+        "id": "COMP-002",
+        "name": "Acme Construction Group",
+        "status": "active",
+        "industry": "General Construction",
+        "totalRegions": 3,
+        "totalSites": 12,
+        "revenue": 3400000,
+        "accountManager": "Jane Wilson",
+        "createdAt": "2021-08-22"
+    },
+    {
+        "id": "COMP-003",
+        "name": "Metro Property Partners",
+        "status": "active",
+        "industry": "Property Management",
+        "totalRegions": 2,
+        "totalSites": 8,
+        "revenue": 890000,
+        "accountManager": "John Smith",
+        "createdAt": "2023-01-10"
+    },
+    {
+        "id": "COMP-004",
+        "name": "Premier Builders Ltd",
+        "status": "on_hold",
+        "industry": "Residential Development",
+        "totalRegions": 1,
+        "totalSites": 3,
+        "revenue": 450000,
+        "accountManager": "Mike Johnson",
+        "createdAt": "2023-06-05"
+    }
+]

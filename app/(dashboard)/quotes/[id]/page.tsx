@@ -2,14 +2,24 @@
 
 import { use, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Topbar } from "@/components/layout";
+import { useDrawer } from "@/components/layout/drawer-provider";
 import { useModal } from "@/components/layout/modal-provider";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
-import { Separator } from "@/components/ui/separator";
-import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select";
 import {
     Table,
     TableBody,
@@ -18,199 +28,193 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuSeparator,
-    DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import { toast } from "sonner";
 import {
     ArrowLeft,
-    Save,
     Send,
     FileText,
     Download,
-    CheckCircle,
-    XCircle,
-    MoreHorizontal,
-    Plus,
-    Trash2,
-    GripVertical,
     Building2,
     User,
     Mail,
     Phone,
-    MapPin,
+    Calendar,
+    Clock,
+    RefreshCw,
+    ExternalLink,
+    Edit,
+    History,
+    Star,
     AlertCircle,
-    PoundSterling,
-    Eye,
 } from "lucide-react";
+import { STATUS_COLORS, getStatusStyle } from "@/lib/status-utils";
+import { cn } from "@/lib/utils";
 
 // Types
+type QuoteStatus = "draft" | "sent" | "awaiting_response" | "in_negotiation" | "revised" | "accepted" | "rejected" | "expired";
+
 interface Quote {
     id: string;
-    clientName: string;
-    clientCompany: string;
-    clientEmail: string;
-    clientPhone: string;
-    clientAddress: string;
-    value: number;
-    status: string;
+    reference: string;
+    companyName: string;
+    companyId: string;
+    contactName: string;
+    contactId: string;
+    contactEmail: string;
+    contactPhone: string;
+    leadId?: string;
+    leadName?: string;
+    bdmName: string;
+    bdmColor: string;
+    systemType: string;
+    units: number;
+    billingTerms: string;
+    rate: number;
+    duration: number;
+    durationUnit: string;
+    totalValue: number;
+    status: QuoteStatus;
     version: number;
+    notes?: string;
+    followUpDate?: string;
     createdAt: string;
+    sentAt?: string;
     expiresAt: string;
-    discount: number;
 }
 
-interface LineItem {
+interface QuoteVersion {
+    version: number;
+    createdAt: string;
+    totalValue: number;
+    status: string;
+}
+
+interface Activity {
     id: string;
-    quoteId: string;
+    type: string;
     description: string;
-    quantity: number;
-    unit: string;
-    unitPrice: number;
-    vatRate: number;
+    user: string;
+    date: string;
 }
 
 // Mock Data
-const mockQuotes: Record<string, Quote> = {
-    "Q-2024-001": {
-        id: "Q-2024-001",
-        clientName: "Mike Thompson",
-        clientCompany: "Johnson Roofing LLC",
-        clientEmail: "mike@johnsonroofing.com",
-        clientPhone: "07555 123 456",
-        clientAddress: "123 Oak Street, Austin, TX 78701",
-        value: 45000,
-        status: "draft",
-        version: 1,
-        createdAt: "2024-01-28",
-        expiresAt: "2024-02-28",
-        discount: 5,
-    },
-    "Q-2024-002": {
-        id: "Q-2024-002",
-        clientName: "Sarah Chen",
-        clientCompany: "Acme Construction",
-        clientEmail: "sarah@acme.com",
-        clientPhone: "07555 234 567",
-        clientAddress: "456 Main Avenue, Dallas, TX 75201",
-        value: 120000,
-        status: "sent",
-        version: 1,
-        createdAt: "2024-01-25",
-        expiresAt: "2024-02-25",
-        discount: 0,
-    },
+const mockQuote: Quote = {
+    id: "Q-001",
+    reference: "K2S-Q-0001",
+    companyName: "Johnson Roofing LLC",
+    companyId: "COMP-001",
+    contactName: "Mike Thompson",
+    contactId: "CON-001",
+    contactEmail: "mike@johnsonroofing.com",
+    contactPhone: "+1 512-555-0101",
+    leadId: "L-001",
+    leadName: "Johnson Roofing - CCTV Upgrade",
+    bdmName: "John Smith",
+    bdmColor: "#3B82F6",
+    systemType: "CCTV - Hardwired",
+    units: 8,
+    billingTerms: "Monthly",
+    rate: 450,
+    duration: 12,
+    durationUnit: "Months",
+    totalValue: 5400,
+    status: "sent",
+    version: 2,
+    notes: "Includes 24/7 monitoring and maintenance support.",
+    followUpDate: "2024-02-05",
+    createdAt: "2024-01-28",
+    sentAt: "2024-01-30",
+    expiresAt: "2024-02-28",
 };
 
-const mockLineItems: LineItem[] = [
-    { id: "LI-001", quoteId: "Q-2024-001", description: "Roof tile replacement - Clay tiles", quantity: 500, unit: "tiles", unitPrice: 45, vatRate: 20 },
-    { id: "LI-002", quoteId: "Q-2024-001", description: "Labour - Roof installation", quantity: 40, unit: "hours", unitPrice: 65, vatRate: 20 },
-    { id: "LI-003", quoteId: "Q-2024-001", description: "Scaffolding hire", quantity: 2, unit: "weeks", unitPrice: 850, vatRate: 20 },
+const mockVersionHistory: QuoteVersion[] = [
+    { version: 1, createdAt: "2024-01-20", totalValue: 4800, status: "revised" },
+    { version: 2, createdAt: "2024-01-28", totalValue: 5400, status: "sent" },
 ];
 
-const statusStyles: Record<string, string> = {
-    draft: "bg-muted text-muted-foreground",
-    sent: "bg-blue-50 text-blue-700 dark:bg-blue-950/50 dark:text-blue-400",
-    approved: "bg-green-50 text-green-700 dark:bg-green-950/50 dark:text-green-400",
-    rejected: "bg-red-50 text-red-700 dark:bg-red-950/50 dark:text-red-400",
-    expired: "bg-amber-50 text-amber-700 dark:bg-amber-950/50 dark:text-amber-400",
+const mockActivities: Activity[] = [
+    { id: "A-001", type: "sent", description: "Quote sent to client", user: "John Smith", date: "2024-01-30T10:00:00Z" },
+    { id: "A-002", type: "revised", description: "Quote revised - increased rate", user: "John Smith", date: "2024-01-28T14:30:00Z" },
+    { id: "A-003", type: "created", description: "Quote created from lead", user: "John Smith", date: "2024-01-20T09:00:00Z" },
+];
+
+const stageStyles: Record<QuoteStatus, string> = {
+    draft: STATUS_COLORS.quote.draft,
+    sent: STATUS_COLORS.quote.sent,
+    awaiting_response: STATUS_COLORS.pipeline.awaiting_response,
+    in_negotiation: STATUS_COLORS.pipeline.negotiation,
+    revised: STATUS_COLORS.pipeline.follow_up,
+    accepted: STATUS_COLORS.quote.accepted,
+    rejected: STATUS_COLORS.quote.rejected,
+    expired: STATUS_COLORS.quote.expired,
 };
 
-const unitOptions = ["units", "hours", "days", "weeks", "m²", "m", "tiles", "kg", "litres"];
+const stageLabels: Record<QuoteStatus, string> = {
+    draft: "Draft",
+    sent: "Sent",
+    awaiting_response: "Awaiting Response",
+    in_negotiation: "In Negotiation",
+    revised: "Revised",
+    accepted: "Accepted",
+    rejected: "Rejected",
+    expired: "Expired",
+};
 
-// Info Row Component
-function InfoRow({ label, value, icon: Icon }: { label: string; value: string | number; icon: React.ElementType }) {
+// Helpers
+const formatCurrency = (value: number) => `£${value.toLocaleString()}`;
+const formatDate = (dateString?: string) => {
+    if (!dateString) return "—";
+    return new Date(dateString).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" });
+};
+
+// Revise Quote Form
+function ReviseQuoteForm({ quote, onClose, onSave }: { quote: Quote; onClose?: () => void; onSave?: () => void }) {
+    const [rate, setRate] = useState(quote.rate);
+    const [duration, setDuration] = useState(quote.duration);
+    const [notes, setNotes] = useState(quote.notes || "");
+
+    const totalValue = quote.billingTerms === "One-Off" ? rate : rate * duration;
+
+    const handleSave = () => {
+        toast.success(`Quote revised to Version ${quote.version + 1}`);
+        onSave?.();
+        onClose?.();
+    };
+
     return (
-        <div className="flex items-start gap-4">
-            <div className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-muted">
-                <Icon className="h-4 w-4 text-muted-foreground" />
+        <div className="space-y-4">
+            <div className="p-3 bg-amber-50 border border-amber-200 rounded-lg text-sm">
+                <p className="font-medium text-amber-800">Creating Version {quote.version + 1}</p>
+                <p className="text-amber-700 text-xs mt-1">This will create a new version of the quote with your changes.</p>
             </div>
-            <div className="min-w-0">
-                <p className="text-[12px] font-medium text-muted-foreground uppercase tracking-wider">{label}</p>
-                <p className="text-sm font-medium text-foreground mt-0.5 truncate">{value}</p>
-            </div>
-        </div>
-    );
-}
 
-// PDF Preview Component (Refined)
-function PDFPreview({ quote, lineItems }: { quote: Quote, lineItems: LineItem[] }) {
-    return (
-        <div className="space-y-4 pt-4">
-            <div className="aspect-[1/1.4] bg-white border rounded shadow-sm p-8 text-black overflow-y-auto">
-                <div className="flex justify-between items-start mb-10">
-                    <div>
-                        <h1 className="text-xl font-bold">QUOTATION</h1>
-                        <p className="text-sm text-muted-foreground mt-1">{quote.id}</p>
-                    </div>
-                    <div className="text-right">
-                        <p className="font-bold">AEM CRM</p>
-                        <p className="text-[12px] text-muted-foreground">123 Business Way, London</p>
+            <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-1.5">
+                    <Label>Rate (per {quote.billingTerms.toLowerCase().replace("ly", "")})</Label>
+                    <div className="relative">
+                        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">£</span>
+                        <Input type="number" value={rate} onChange={(e) => setRate(parseFloat(e.target.value) || 0)} className="pl-7" />
                     </div>
                 </div>
-
-                <div className="grid grid-cols-2 gap-10 mb-10">
-                    <div>
-                        <p className="text-[12px] font-medium text-muted-foreground uppercase mb-2">Quote For</p>
-                        <p className="font-semibold">{quote.clientName}</p>
-                        <p className="text-sm text-muted-foreground">{quote.clientCompany}</p>
-                        <p className="text-sm text-muted-foreground mt-1">{quote.clientAddress}</p>
-                    </div>
-                    <div className="text-right space-y-1">
-                        <p className="text-sm"><span className="text-muted-foreground">Date:</span> {quote.createdAt}</p>
-                        <p className="text-sm"><span className="text-muted-foreground">Valid Until:</span> {quote.expiresAt}</p>
-                    </div>
-                </div>
-
-                <div className="border rounded-t overflow-hidden mb-6">
-                    <table className="w-full text-sm">
-                        <thead>
-                            <tr className="bg-muted/50 border-b">
-                                <th className="py-2 px-3 text-left font-medium">Description</th>
-                                <th className="py-2 px-3 text-right font-medium w-16">Qty</th>
-                                <th className="py-2 px-3 text-right font-medium w-24">Price</th>
-                                <th className="py-2 px-3 text-right font-medium w-24">Total</th>
-                            </tr>
-                        </thead>
-                        <tbody className="divide-y">
-                            {lineItems.map((item) => (
-                                <tr key={item.id}>
-                                    <td className="py-2 px-3">{item.description}</td>
-                                    <td className="py-2 px-3 text-right">{item.quantity}</td>
-                                    <td className="py-2 px-3 text-right">£{item.unitPrice}</td>
-                                    <td className="py-2 px-3 text-right font-medium">£{(item.quantity * item.unitPrice).toLocaleString()}</td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                </div>
-
-                <div className="flex justify-end pt-4">
-                    <div className="w-1/2 space-y-2">
-                        <div className="flex justify-between text-sm">
-                            <span className="text-muted-foreground">Subtotal</span>
-                            <span>£{(quote.value / 1.2).toLocaleString()}</span>
-                        </div>
-                        <div className="flex justify-between text-sm">
-                            <span className="text-muted-foreground">VAT (20%)</span>
-                            <span>£{(quote.value - (quote.value / 1.2)).toLocaleString()}</span>
-                        </div>
-                        <Separator />
-                        <div className="flex justify-between font-bold">
-                            <span>Total (GBP)</span>
-                            <span>£{quote.value.toLocaleString()}</span>
-                        </div>
-                    </div>
+                <div className="space-y-1.5">
+                    <Label>Duration ({quote.durationUnit})</Label>
+                    <Input type="number" value={duration} onChange={(e) => setDuration(parseInt(e.target.value) || 0)} />
                 </div>
             </div>
-            <div className="flex justify-end">
-                <Button size="sm">
-                    <Download className="mr-1.5 h-4 w-4" />
-                    Download PDF
-                </Button>
+
+            <div className="p-3 bg-primary/5 rounded-lg border border-primary/20">
+                <p className="text-xs text-muted-foreground">New Total Value</p>
+                <p className="text-xl font-bold text-primary">{formatCurrency(totalValue)}</p>
+            </div>
+
+            <div className="space-y-1.5">
+                <Label>Notes</Label>
+                <Textarea value={notes} onChange={(e) => setNotes(e.target.value)} rows={3} />
+            </div>
+
+            <div className="flex justify-end gap-2 pt-4 border-t">
+                <Button variant="outline" onClick={onClose}>Cancel</Button>
+                <Button onClick={handleSave}>Create Revision</Button>
             </div>
         </div>
     );
@@ -218,152 +222,215 @@ function PDFPreview({ quote, lineItems }: { quote: Quote, lineItems: LineItem[] 
 
 export default function QuoteDetailPage({ params }: { params: Promise<{ id: string }> }) {
     const { id } = use(params);
-    const { openModal, openConfirmation } = useModal();
+    const router = useRouter();
+    const { openDrawer, closeDrawer } = useDrawer();
+    const { openConfirmation } = useModal();
 
-    const quote = mockQuotes[id] || mockQuotes["Q-2024-001"];
-    const [lineItems, setLineItems] = useState<LineItem[]>(mockLineItems.filter(li => li.quoteId === quote.id));
+    const quote = mockQuote;
+    const versions = mockVersionHistory;
+    const activities = mockActivities;
 
-    const subtotal = lineItems.reduce((sum, item) => sum + item.quantity * item.unitPrice, 0);
-    const discountAmount = subtotal * (quote.discount / 100);
-    const afterDiscount = subtotal - discountAmount;
-    const vatAmount = afterDiscount * 0.20;
-    const total = afterDiscount + vatAmount;
-
-    const handlePreviewPDF = () => {
-        openModal({
-            title: "Quote Preview",
-            description: `Draft PDF preview for ${quote.id}`,
-            content: <PDFPreview quote={quote} lineItems={lineItems} />,
-            size: "lg",
+    const handleReviseQuote = () => {
+        openDrawer({
+            title: "Revise Quote",
+            description: `Create a new version of ${quote.reference}`,
+            content: <ReviseQuoteForm quote={quote} onClose={closeDrawer} />
         });
     };
 
-    const handleSendToClient = () => {
+    const handleResendQuote = () => {
         openConfirmation(
-            "Send Quote to Client",
-            `Send ${quote.id} to ${quote.clientName} at ${quote.clientEmail}? this will lock the current version.`,
-            () => console.log("Sent:", quote.id)
+            "Resend Quote",
+            `Send ${quote.reference} to ${quote.contactName} at ${quote.contactEmail}?`,
+            () => toast.success("Quote resent successfully")
         );
     };
 
-    const formatCurrency = (value: number) => {
-        return new Intl.NumberFormat("en-GB", {
-            style: "currency",
-            currency: "GBP",
-            minimumFractionDigits: 0,
-        }).format(value);
+    const handleDownloadPDF = () => {
+        toast.success("Downloading PDF...");
     };
-
-    const formatDate = (dateString: string) => {
-        const date = new Date(dateString);
-        return date.toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" });
-    };
-
-    const isEditable = quote.status === "draft";
 
     return (
         <>
-            <Topbar title="Quote Builder" />
-            <main className="flex-1 overflow-y-auto bg-muted/40 p-6">
+            <Topbar title="Quote Details" subtitle={quote.reference} />
+            <main className="flex-1 overflow-y-auto bg-muted/20 p-6">
+                {/* Back Link */}
                 <div className="mb-4">
-                    <Link href="/quotes">
-                        <Button variant="ghost" size="sm" className="h-8 text-muted-foreground hover:text-foreground -ml-2">
-                            <ArrowLeft className="mr-1.5 h-4 w-4" />
-                            Back to Quotes
-                        </Button>
-                    </Link>
+                    <Button variant="ghost" size="sm" asChild className="h-8 px-2 text-muted-foreground">
+                        <Link href="/quotes"><ArrowLeft className="mr-1 h-4 w-4" />Back to Quotes</Link>
+                    </Button>
                 </div>
 
-                <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-                    <div className="flex items-center gap-4">
-                        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 text-primary">
-                            <FileText className="h-6 w-6" />
-                        </div>
-                        <div>
-                            <div className="flex items-center gap-2.5">
-                                <h1 className="text-xl font-semibold leading-none">{quote.id}</h1>
-                                <Badge variant="secondary" className={`${statusStyles[quote.status]} font-normal h-5`}>
-                                    {quote.status.charAt(0).toUpperCase() + quote.status.slice(1)}
-                                </Badge>
-                                <Badge variant="outline" className="h-5 font-normal text-muted-foreground">v{quote.version}</Badge>
+                {/* Header Card */}
+                <Card className="mb-6 border-none shadow-sm">
+                    <CardContent className="pt-6">
+                        <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-4">
+                            <div className="flex gap-4">
+                                <div className="h-14 w-14 rounded-2xl bg-primary/10 flex items-center justify-center">
+                                    <FileText className="h-7 w-7 text-primary" />
+                                </div>
+                                <div>
+                                    <div className="flex items-center gap-3 mb-1 flex-wrap">
+                                        <h1 className="text-xl font-bold">{quote.reference}</h1>
+                                        <Badge className={cn("border-none text-[10px] font-bold uppercase", stageStyles[quote.status])}>
+                                            {stageLabels[quote.status]}
+                                        </Badge>
+                                        <Badge variant="outline" className="text-xs font-bold uppercase tracking-wider">v{quote.version}</Badge>
+                                    </div>
+                                    <div className="flex items-center gap-4 text-sm flex-wrap">
+                                        <Link href={`/accounts/${quote.companyId}`} className="flex items-center gap-1 text-primary hover:underline">
+                                            <Building2 className="h-3.5 w-3.5" />{quote.companyName}
+                                        </Link>
+                                        <Link href={`/contacts/${quote.contactId}`} className="flex items-center gap-1 text-primary hover:underline">
+                                            <User className="h-3.5 w-3.5" />{quote.contactName}
+                                        </Link>
+                                        <span className="flex items-center gap-1 text-muted-foreground">
+                                            <div className="h-3 w-3 rounded-full" style={{ backgroundColor: quote.bdmColor }}></div>
+                                            {quote.bdmName}
+                                        </span>
+                                    </div>
+                                </div>
                             </div>
-                            <p className="text-sm text-muted-foreground mt-1.5">
-                                Created {formatDate(quote.createdAt)} • Expires {formatDate(quote.expiresAt)}
-                            </p>
+                            <div className="flex items-center gap-2 flex-wrap">
+                                <Button variant="outline" size="sm" onClick={handleDownloadPDF}>
+                                    <Download className="mr-1.5 h-4 w-4" />Download PDF
+                                </Button>
+                                <Button variant="outline" size="sm" onClick={handleResendQuote}>
+                                    <Send className="mr-1.5 h-4 w-4" />Resend
+                                </Button>
+                                <Button size="sm" onClick={handleReviseQuote}>
+                                    <RefreshCw className="mr-1.5 h-4 w-4" />Revise Quote
+                                </Button>
+                            </div>
                         </div>
-                    </div>
-                    <div className="flex items-center gap-2">
-                        {isEditable && (
-                            <Button variant="outline" size="sm" className="h-9">
-                                <Save className="mr-1.5 h-4 w-4" />
-                                Save
-                            </Button>
-                        )}
-                        <Button variant="outline" size="sm" className="h-9" onClick={handlePreviewPDF}>
-                            <Eye className="mr-1.5 h-4 w-4" />
-                            Preview
-                        </Button>
-                        <Button size="sm" className="h-9" onClick={handleSendToClient}>
-                            <Send className="mr-1.5 h-4 w-4" />
-                            Send to Client
-                        </Button>
-                    </div>
-                </div>
+                    </CardContent>
+                </Card>
 
-                <div className="grid gap-6 lg:grid-cols-4">
-                    <div className="lg:col-span-3 space-y-6">
-                        <Card>
-                            <CardHeader className="pb-3 border-b flex flex-row items-center justify-between">
-                                <CardTitle className="text-base font-medium">Line Items</CardTitle>
-                                {isEditable && (
-                                    <Button size="sm" variant="outline" className="h-8">
-                                        <Plus className="mr-1.5 h-3.5 w-3.5" />
-                                        Add Item
-                                    </Button>
-                                )}
+                {/* Quote Summary */}
+                <Card className="mb-6 border-none shadow-sm">
+                    <CardHeader className="pb-3">
+                        <CardTitle className="text-sm font-bold uppercase tracking-widest text-muted-foreground">Quote Summary</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                            <div className="space-y-1">
+                                <p className="text-xs text-muted-foreground">Total Value</p>
+                                <p className="text-lg font-bold text-primary">{formatCurrency(quote.totalValue)}</p>
+                            </div>
+                            <div className="space-y-1">
+                                <p className="text-xs text-muted-foreground">System Type</p>
+                                <p className="text-sm font-medium">{quote.systemType}</p>
+                            </div>
+                            <div className="space-y-1">
+                                <p className="text-xs text-muted-foreground">Rate</p>
+                                <p className="text-sm font-medium">{formatCurrency(quote.rate)} / {quote.billingTerms.toLowerCase()}</p>
+                            </div>
+                            <div className="space-y-1">
+                                <p className="text-xs text-muted-foreground">Duration</p>
+                                <p className="text-sm font-medium">{quote.duration} {quote.durationUnit}</p>
+                            </div>
+                            <div className="space-y-1">
+                                <p className="text-xs text-muted-foreground">Date Created</p>
+                                <p className="text-sm font-medium">{formatDate(quote.createdAt)}</p>
+                            </div>
+                            <div className="space-y-1">
+                                <p className="text-xs text-muted-foreground">Date Sent</p>
+                                <p className="text-sm font-medium">{formatDate(quote.sentAt)}</p>
+                            </div>
+                            <div className="space-y-1">
+                                <p className="text-xs text-muted-foreground">Expiry Date</p>
+                                <p className="text-sm font-medium">{formatDate(quote.expiresAt)}</p>
+                            </div>
+                            <div className="space-y-1">
+                                <p className="text-xs text-muted-foreground">Follow-Up Date</p>
+                                <p className="text-sm font-medium">{formatDate(quote.followUpDate)}</p>
+                            </div>
+                        </div>
+                        {quote.notes && (
+                            <div className="mt-4 p-3 bg-muted/30 rounded-lg">
+                                <p className="text-xs text-muted-foreground mb-1">Notes</p>
+                                <p className="text-sm">{quote.notes}</p>
+                            </div>
+                        )}
+                    </CardContent>
+                </Card>
+
+                {/* Associated Lead */}
+                {quote.leadId && (
+                    <Card className="mb-6 border-none shadow-sm">
+                        <CardContent className="py-4">
+                            <div className="flex items-center justify-between">
+                                <div className="flex items-center gap-3">
+                                    <div className="h-10 w-10 rounded-lg bg-amber-100 flex items-center justify-center">
+                                        <Star className="h-5 w-5 text-amber-600" />
+                                    </div>
+                                    <div>
+                                        <p className="text-xs text-muted-foreground">Associated Lead</p>
+                                        <p className="font-medium">{quote.leadName}</p>
+                                    </div>
+                                </div>
+                                <Button variant="ghost" size="sm" asChild>
+                                    <Link href={`/leads/${quote.leadId}`}>
+                                        View Lead<ExternalLink className="ml-1.5 h-3.5 w-3.5" />
+                                    </Link>
+                                </Button>
+                            </div>
+                        </CardContent>
+                    </Card>
+                )}
+
+                {/* Tabs */}
+                <Tabs defaultValue="versions" className="space-y-6">
+                    <TabsList className="bg-transparent h-auto p-0 gap-2 border-b rounded-none w-full justify-start">
+                        {["versions", "activity", "contact"].map((tab) => (
+                            <TabsTrigger
+                                key={tab}
+                                value={tab}
+                                className="data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-primary rounded-none px-3 pb-3 text-xs font-bold uppercase tracking-wider transition-none capitalize"
+                            >
+                                {tab === "versions" ? "Version History" : tab}
+                            </TabsTrigger>
+                        ))}
+                    </TabsList>
+
+                    {/* Version History Tab */}
+                    <TabsContent value="versions">
+                        <Card className="border-none shadow-sm">
+                            <CardHeader className="pb-3">
+                                <CardTitle className="text-sm font-bold">Version History</CardTitle>
                             </CardHeader>
                             <CardContent className="p-0">
                                 <Table>
                                     <TableHeader>
-                                        <TableRow className="hover:bg-transparent">
-                                            {isEditable && <TableHead className="w-10"></TableHead>}
-                                            <TableHead className="pl-6 font-medium">Description</TableHead>
-                                            <TableHead className="font-medium text-right w-20">Qty</TableHead>
-                                            <TableHead className="font-medium w-24">Unit</TableHead>
-                                            <TableHead className="font-medium text-right w-32">Price</TableHead>
-                                            <TableHead className="font-medium text-right pr-6 w-32">Total</TableHead>
+                                        <TableRow>
+                                            <TableHead>Version</TableHead>
+                                            <TableHead>Created</TableHead>
+                                            <TableHead className="text-right">Value</TableHead>
+                                            <TableHead>Status</TableHead>
+                                            <TableHead></TableHead>
                                         </TableRow>
                                     </TableHeader>
                                     <TableBody>
-                                        {lineItems.map((item) => (
-                                            <TableRow key={item.id}>
-                                                {isEditable && (
-                                                    <TableCell className="text-center">
-                                                        <GripVertical className="h-3.5 w-3.5 text-muted-foreground/50" />
-                                                    </TableCell>
-                                                )}
-                                                <TableCell className="pl-6">
-                                                    {isEditable ? (
-                                                        <Input defaultValue={item.description} className="h-8 text-sm" />
-                                                    ) : (
-                                                        <span className="text-sm">{item.description}</span>
-                                                    )}
+                                        {versions.map((v) => (
+                                            <TableRow key={v.version}>
+                                                <TableCell>
+                                                    <div className="flex items-center gap-2">
+                                                        <History className="h-4 w-4 text-muted-foreground" />
+                                                        <span className="font-medium">Version {v.version}</span>
+                                                        {v.version === quote.version && (
+                                                            <Badge className="bg-primary/10 text-primary text-[9px]">Current</Badge>
+                                                        )}
+                                                    </div>
                                                 </TableCell>
-                                                <TableCell className="text-right">
-                                                    {isEditable ? (
-                                                        <Input type="number" defaultValue={item.quantity} className="h-8 text-sm text-right" />
-                                                    ) : (
-                                                        <span className="text-sm font-medium">{item.quantity}</span>
-                                                    )}
+                                                <TableCell className="text-muted-foreground">{formatDate(v.createdAt)}</TableCell>
+                                                <TableCell className="text-right font-medium">{formatCurrency(v.totalValue)}</TableCell>
+                                                <TableCell>
+                                                    <Badge className={cn("border-none text-[10px] font-bold uppercase", stageStyles[v.status as QuoteStatus] || STATUS_COLORS.quote.draft)}>
+                                                        {v.status.charAt(0).toUpperCase() + v.status.slice(1)}
+                                                    </Badge>
                                                 </TableCell>
                                                 <TableCell>
-                                                    <span className="text-sm text-muted-foreground">{item.unit}</span>
-                                                </TableCell>
-                                                <TableCell className="text-right">
-                                                    <span className="text-sm font-medium">{formatCurrency(item.unitPrice)}</span>
-                                                </TableCell>
-                                                <TableCell className="text-right pr-6">
-                                                    <span className="text-sm font-semibold">{formatCurrency(item.quantity * item.unitPrice)}</span>
+                                                    <Button variant="ghost" size="sm" className="h-7 text-xs">View</Button>
                                                 </TableCell>
                                             </TableRow>
                                         ))}
@@ -371,98 +438,98 @@ export default function QuoteDetailPage({ params }: { params: Promise<{ id: stri
                                 </Table>
                             </CardContent>
                         </Card>
+                    </TabsContent>
 
-                        <div className="grid gap-6 md:grid-cols-2">
-                            <Card>
-                                <CardHeader className="pb-3 border-b">
-                                    <CardTitle className="text-base font-medium">Client Details</CardTitle>
-                                </CardHeader>
-                                <CardContent className="pt-6 space-y-6">
-                                    <InfoRow label="Client Name" value={quote.clientName} icon={User} />
-                                    <InfoRow label="Company" value={quote.clientCompany} icon={Building2} />
-                                    <InfoRow label="Email" value={quote.clientEmail} icon={Mail} />
-                                    <InfoRow label="Phone" value={quote.clientPhone} icon={Phone} />
-                                    <InfoRow label="Address" value={quote.clientAddress} icon={MapPin} />
-                                </CardContent>
-                            </Card>
-
-                            <Card>
-                                <CardHeader className="pb-3 border-b">
-                                    <CardTitle className="text-base font-medium">Pricing Summary</CardTitle>
-                                </CardHeader>
-                                <CardContent className="pt-6 space-y-4">
-                                    <div className="flex justify-between items-center text-sm">
-                                        <span className="text-muted-foreground">Subtotal</span>
-                                        <span className="font-medium">{formatCurrency(subtotal)}</span>
-                                    </div>
-                                    <div className="flex justify-between items-center text-sm">
-                                        <span className="text-muted-foreground">VAT (20%)</span>
-                                        <span className="font-medium">{formatCurrency(vatAmount)}</span>
-                                    </div>
-                                    {quote.discount > 0 && (
-                                        <div className="flex justify-between items-center text-sm">
-                                            <span className="text-muted-foreground">Discount ({quote.discount}%)</span>
-                                            <span className="text-green-600 font-medium">-{formatCurrency(discountAmount)}</span>
-                                        </div>
-                                    )}
-                                    <Separator />
-                                    <div className="flex justify-between items-center pt-2">
-                                        <span className="font-bold text-lg">Total</span>
-                                        <span className="font-bold text-lg">{formatCurrency(total)}</span>
-                                    </div>
-                                </CardContent>
-                            </Card>
-                        </div>
-                    </div>
-
-                    <div className="space-y-6">
-                        <Card>
+                    {/* Activity Tab */}
+                    <TabsContent value="activity">
+                        <Card className="border-none shadow-sm">
                             <CardHeader className="pb-3">
-                                <CardTitle className="text-sm font-medium text-muted-foreground">Summary Stats</CardTitle>
+                                <CardTitle className="text-sm font-bold">Activity</CardTitle>
                             </CardHeader>
-                            <CardContent className="space-y-6">
-                                <div className="flex items-center justify-between">
-                                    <div>
-                                        <p className="text-[12px] font-medium text-muted-foreground uppercase tracking-wider">Total Items</p>
-                                        <p className="text-lg font-semibold mt-1">{lineItems.length}</p>
-                                    </div>
-                                    <div className="h-10 w-10 flex items-center justify-center rounded-lg bg-muted/50">
-                                        <Plus className="h-4 w-4 text-muted-foreground" />
-                                    </div>
-                                </div>
-                                <div className="flex items-center justify-between">
-                                    <div>
-                                        <p className="text-[12px] font-medium text-muted-foreground uppercase tracking-wider">Estimated Value</p>
-                                        <p className="text-lg font-semibold mt-1">{formatCurrency(total)}</p>
-                                    </div>
-                                    <div className="h-10 w-10 flex items-center justify-center rounded-lg bg-muted/50">
-                                        <PoundSterling className="h-4 w-4 text-muted-foreground" />
-                                    </div>
+                            <CardContent>
+                                <div className="space-y-4">
+                                    {activities.map((activity, index) => (
+                                        <div key={activity.id} className="flex gap-4">
+                                            <div className="flex flex-col items-center">
+                                                <div className="h-8 w-8 rounded-full bg-muted flex items-center justify-center">
+                                                    {activity.type === "sent" && <Send className="h-4 w-4" />}
+                                                    {activity.type === "revised" && <RefreshCw className="h-4 w-4" />}
+                                                    {activity.type === "created" && <FileText className="h-4 w-4" />}
+                                                </div>
+                                                {index < activities.length - 1 && <div className="w-px flex-1 bg-border mt-2" />}
+                                            </div>
+                                            <div className="flex-1 pb-4">
+                                                <p className="text-sm font-medium">{activity.description}</p>
+                                                <div className="flex items-center gap-2 mt-1 text-xs text-muted-foreground">
+                                                    <span>{activity.user}</span>
+                                                    <span>•</span>
+                                                    <span>{formatDate(activity.date)}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ))}
                                 </div>
                             </CardContent>
                         </Card>
+                    </TabsContent>
 
-                        <Card>
-                            <CardHeader className="pb-3 border-b">
-                                <CardTitle className="text-base font-medium">Quick Actions</CardTitle>
+                    {/* Contact Tab */}
+                    <TabsContent value="contact">
+                        <Card className="border-none shadow-sm">
+                            <CardHeader className="pb-3">
+                                <CardTitle className="text-sm font-bold">Contact Information</CardTitle>
                             </CardHeader>
-                            <CardContent className="pt-4 space-y-2">
-                                <Button variant="outline" className="w-full justify-start h-9" onClick={handlePreviewPDF}>
-                                    <FileText className="mr-2 h-4 w-4" />
-                                    Generate PDF
-                                </Button>
-                                <Button variant="outline" className="w-full justify-start h-9">
-                                    <Download className="mr-2 h-4 w-4" />
-                                    Download
-                                </Button>
-                                <Button className="w-full justify-start h-9" onClick={handleSendToClient}>
-                                    <Send className="mr-2 h-4 w-4" />
-                                    Send to Client
-                                </Button>
+                            <CardContent>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div className="flex items-center gap-3">
+                                        <div className="h-10 w-10 rounded-lg bg-muted flex items-center justify-center">
+                                            <User className="h-5 w-5 text-muted-foreground" />
+                                        </div>
+                                        <div>
+                                            <p className="text-xs text-muted-foreground">Contact Name</p>
+                                            <Link href={`/contacts/${quote.contactId}`} className="font-medium text-primary hover:underline">
+                                                {quote.contactName}
+                                            </Link>
+                                        </div>
+                                    </div>
+                                    <div className="flex items-center gap-3">
+                                        <div className="h-10 w-10 rounded-lg bg-muted flex items-center justify-center">
+                                            <Mail className="h-5 w-5 text-muted-foreground" />
+                                        </div>
+                                        <div>
+                                            <p className="text-xs text-muted-foreground">Email</p>
+                                            <a href={`mailto:${quote.contactEmail}`} className="font-medium text-primary hover:underline">
+                                                {quote.contactEmail}
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div className="flex items-center gap-3">
+                                        <div className="h-10 w-10 rounded-lg bg-muted flex items-center justify-center">
+                                            <Phone className="h-5 w-5 text-muted-foreground" />
+                                        </div>
+                                        <div>
+                                            <p className="text-xs text-muted-foreground">Phone</p>
+                                            <a href={`tel:${quote.contactPhone}`} className="font-medium">
+                                                {quote.contactPhone}
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div className="flex items-center gap-3">
+                                        <div className="h-10 w-10 rounded-lg bg-muted flex items-center justify-center">
+                                            <Building2 className="h-5 w-5 text-muted-foreground" />
+                                        </div>
+                                        <div>
+                                            <p className="text-xs text-muted-foreground">Company</p>
+                                            <Link href={`/accounts/${quote.companyId}`} className="font-medium text-primary hover:underline">
+                                                {quote.companyName}
+                                            </Link>
+                                        </div>
+                                    </div>
+                                </div>
                             </CardContent>
                         </Card>
-                    </div>
-                </div>
+                    </TabsContent>
+                </Tabs>
             </main>
         </>
     );

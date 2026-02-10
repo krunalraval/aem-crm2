@@ -1,21 +1,18 @@
 "use client";
 
-import { use, useState } from "react";
+import { use, useState, useMemo } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Topbar } from "@/components/layout";
+import { useDrawer } from "@/components/layout/drawer-provider";
 import { useModal } from "@/components/layout/modal-provider";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Separator } from "@/components/ui/separator";
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuSeparator,
-    DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import {
     Table,
     TableBody,
@@ -25,211 +22,277 @@ import {
     TableRow,
 } from "@/components/ui/table";
 import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select";
+import {
     ArrowLeft,
-    Edit,
-    UserPlus,
-    Trash2,
-    FileText,
-    MoreHorizontal,
-    Mail,
-    Phone,
     Building2,
-    Globe,
     User,
+    Phone,
+    Mail,
     Calendar,
-    PoundSterling,
+    DollarSign,
+    Clock,
+    Star,
+    Plus,
+    Edit,
+    FileText,
+    CheckCircle2,
+    Circle,
     PhoneCall,
     MessageSquare,
-    Users,
-    RefreshCw,
     StickyNote,
-    Plus,
-    Pencil,
-    Inbox,
-    Clock,
-    MapPin,
+    CheckSquare,
+    RefreshCw,
+    ExternalLink,
 } from "lucide-react";
+import { ActivityTimeline, Activity } from "@/components/activity/activity-timeline";
+import { STATUS_COLORS, getStatusStyle } from "@/lib/status-utils";
+import { cn } from "@/lib/utils";
 
 // Types
+type PipelineStage =
+    | "new"
+    | "contacted"
+    | "follow_up"
+    | "site_visit_booked"
+    | "site_visit_completed"
+    | "quote_sent"
+    | "awaiting_response"
+    | "negotiation"
+    | "won"
+    | "lost";
+
+type Priority = "Normal" | "High" | "VIP/Big Deal";
+type ActivityType = "call" | "email" | "meeting" | "note" | "status_change";
+
 interface Lead {
     id: string;
     name: string;
     company: string;
+    companyId: string;
+    contactName: string;
+    contactId: string;
     email: string;
     phone: string;
     source: string;
-    status: string;
+    status: PipelineStage;
     owner: string;
+    ownerId: string;
+    ownerColor: string;
     value: number;
+    priority: Priority;
+    expectedCloseDate: string;
+    stageEnteredAt: string;
+    createdAt: string;
     lastActivity: string;
-    createdAt: string;
 }
 
-interface Activity {
-    id: string;
-    leadId: string;
-    type: "call" | "email" | "meeting" | "note" | "status_change";
-    description: string;
-    author: string;
-    date: string;
-}
-
-interface Note {
-    id: string;
-    leadId: string;
-    content: string;
-    author: string;
-    createdAt: string;
-    updatedAt: string;
-}
-
-// Mock Data
-const mockLeads: Record<string, Lead> = {
-    "L-001": { id: "L-001", name: "Mike Thompson", company: "Johnson Roofing LLC", email: "mike@johnsonroofing.com", phone: "07555 123 456", source: "Website", status: "qualified", owner: "John Smith", value: 45000, lastActivity: "2024-01-30", createdAt: "2024-01-15" },
-    "L-002": { id: "L-002", name: "Sarah Chen", company: "Acme Construction", email: "sarah@acme.com", phone: "07555 234 567", source: "Referral", status: "contacted", owner: "Jane Wilson", value: 120000, lastActivity: "2024-01-29", createdAt: "2024-01-14" },
-    "L-003": { id: "L-003", name: "Tom Williams", company: "Premier Builders", email: "tom@premierbuilders.com", phone: "07555 345 678", source: "Trade Show", status: "new", owner: "John Smith", value: 78000, lastActivity: "2024-01-28", createdAt: "2024-01-12" },
-};
-
-const mockActivities: Activity[] = [
-    { id: "A-001", leadId: "L-001", type: "call", description: "Initial discovery call - discussed project requirements", author: "John Smith", date: "2024-01-30T14:30:00Z" },
-    { id: "A-002", leadId: "L-001", type: "email", description: "Sent proposal document and pricing breakdown", author: "John Smith", date: "2024-01-28T10:15:00Z" },
-    { id: "A-003", leadId: "L-001", type: "status_change", description: "Status changed from Contacted to Qualified", author: "System", date: "2024-01-27T09:00:00Z" },
-    { id: "A-004", leadId: "L-001", type: "meeting", description: "On-site meeting to assess project scope", author: "Mike Johnson", date: "2024-01-25T11:00:00Z" },
-    { id: "A-005", leadId: "L-001", type: "note", description: "Client prefers to start work in March due to weather conditions", author: "John Smith", date: "2024-01-24T16:45:00Z" },
+// Pipeline Stages
+const PIPELINE_STAGES: { value: PipelineStage; label: string }[] = [
+    { value: "new", label: "New Lead" },
+    { value: "contacted", label: "Contacted" },
+    { value: "follow_up", label: "Follow-Up" },
+    { value: "site_visit_booked", label: "Visit Booked" },
+    { value: "site_visit_completed", label: "Visit Done" },
+    { value: "quote_sent", label: "Quote Sent" },
+    { value: "awaiting_response", label: "Awaiting" },
+    { value: "negotiation", label: "Negotiation" },
+    { value: "won", label: "Won" },
+    { value: "lost", label: "Lost" },
 ];
 
-const mockNotes: Note[] = [
-    { id: "N-001", leadId: "L-001", content: "Client prefers to start work in March due to weather conditions. They have flexibility on the exact dates.", author: "John Smith", createdAt: "2024-01-24T16:45:00Z", updatedAt: "2024-01-24T16:45:00Z" },
-    { id: "N-002", leadId: "L-001", content: "Budget approved internally. Decision maker is Mike Thompson (CEO). Secondary contact is their operations manager.", author: "Jane Wilson", createdAt: "2024-01-22T10:30:00Z", updatedAt: "2024-01-23T09:15:00Z" },
+const priorityStyles: Record<Priority, string> = {
+    "Normal": STATUS_COLORS.priority.normal,
+    "High": STATUS_COLORS.priority.high,
+    "VIP/Big Deal": STATUS_COLORS.priority["VIP/Big Deal"],
+};
+
+const activityIcons: Record<ActivityType, React.ReactNode> = {
+    call: <PhoneCall className="h-4 w-4" />,
+    email: <Mail className="h-4 w-4" />,
+    meeting: <Calendar className="h-4 w-4" />,
+    note: <MessageSquare className="h-4 w-4" />,
+    status_change: <RefreshCw className="h-4 w-4" />,
+};
+
+// Mock Data
+const mockLead: Lead = {
+    id: "L-001",
+    name: "Johnson Roofing - CCTV Upgrade",
+    company: "Johnson Roofing LLC",
+    companyId: "COMP-001",
+    contactName: "Mike Thompson",
+    contactId: "CON-001",
+    email: "mike@johnsonroofing.com",
+    phone: "+1 512-555-0101",
+    source: "Referral",
+    status: "quote_sent",
+    owner: "John Smith",
+    ownerId: "BDM-001",
+    ownerColor: "#3B82F6",
+    value: 45000,
+    priority: "VIP/Big Deal",
+    expectedCloseDate: "2024-03-15",
+    stageEnteredAt: "2024-01-25",
+    createdAt: "2024-01-10",
+    lastActivity: "2024-01-30",
+};
+
+const mockActivitiesData: Activity[] = [
+    { id: "A-001", type: "call", description: "Discovery call - discussed project requirements", userName: "John Smith", timestamp: "2024-01-30 14:30" },
+    { id: "A-002", type: "email_sent", description: "Sent quote for CCTV upgrade", userName: "John Smith", timestamp: "2024-01-28 10:00" },
+    { id: "A-003", type: "status_change", description: "Moved to Quote Sent", userName: "John Smith", timestamp: "2024-01-28 09:00" },
+    { id: "A-004", type: "site_visit", description: "Site visit completed - 16 camera locations identified", userName: "John Smith", timestamp: "2024-01-22 09:00" },
+    { id: "A-005", type: "note", description: "Client interested in 4K cameras with night vision", userName: "John Smith", timestamp: "2024-01-18 11:00" },
+];
+
+const mockTasks = [
+    { id: "T-001", title: "Follow up on quote", dueDate: "2024-02-05", priority: "High", status: "pending" },
+    { id: "T-002", title: "Prepare technical proposal", dueDate: "2024-01-28", priority: "Normal", status: "completed" },
+    { id: "T-003", title: "Schedule site survey", dueDate: "2024-01-20", priority: "Normal", status: "completed" },
 ];
 
 const mockQuotes = [
-    { id: "Q-2024-0001", leadId: "L-001", total: 45000, status: "draft", created: "2024-01-28" },
+    { id: "Q-2024-015", value: 45000, status: "Sent", createdDate: "2024-01-28" },
+    { id: "Q-2024-010", value: 38000, status: "Rejected", createdDate: "2024-01-15" },
 ];
 
-const statusStyles: Record<string, string> = {
-    new: "bg-blue-50 text-blue-700 dark:bg-blue-950/50 dark:text-blue-400",
-    contacted: "bg-amber-50 text-amber-700 dark:bg-amber-950/50 dark:text-amber-400",
-    qualified: "bg-purple-50 text-purple-700 dark:bg-purple-950/50 dark:text-purple-400",
-    proposal: "bg-orange-50 text-orange-700 dark:bg-orange-950/50 dark:text-orange-400",
-    negotiation: "bg-indigo-50 text-indigo-700 dark:bg-indigo-950/50 dark:text-indigo-400",
-    won: "bg-green-50 text-green-700 dark:bg-green-950/50 dark:text-green-400",
-    lost: "bg-muted text-muted-foreground",
-};
+const mockNotes = [
+    { id: "N-001", content: "Client prefers Hikvision cameras. Budget around £50K. Decision expected by end of March.", author: "John Smith", createdAt: "2024-01-28" },
+    { id: "N-002", content: "Primary contact is Mike Thompson (Facilities Manager). Also spoke with IT Director about network requirements.", author: "John Smith", createdAt: "2024-01-18" },
+];
 
-const activityIcons: Record<string, React.ElementType> = {
-    call: PhoneCall,
-    email: Mail,
-    meeting: Users,
-    note: StickyNote,
-    status_change: RefreshCw,
-};
-
-const activityColors: Record<string, string> = {
-    call: "bg-green-500/10 text-green-600",
-    email: "bg-blue-500/10 text-blue-600",
-    meeting: "bg-purple-500/10 text-purple-600",
-    note: "bg-amber-500/10 text-amber-600",
-    status_change: "bg-muted text-muted-foreground",
-};
-
-// Empty State Component
-function EmptyState({ icon: Icon, title, description, action }: {
-    icon: React.ElementType;
-    title: string;
-    description: string;
-    action?: { label: string; onClick: () => void };
-}) {
-    return (
-        <div className="flex flex-col items-center justify-center py-12 text-center">
-            <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-full bg-muted">
-                <Icon className="h-5 w-5 text-muted-foreground" />
-            </div>
-            <h3 className="text-sm font-medium">{title}</h3>
-            <p className="mt-1 text-sm text-muted-foreground max-w-[200px]">{description}</p>
-            {action && (
-                <Button variant="outline" size="sm" className="mt-4" onClick={action.onClick}>
-                    <Plus className="mr-1.5 h-3.5 w-3.5" />
-                    {action.label}
-                </Button>
-            )}
-        </div>
-    );
-}
-
-// Activity Timeline Component
-function ActivityTimeline({ activities }: { activities: Activity[] }) {
-    const formatDate = (dateString: string) => {
-        const date = new Date(dateString);
-        return date.toLocaleDateString("en-GB", { day: "numeric", month: "short" });
-    };
-
-    const formatTime = (dateString: string) => {
-        const date = new Date(dateString);
-        return date.toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" });
-    };
-
-    if (activities.length === 0) {
-        return (
-            <EmptyState
-                icon={MessageSquare}
-                title="No interactions logged yet."
-                description="Activities will appear here as you interact with this lead."
-            />
-        );
-    }
+// Pipeline Progress Indicator Component
+function PipelineProgress({ currentStage }: { currentStage: PipelineStage }) {
+    const currentIndex = PIPELINE_STAGES.findIndex(s => s.value === currentStage);
 
     return (
-        <div className="space-y-6">
-            {activities.map((activity, index) => {
-                const Icon = activityIcons[activity.type];
-                return (
-                    <div key={activity.id} className="relative flex gap-4">
-                        <div className="flex flex-col items-center">
-                            <div className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full ${activityColors[activity.type]}`}>
-                                <Icon className="h-4 w-4" />
+        <div className="w-full overflow-x-auto pb-2">
+            <div className="flex items-center min-w-[700px]">
+                {PIPELINE_STAGES.map((stage, index) => {
+                    const isCompleted = index < currentIndex;
+                    const isCurrent = index === currentIndex;
+                    const isTerminal = stage.value === "won" || stage.value === "lost";
+
+                    return (
+                        <div key={stage.value} className="flex items-center flex-1">
+                            <div className="flex flex-col items-center">
+                                <div className={`
+                                    h-8 w-8 rounded-full flex items-center justify-center text-xs font-bold transition-all
+                                    ${isCompleted ? "bg-primary text-white" : ""}
+                                    ${isCurrent ? "bg-primary text-white ring-4 ring-primary/20" : ""}
+                                    ${!isCompleted && !isCurrent ? "bg-muted text-muted-foreground" : ""}
+                                    ${isTerminal && isCurrent && stage.value === "won" ? "bg-green-500" : ""}
+                                    ${isTerminal && isCurrent && stage.value === "lost" ? "bg-slate-400" : ""}
+                                `}>
+                                    {isCompleted ? (
+                                        <CheckCircle2 className="h-4 w-4" />
+                                    ) : isCurrent ? (
+                                        index + 1
+                                    ) : (
+                                        <Circle className="h-4 w-4" />
+                                    )}
+                                </div>
+                                <span className={`mt-2 text-[10px] font-bold text-center whitespace-nowrap ${isCurrent ? "text-primary" : "text-muted-foreground"}`}>
+                                    {stage.label}
+                                </span>
                             </div>
-                            {index < activities.length - 1 && (
-                                <div className="absolute top-8 left-[15px] h-full w-[1px] bg-border" />
+                            {index < PIPELINE_STAGES.length - 1 && (
+                                <div className={`flex-1 h-1 mx-1 rounded ${index < currentIndex ? "bg-primary" : "bg-muted"}`} />
                             )}
                         </div>
-                        <div className="flex-1 pb-4">
-                            <div className="flex items-start justify-between">
-                                <div className="min-w-0">
-                                    <p className="text-sm font-medium capitalize leading-none mb-1">
-                                        {activity.type.replace("_", " ")}
-                                    </p>
-                                    <p className="text-sm text-muted-foreground leading-relaxed">
-                                        {activity.description}
-                                    </p>
-                                </div>
-                                <div className="text-right text-[12px] text-muted-foreground whitespace-nowrap pt-0.5 ml-4">
-                                    <p className="font-medium text-foreground">{formatDate(activity.date)}</p>
-                                    <p>{formatTime(activity.date)}</p>
-                                </div>
-                            </div>
-                            <div className="mt-2 flex items-center gap-1.5 text-[12px] text-muted-foreground">
-                                <span className="h-1 w-1 rounded-full bg-border" />
-                                <span>by {activity.author}</span>
-                            </div>
-                        </div>
-                    </div>
-                );
-            })}
+                    );
+                })}
+            </div>
         </div>
     );
 }
 
-// Info Row Component
-function InfoRow({ label, value, icon: Icon }: { label: string; value: string | number; icon: React.ElementType }) {
+// Form Components
+function LogActivityForm({ onClose }: { onClose?: () => void }) {
+    const [activityType, setActivityType] = useState("");
     return (
-        <div className="flex items-start gap-4">
-            <div className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-muted">
-                <Icon className="h-4 w-4 text-muted-foreground" />
+        <div className="space-y-4">
+            <div className="space-y-1.5">
+                <Label>Activity Type <span className="text-destructive">*</span></Label>
+                <Select value={activityType} onValueChange={setActivityType}>
+                    <SelectTrigger><SelectValue placeholder="Select type" /></SelectTrigger>
+                    <SelectContent>
+                        <SelectItem value="call">Phone Call</SelectItem>
+                        <SelectItem value="email">Email</SelectItem>
+                        <SelectItem value="meeting">Meeting</SelectItem>
+                        <SelectItem value="note">Note</SelectItem>
+                    </SelectContent>
+                </Select>
             </div>
-            <div className="min-w-0">
-                <p className="text-[12px] font-medium text-muted-foreground uppercase tracking-wider">{label}</p>
-                <p className="text-sm font-medium text-foreground mt-0.5 truncate">{value}</p>
+            <div className="space-y-1.5">
+                <Label>Description <span className="text-destructive">*</span></Label>
+                <Textarea placeholder="What happened?" rows={3} />
+            </div>
+            <div className="space-y-1.5">
+                <Label>Date/Time</Label>
+                <Input type="datetime-local" defaultValue={new Date().toISOString().slice(0, 16)} />
+            </div>
+            <div className="flex justify-end gap-2 pt-4 border-t">
+                <Button variant="outline" onClick={onClose}>Cancel</Button>
+                <Button>Log Activity</Button>
+            </div>
+        </div>
+    );
+}
+
+function CreateTaskForm({ onClose }: { onClose?: () => void }) {
+    return (
+        <div className="space-y-4">
+            <div className="space-y-1.5">
+                <Label>Task Title <span className="text-destructive">*</span></Label>
+                <Input placeholder="e.g., Follow up on proposal" />
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-1.5">
+                    <Label>Due Date</Label>
+                    <Input type="date" />
+                </div>
+                <div className="space-y-1.5">
+                    <Label>Priority</Label>
+                    <Select defaultValue="Normal">
+                        <SelectTrigger><SelectValue /></SelectTrigger>
+                        <SelectContent>
+                            <SelectItem value="Low">Low</SelectItem>
+                            <SelectItem value="Normal">Normal</SelectItem>
+                            <SelectItem value="High">High</SelectItem>
+                            <SelectItem value="Urgent">Urgent</SelectItem>
+                        </SelectContent>
+                    </Select>
+                </div>
+            </div>
+            <div className="space-y-1.5">
+                <Label>Notes</Label>
+                <Textarea placeholder="Additional details..." rows={2} />
+            </div>
+            <div className="flex justify-end gap-2 pt-4 border-t">
+                <Button variant="outline" onClick={onClose}>Cancel</Button>
+                <Button>Create Task</Button>
+            </div>
+        </div>
+    );
+}
+
+function AddNoteForm({ onClose }: { onClose?: () => void }) {
+    return (
+        <div className="space-y-4">
+            <div className="space-y-1.5">
+                <Label>Note Content <span className="text-destructive">*</span></Label>
+                <Textarea placeholder="Enter your note..." rows={4} />
+            </div>
+            <div className="flex justify-end gap-2 pt-4 border-t">
+                <Button variant="outline" onClick={onClose}>Cancel</Button>
+                <Button>Save Note</Button>
             </div>
         </div>
     );
@@ -237,359 +300,311 @@ function InfoRow({ label, value, icon: Icon }: { label: string; value: string | 
 
 export default function LeadDetailPage({ params }: { params: Promise<{ id: string }> }) {
     const { id } = use(params);
-    const { openModal, openConfirmation } = useModal();
-    const [activeTab, setActiveTab] = useState("overview");
+    const router = useRouter();
+    const { openDrawer, closeDrawer } = useDrawer();
+    const { openConfirmation } = useModal();
 
-    // Get lead data
-    const lead = mockLeads[id] || mockLeads["L-001"];
-    const leadActivities = mockActivities.filter(a => a.leadId === lead.id);
-    const leadNotes = mockNotes.filter(n => n.leadId === lead.id);
-    const leadQuotes = mockQuotes.filter(q => q.leadId === lead.id);
+    const lead = mockLead;
 
-    // Handlers
-    const handleAddNote = () => {
-        openModal({
-            title: "Add Note",
-            description: `Add a note to ${lead.name}`,
-            content: (
-                <div className="space-y-4 pt-4">
-                    <textarea
-                        className="flex min-h-[120px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-                        placeholder="Enter your note..."
-                    />
-                </div>
-            ),
-            onConfirm: () => console.log("Note added"),
-            confirmText: "Save Note",
+    const getDaysInPipeline = () => {
+        const created = new Date(lead.createdAt);
+        const now = new Date();
+        return Math.floor((now.getTime() - created.getTime()) / (1000 * 60 * 60 * 24));
+    };
+
+    const getDaysInStage = () => {
+        const entered = new Date(lead.stageEnteredAt);
+        const now = new Date();
+        return Math.floor((now.getTime() - entered.getTime()) / (1000 * 60 * 60 * 24));
+    };
+
+    const formatCurrency = (value: number) => `£${value.toLocaleString()}`;
+    const formatDate = (dateString: string) => {
+        if (!dateString) return "—";
+        return new Date(dateString).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" });
+    };
+
+    const handleCreateQuote = () => {
+        router.push(`/quotes/new?leadId=${lead.id}&companyId=${lead.companyId}&value=${lead.value}`);
+    };
+
+    const handleLogActivity = () => {
+        openDrawer({
+            title: "Log Activity",
+            content: <LogActivityForm onClose={closeDrawer} />,
+            description: "Record an interaction with this lead"
         });
     };
 
-    const handleConvert = () => {
-        openConfirmation(
-            "Convert to Account",
-            `Are you sure you want to convert "${lead.name}" to an account? The lead will be archived.`,
-            () => console.log("Converted:", lead.id)
-        );
+    const handleCreateTask = () => {
+        openDrawer({
+            title: "Create Task",
+            content: <CreateTaskForm onClose={closeDrawer} />,
+            description: "Create a task for this lead"
+        });
     };
 
-    const handleDelete = () => {
-        openConfirmation(
-            "Delete Lead",
-            `Are you sure you want to delete "${lead.name}"? This action cannot be undone.`,
-            () => console.log("Deleted:", lead.id)
-        );
+    const handleAddNote = () => {
+        openDrawer({
+            title: "Add Note",
+            content: <AddNoteForm onClose={closeDrawer} />,
+            description: "Add a note to this lead"
+        });
     };
 
-    const formatCurrency = (value: number) => {
-        return new Intl.NumberFormat("en-GB", {
-            style: "currency",
-            currency: "GBP",
-            minimumFractionDigits: 0,
-        }).format(value);
-    };
-
-    const formatDate = (dateString: string) => {
-        const date = new Date(dateString);
-        return date.toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" });
-    };
+    const isVIP = lead.priority === "VIP/Big Deal";
 
     return (
         <>
-            <Topbar title="Lead Details" />
-            <main className="flex-1 overflow-y-auto bg-muted/40 p-6">
-                {/* Back Button */}
+            <Topbar title="Lead Details" subtitle={lead.name} />
+            <main className="flex-1 overflow-y-auto bg-muted/20 p-6">
+                {/* Back Link */}
                 <div className="mb-4">
-                    <Link href="/leads">
-                        <Button variant="ghost" size="sm" className="h-8 text-muted-foreground hover:text-foreground -ml-2">
-                            <ArrowLeft className="mr-1.5 h-4 w-4" />
-                            Back to Leads
-                        </Button>
-                    </Link>
+                    <Button variant="ghost" size="sm" asChild className="h-8 px-2 text-muted-foreground">
+                        <Link href="/leads"><ArrowLeft className="mr-1 h-4 w-4" />Back to Leads</Link>
+                    </Button>
                 </div>
 
-                {/* Header */}
-                <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-                    <div className="flex items-center gap-4">
-                        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 text-primary text-lg font-bold">
-                            {lead.name.split(" ").map(n => n[0]).join("")}
-                        </div>
-                        <div>
-                            <div className="flex items-center gap-2.5">
-                                <h1 className="text-xl font-semibold leading-none">{lead.name}</h1>
-                                <Badge variant="secondary" className={`${statusStyles[lead.status]} font-normal h-5`}>
-                                    {lead.status.charAt(0).toUpperCase() + lead.status.slice(1)}
-                                </Badge>
+                {/* Header Card */}
+                <Card className="mb-6 border-none shadow-sm">
+                    <CardContent className="pt-6">
+                        <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-4">
+                            <div className="flex gap-4">
+                                <div className="h-14 w-14 rounded-2xl bg-primary/10 flex items-center justify-center relative">
+                                    <DollarSign className="h-7 w-7 text-primary" />
+                                    {isVIP && (
+                                        <div className="absolute -top-1 -right-1 h-5 w-5 bg-amber-400 rounded-full flex items-center justify-center">
+                                            <Star className="h-3 w-3 text-white fill-white" />
+                                        </div>
+                                    )}
+                                </div>
+                                <div>
+                                    <div className="flex items-center gap-3 mb-1 flex-wrap">
+                                        <h1 className="text-xl font-bold">{lead.name}</h1>
+                                        <Badge className={`${priorityStyles[lead.priority]} text-xs font-medium border-none`}>
+                                            {lead.priority}
+                                        </Badge>
+                                    </div>
+                                    <div className="flex items-center gap-4 text-sm flex-wrap">
+                                        <Link href={`/accounts/${lead.companyId}`} className="flex items-center gap-1 text-primary hover:underline">
+                                            <Building2 className="h-3.5 w-3.5" />{lead.company}
+                                        </Link>
+                                        <Link href={`/contacts/${lead.contactId}`} className="flex items-center gap-1 text-primary hover:underline">
+                                            <User className="h-3.5 w-3.5" />{lead.contactName}
+                                        </Link>
+                                        <span className="flex items-center gap-1 text-muted-foreground">
+                                            <div className="h-3 w-3 rounded-full" style={{ backgroundColor: lead.ownerColor }}></div>
+                                            {lead.owner}
+                                        </span>
+                                    </div>
+                                </div>
                             </div>
-                            <p className="text-sm text-muted-foreground mt-1.5">{lead.company}</p>
-                        </div>
-                    </div>
-                    <div className="flex items-center gap-2">
-                        <Button variant="outline" size="sm" className="h-9">
-                            <Edit className="mr-1.5 h-4 w-4" />
-                            Edit
-                        </Button>
-                        <Button variant="outline" size="sm" className="h-9" onClick={handleConvert}>
-                            <UserPlus className="mr-1.5 h-4 w-4" />
-                            Convert
-                        </Button>
-                        <DropdownMenu>
-                            <DropdownMenuTrigger asChild>
-                                <Button variant="outline" size="icon" className="h-9 w-9">
-                                    <MoreHorizontal className="h-4 w-4" />
+                            <div className="flex items-center gap-2 flex-wrap">
+                                <Button size="sm" onClick={handleCreateQuote}>
+                                    <FileText className="mr-1.5 h-4 w-4" />Create Quote
                                 </Button>
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent align="end" className="w-48">
-                                <DropdownMenuItem onClick={handleAddNote}>
-                                    <FileText className="mr-2 h-4 w-4" />
-                                    Add Note
-                                </DropdownMenuItem>
-                                <DropdownMenuSeparator />
-                                <DropdownMenuItem className="text-destructive focus:text-destructive" onClick={handleDelete}>
-                                    <Trash2 className="mr-2 h-4 w-4" />
-                                    Delete Lead
-                                </DropdownMenuItem>
-                            </DropdownMenuContent>
-                        </DropdownMenu>
-                    </div>
-                </div>
+                                <Button variant="outline" size="sm" onClick={handleLogActivity}>
+                                    <PhoneCall className="mr-1.5 h-4 w-4" />Log Activity
+                                </Button>
+                                <Button variant="outline" size="sm" onClick={handleCreateTask}>
+                                    <CheckSquare className="mr-1.5 h-4 w-4" />Create Task
+                                </Button>
+                                <Button variant="outline" size="sm">
+                                    <Edit className="mr-1.5 h-4 w-4" />Edit
+                                </Button>
+                            </div>
+                        </div>
+                    </CardContent>
+                </Card>
 
-                {/* Main Content Layout */}
-                <div className="grid gap-6 lg:grid-cols-4">
-                    {/* Left Column: Lead Info (1/4) */}
-                    <div className="lg:col-span-1 space-y-6">
-                        <Card>
-                            <CardHeader className="pb-4">
-                                <CardTitle className="text-sm font-medium text-muted-foreground">General Information</CardTitle>
+                {/* Pipeline Progress */}
+                <Card className="mb-6 border-none shadow-sm">
+                    <CardHeader className="pb-2">
+                        <CardTitle className="text-sm font-bold uppercase tracking-widest text-muted-foreground">Pipeline Stage</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                        <PipelineProgress currentStage={lead.status} />
+                    </CardContent>
+                </Card>
+
+                {/* Detail Card */}
+                <Card className="mb-6 border-none shadow-sm">
+                    <CardHeader className="pb-3">
+                        <CardTitle className="text-sm font-bold uppercase tracking-widest text-muted-foreground">Lead Information</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                            <div className="space-y-1">
+                                <p className="text-xs text-muted-foreground">Estimated Value</p>
+                                <p className="text-lg font-bold text-primary">{formatCurrency(lead.value)}</p>
+                            </div>
+                            <div className="space-y-1">
+                                <p className="text-xs text-muted-foreground">Expected Close</p>
+                                <p className="text-sm font-medium">{formatDate(lead.expectedCloseDate)}</p>
+                            </div>
+                            <div className="space-y-1">
+                                <p className="text-xs text-muted-foreground">Lead Source</p>
+                                <p className="text-sm font-medium">{lead.source}</p>
+                            </div>
+                            <div className="space-y-1">
+                                <p className="text-xs text-muted-foreground">Date Created</p>
+                                <p className="text-sm font-medium">{formatDate(lead.createdAt)}</p>
+                            </div>
+                            <div className="space-y-1">
+                                <p className="text-xs text-muted-foreground">Days in Pipeline</p>
+                                <p className="text-sm font-medium">{getDaysInPipeline()} days</p>
+                            </div>
+                            <div className="space-y-1">
+                                <p className="text-xs text-muted-foreground">Days in Current Stage</p>
+                                <p className="text-sm font-medium">{getDaysInStage()} days</p>
+                            </div>
+                            <div className="space-y-1">
+                                <p className="text-xs text-muted-foreground">Email</p>
+                                <a href={`mailto:${lead.email}`} className="text-sm text-primary hover:underline">{lead.email}</a>
+                            </div>
+                            <div className="space-y-1">
+                                <p className="text-xs text-muted-foreground">Phone</p>
+                                <a href={`tel:${lead.phone}`} className="text-sm text-primary hover:underline">{lead.phone}</a>
+                            </div>
+                        </div>
+                    </CardContent>
+                </Card>
+
+                {/* Tabs */}
+                <Tabs defaultValue="activity" className="space-y-6">
+                    <TabsList className="bg-transparent h-auto p-0 gap-2 border-b rounded-none w-full justify-start overflow-x-auto no-scrollbar">
+                        {["activity", "tasks", "quotes", "notes"].map((tab) => (
+                            <TabsTrigger
+                                key={tab}
+                                value={tab}
+                                className="data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-primary rounded-none px-4 pb-3 text-[10px] font-bold uppercase tracking-widest transition-none capitalize"
+                            >
+                                {tab}
+                            </TabsTrigger>
+                        ))}
+                    </TabsList>
+
+                    {/* Activity Tab */}
+                    <TabsContent value="activity">
+                        <ActivityTimeline activities={mockActivitiesData} />
+                    </TabsContent>
+
+                    {/* Tasks Tab */}
+                    <TabsContent value="tasks">
+                        <Card className="border-none shadow-sm">
+                            <CardHeader className="pb-3 flex flex-row items-center justify-between">
+                                <CardTitle className="text-sm font-bold">Tasks</CardTitle>
+                                <Button size="sm" onClick={handleCreateTask}>
+                                    <Plus className="mr-1 h-4 w-4" />Create Task
+                                </Button>
                             </CardHeader>
-                            <CardContent className="space-y-6">
-                                <InfoRow label="Email" value={lead.email} icon={Mail} />
-                                <InfoRow label="Phone" value={lead.phone} icon={Phone} />
-                                <InfoRow label="Source" value={lead.source} icon={Globe} />
-                                <InfoRow label="Owner" value={lead.owner} icon={User} />
-                                <InfoRow label="Estimated Value" value={formatCurrency(lead.value)} icon={PoundSterling} />
-                                <InfoRow label="Created" value={formatDate(lead.createdAt)} icon={Calendar} />
+                            <CardContent className="p-0">
+                                <Table>
+                                    <TableHeader>
+                                        <TableRow>
+                                            <TableHead>Task</TableHead>
+                                            <TableHead>Due Date</TableHead>
+                                            <TableHead>Priority</TableHead>
+                                            <TableHead>Status</TableHead>
+                                        </TableRow>
+                                    </TableHeader>
+                                    <TableBody>
+                                        {mockTasks.map((task) => (
+                                            <TableRow key={task.id}>
+                                                <TableCell className="font-medium">{task.title}</TableCell>
+                                                <TableCell className="text-sm text-muted-foreground">{formatDate(task.dueDate)}</TableCell>
+                                                <TableCell>
+                                                    <Badge className={cn("border-none text-[10px] font-bold",
+                                                        task.priority === "High" ? STATUS_COLORS.priority.high : STATUS_COLORS.priority.normal
+                                                    )}>
+                                                        {task.priority}
+                                                    </Badge>
+                                                </TableCell>
+                                                <TableCell>
+                                                    <Badge className={cn("border-none text-[10px] font-bold",
+                                                        task.status === "completed" ? STATUS_COLORS.semantic.healthy : STATUS_COLORS.semantic.warning
+                                                    )}>
+                                                        {task.status === "completed" ? "Completed" : "Pending"}
+                                                    </Badge>
+                                                </TableCell>
+                                            </TableRow>
+                                        ))}
+                                    </TableBody>
+                                </Table>
                             </CardContent>
                         </Card>
-                    </div>
+                    </TabsContent>
 
-                    {/* Right Column: Content + Timeline (3/4) */}
-                    <div className="lg:col-span-3 space-y-6">
-                        <Tabs value={activeTab} onValueChange={setActiveTab}>
-                            <TabsList className="bg-transparent h-auto p-0 gap-6 border-b rounded-none w-full justify-start">
-                                <TabsTrigger
-                                    value="overview"
-                                    className="data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-primary rounded-none px-0 pb-3 text-sm font-medium"
-                                >
-                                    Overview
-                                </TabsTrigger>
-                                <TabsTrigger
-                                    value="activity"
-                                    className="data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-primary rounded-none px-0 pb-3 text-sm font-medium"
-                                >
-                                    Activity Timeline
-                                </TabsTrigger>
-                                <TabsTrigger
-                                    value="quotes"
-                                    className="data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-primary rounded-none px-0 pb-3 text-sm font-medium"
-                                >
-                                    Quotes
-                                </TabsTrigger>
-                                <TabsTrigger
-                                    value="notes"
-                                    className="data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-primary rounded-none px-0 pb-3 text-sm font-medium"
-                                >
-                                    Notes
-                                </TabsTrigger>
-                            </TabsList>
+                    {/* Quotes Tab */}
+                    <TabsContent value="quotes">
+                        <Card className="border-none shadow-sm">
+                            <CardHeader className="pb-3 flex flex-row items-center justify-between">
+                                <CardTitle className="text-sm font-bold">Quotes</CardTitle>
+                                <Button size="sm" onClick={handleCreateQuote}>
+                                    <Plus className="mr-1 h-4 w-4" />Create Quote
+                                </Button>
+                            </CardHeader>
+                            <CardContent className="p-0">
+                                <Table>
+                                    <TableHeader>
+                                        <TableRow>
+                                            <TableHead>Quote Ref</TableHead>
+                                            <TableHead className="text-right">Value</TableHead>
+                                            <TableHead>Status</TableHead>
+                                            <TableHead>Created</TableHead>
+                                        </TableRow>
+                                    </TableHeader>
+                                    <TableBody>
+                                        {mockQuotes.map((quote) => (
+                                            <TableRow key={quote.id} className="cursor-pointer hover:bg-muted/50">
+                                                <TableCell>
+                                                    <Link href={`/quotes/${quote.id}`} className="font-medium text-primary hover:underline">
+                                                        {quote.id}
+                                                    </Link>
+                                                </TableCell>
+                                                <TableCell className="text-right font-medium">{formatCurrency(quote.value)}</TableCell>
+                                                <TableCell>
+                                                    <Badge className={cn("border-none text-[10px] font-bold",
+                                                        quote.status === "Sent" ? STATUS_COLORS.quote.sent : STATUS_COLORS.quote.rejected
+                                                    )}>
+                                                        {quote.status}
+                                                    </Badge>
+                                                </TableCell>
+                                                <TableCell className="text-sm text-muted-foreground">{formatDate(quote.createdDate)}</TableCell>
+                                            </TableRow>
+                                        ))}
+                                    </TableBody>
+                                </Table>
+                            </CardContent>
+                        </Card>
+                    </TabsContent>
 
-                            {/* Overview Tab */}
-                            <TabsContent value="overview" className="mt-6">
-                                <div className="grid gap-4 sm:grid-cols-3">
-                                    <Card>
-                                        <CardContent className="pt-6">
-                                            <p className="text-sm text-muted-foreground">Value</p>
-                                            <p className="text-2xl font-semibold mt-1">{formatCurrency(lead.value)}</p>
-                                        </CardContent>
-                                    </Card>
-                                    <Card>
-                                        <CardContent className="pt-6">
-                                            <p className="text-sm text-muted-foreground">Interactions</p>
-                                            <p className="text-2xl font-semibold mt-1">{leadActivities.length}</p>
-                                        </CardContent>
-                                    </Card>
-                                    <Card>
-                                        <CardContent className="pt-6">
-                                            <p className="text-sm text-muted-foreground">Quotes</p>
-                                            <p className="text-2xl font-semibold mt-1">{leadQuotes.length}</p>
-                                        </CardContent>
-                                    </Card>
-                                </div>
-
-                                <Card className="mt-6">
-                                    <CardHeader className="pb-3 border-b">
-                                        <CardTitle className="text-base font-medium">Internal Notes</CardTitle>
-                                    </CardHeader>
-                                    <CardContent className="pt-4">
-                                        {leadNotes.length > 0 ? (
-                                            <div className="space-y-4">
-                                                {leadNotes.slice(0, 2).map((note) => (
-                                                    <div key={note.id} className="text-sm">
-                                                        <div className="flex items-center gap-2 mb-1">
-                                                            <span className="font-medium">{note.author}</span>
-                                                            <span className="text-xs text-muted-foreground">{formatDate(note.createdAt)}</span>
-                                                        </div>
-                                                        <p className="text-muted-foreground text-sm leading-relaxed">{note.content}</p>
-                                                    </div>
-                                                ))}
-                                                <Button variant="ghost" size="sm" className="w-full text-muted-foreground hover:text-foreground" onClick={() => setActiveTab("notes")}>
-                                                    View all notes
-                                                </Button>
-                                            </div>
-                                        ) : (
-                                            <EmptyState
-                                                icon={StickyNote}
-                                                title="No notes"
-                                                description="Keep track of internal discussions here."
-                                                action={{ label: "Add Note", onClick: handleAddNote }}
-                                            />
-                                        )}
-                                    </CardContent>
-                                </Card>
-                            </TabsContent>
-
-                            {/* Activity Tab */}
-                            <TabsContent value="activity" className="mt-6">
-                                <Card border-none className="bg-transparent shadow-none border-0">
-                                    <CardContent className="p-0">
-                                        <div className="flex items-center justify-between mb-6">
-                                            <h3 className="text-base font-medium">Activity Timeline</h3>
-                                            <div className="flex gap-2">
-                                                <Button variant="outline" size="sm" className="h-8">Log Call</Button>
-                                                <Button variant="outline" size="sm" className="h-8">Log Email</Button>
+                    {/* Notes Tab */}
+                    <TabsContent value="notes">
+                        <Card className="border-none shadow-sm">
+                            <CardHeader className="pb-3 flex flex-row items-center justify-between">
+                                <CardTitle className="text-sm font-bold">Notes</CardTitle>
+                                <Button size="sm" onClick={handleAddNote}>
+                                    <Plus className="mr-1 h-4 w-4" />Add Note
+                                </Button>
+                            </CardHeader>
+                            <CardContent>
+                                <div className="space-y-4">
+                                    {mockNotes.map((note) => (
+                                        <div key={note.id} className="p-4 bg-muted/30 rounded-lg border">
+                                            <p className="text-sm">{note.content}</p>
+                                            <div className="flex items-center gap-2 mt-3 text-xs text-muted-foreground">
+                                                <span className="font-medium">{note.author}</span>
+                                                <span>•</span>
+                                                <span>{formatDate(note.createdAt)}</span>
                                             </div>
                                         </div>
-                                        <ActivityTimeline activities={leadActivities} />
-                                    </CardContent>
-                                </Card>
-                            </TabsContent>
-
-                            {/* Quotes Tab */}
-                            <TabsContent value="quotes" className="mt-6">
-                                <Card>
-                                    <CardHeader className="flex flex-row items-center justify-between border-b px-6 py-4">
-                                        <CardTitle className="text-base font-medium">Lead Quotes</CardTitle>
-                                        <Button size="sm" className="h-8">
-                                            <Plus className="mr-1.5 h-3.5 w-3.5" />
-                                            Create Quote
-                                        </Button>
-                                    </CardHeader>
-                                    <CardContent className="p-0">
-                                        {leadQuotes.length > 0 ? (
-                                            <Table>
-                                                <TableHeader>
-                                                    <TableRow className="hover:bg-transparent">
-                                                        <TableHead className="pl-6 font-medium">Quote #</TableHead>
-                                                        <TableHead className="font-medium">Value</TableHead>
-                                                        <TableHead className="font-medium">Status</TableHead>
-                                                        <TableHead className="pr-6 font-medium text-right">Created</TableHead>
-                                                    </TableRow>
-                                                </TableHeader>
-                                                <TableBody>
-                                                    {leadQuotes.map((quote) => (
-                                                        <TableRow key={quote.id} className="group">
-                                                            <TableCell className="pl-6">
-                                                                <Link href={`/quotes/${quote.id}`} className="font-medium text-sm hover:underline">
-                                                                    {quote.id}
-                                                                </Link>
-                                                            </TableCell>
-                                                            <TableCell className="text-sm">{formatCurrency(quote.total)}</TableCell>
-                                                            <TableCell>
-                                                                <Badge variant="secondary" className="font-normal">{quote.status}</Badge>
-                                                            </TableCell>
-                                                            <TableCell className="pr-6 text-sm text-muted-foreground text-right">
-                                                                {formatDate(quote.created)}
-                                                            </TableCell>
-                                                        </TableRow>
-                                                    ))}
-                                                </TableBody>
-                                            </Table>
-                                        ) : (
-                                            <EmptyState
-                                                icon={FileText}
-                                                title="No quotes"
-                                                description="Create a quote to start the proposal process."
-                                                action={{ label: "Create Quote", onClick: () => console.log("Create quote") }}
-                                            />
-                                        )}
-                                    </CardContent>
-                                </Card>
-                            </TabsContent>
-
-                            {/* Notes Tab */}
-                            <TabsContent value="notes" className="mt-6">
-                                <Card>
-                                    <CardHeader className="flex flex-row items-center justify-between border-b px-6 py-4">
-                                        <CardTitle className="text-base font-medium">Internal Notes</CardTitle>
-                                        <Button size="sm" className="h-8" onClick={handleAddNote}>
-                                            <Plus className="mr-1.5 h-3.5 w-3.5" />
-                                            Add Note
-                                        </Button>
-                                    </CardHeader>
-                                    <CardContent className="px-6 py-4">
-                                        {leadNotes.length > 0 ? (
-                                            <div className="space-y-6">
-                                                {leadNotes.map((note) => (
-                                                    <div key={note.id} className="relative group">
-                                                        <div className="flex items-start justify-between mb-2">
-                                                            <div className="flex items-center gap-2">
-                                                                <div className="h-6 w-6 rounded-full bg-muted flex items-center justify-center text-[10px] font-bold">
-                                                                    {note.author.split(" ").map(n => n[0]).join("")}
-                                                                </div>
-                                                                <div>
-                                                                    <p className="text-sm font-medium leading-none">{note.author}</p>
-                                                                    <p className="text-xs text-muted-foreground mt-1">{formatDate(note.createdAt)}</p>
-                                                                </div>
-                                                            </div>
-                                                            <DropdownMenu>
-                                                                <DropdownMenuTrigger asChild>
-                                                                    <Button variant="ghost" size="icon" className="h-8 w-8 opacity-0 group-hover:opacity-100 transition-opacity">
-                                                                        <MoreHorizontal className="h-4 w-4" />
-                                                                    </Button>
-                                                                </DropdownMenuTrigger>
-                                                                <DropdownMenuContent align="end">
-                                                                    <DropdownMenuItem>
-                                                                        <Pencil className="mr-2 h-4 w-4" />
-                                                                        Edit
-                                                                    </DropdownMenuItem>
-                                                                    <DropdownMenuSeparator />
-                                                                    <DropdownMenuItem className="text-destructive">
-                                                                        <Trash2 className="mr-2 h-4 w-4" />
-                                                                        Delete
-                                                                    </DropdownMenuItem>
-                                                                </DropdownMenuContent>
-                                                            </DropdownMenu>
-                                                        </div>
-                                                        <p className="text-sm text-foreground leading-relaxed pl-8">
-                                                            {note.content}
-                                                        </p>
-                                                        <Separator className="mt-6" />
-                                                    </div>
-                                                ))}
-                                            </div>
-                                        ) : (
-                                            <EmptyState
-                                                icon={StickyNote}
-                                                title="No notes"
-                                                description="Capture important details about this lead."
-                                                action={{ label: "Add Note", onClick: handleAddNote }}
-                                            />
-                                        )}
-                                    </CardContent>
-                                </Card>
-                            </TabsContent>
-                        </Tabs>
-                    </div>
-                </div>
+                                    ))}
+                                </div>
+                            </CardContent>
+                        </Card>
+                    </TabsContent>
+                </Tabs>
             </main>
         </>
     );

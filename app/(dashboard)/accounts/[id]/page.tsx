@@ -7,8 +7,16 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Separator } from "@/components/ui/separator";
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select";
 import {
     Table,
     TableBody,
@@ -35,190 +43,277 @@ import {
     MapPin,
     User,
     Plus,
-    Upload,
-    FileText,
-    File,
-    FolderKanban,
     PoundSterling,
     TrendingUp,
     Receipt,
     CreditCard,
     Clock,
-    Download,
     Eye,
     ChevronRight,
-    CheckCircle,
+    FileText,
+    Users,
+    Globe,
+    Calendar,
+    MessageSquare,
+    PhoneCall,
+    Send,
+    AlertCircle,
+    HardHat,
+    CheckCircle2,
+    Filter,
+    ChevronLeft,
 } from "lucide-react";
+import { ActivityTimeline, Activity as ActivityInterface } from "@/components/activity/activity-timeline";
+import { STATUS_COLORS, getStatusStyle } from "@/lib/status-utils";
+import { cn } from "@/lib/utils";
+import { EmptyState as SharedEmptyState } from "@/components/ui/empty-state";
 
 // Types
-interface Account {
+type CompanyStatus = "Prospect" | "Active Customer" | "Inactive" | "Archived";
+type SiteStatus = "Lead/Prospect" | "Quote Sent" | "Contract Signed" | "Pending Install" | "Active" | "Under Service" | "Decommissioned" | "Archived";
+type RegionStatus = "Active" | "Dormant" | "Not Yet Approached";
+
+interface Company {
     id: string;
-    name: string;
-    type: string;
-    status: string;
-    totalProjects: number;
-    revenue: number;
-    location: string;
-    contactName: string;
-    contactEmail: string;
-    contactPhone: string;
-    address: string;
+    companyName: string;
+    companyType: string;
+    industry: string;
+    accountOwnerBdmId: string;
+    accountOwnerBdmName: string;
+    status: CompanyStatus;
+    domain?: string;
+    phone?: string;
+    registeredAddress?: string;
     createdAt: string;
 }
 
 interface Site {
     id: string;
-    accountId: string;
-    name: string;
-    address: string;
-    status: string;
-    projectsCount: number;
+    siteName: string;
+    fullAddress: string;
+    siteStatus: SiteStatus;
+    systemType: string;
+    assignedBdmName: string;
+    installationDate?: string;
+    totalContractValue: number;
 }
 
-interface Project {
+interface Contact {
     id: string;
-    accountId: string;
-    name: string;
-    status: string;
-    budget: number;
-    spent: number;
-    progress: number;
-    manager: string;
+    firstName: string;
+    lastName: string;
+    jobTitle?: string;
+    email: string;
+    mobilePhone?: string;
+    preferredCommunication: string;
+    regionName?: string;
+    associatedSitesCount: number;
 }
 
-interface Document {
+interface Region {
     id: string;
-    accountId: string;
-    name: string;
-    type: string;
-    size: string;
-    uploadedBy: string;
-    uploadedAt: string;
+    regionName: string;
+    regionOwnerBdmName: string;
+    status: RegionStatus;
+    contactsCount: number;
 }
 
 interface Activity {
     id: string;
+    activityType: string;
     description: string;
-    date: string;
-    user: string;
+    dateTime: string;
+    performedByName: string;
 }
 
+interface Quote {
+    id: string;
+    quoteReference: string;
+    contactName: string;
+    totalValue: number;
+    quoteStatus: string;
+    dateSent?: string;
+    bdmName: string;
+}
+
+// Mock BDM Users
+const mockBdmUsers = [
+    { id: "BDM-001", name: "John Smith" },
+    { id: "BDM-002", name: "Sarah Chen" },
+    { id: "BDM-003", name: "Mike Johnson" },
+    { id: "BDM-004", name: "Lisa Park" },
+];
+
 // Mock Data
-const mockAccounts: Record<string, Account> = {
-    "ACC-001": { id: "ACC-001", name: "Johnson Roofing LLC", type: "commercial", status: "active", totalProjects: 12, revenue: 450000, location: "Austin, TX", contactName: "Mike Thompson", contactEmail: "mike@johnsonroofing.com", contactPhone: "07555 123 456", address: "123 Oak Street, Austin, TX 78701", createdAt: "2023-06-15" },
-    "ACC-002": { id: "ACC-002", name: "Acme Construction", type: "enterprise", status: "active", totalProjects: 28, revenue: 1200000, location: "Dallas, TX", contactName: "Sarah Chen", contactEmail: "sarah@acme.com", contactPhone: "07555 234 567", address: "456 Main Avenue, Dallas, TX 75201", createdAt: "2023-04-10" },
+const mockCompanies: Record<string, Company> = {
+    "COMP-001": { id: "COMP-001", companyName: "Johnson Roofing LLC", companyType: "Main Contractor", industry: "Construction", accountOwnerBdmId: "BDM-001", accountOwnerBdmName: "John Smith", status: "Active Customer", domain: "johnsonroofing.com", phone: "07555 123 456", registeredAddress: "123 Oak Street, Austin, TX 78701", createdAt: "2023-06-15" },
+    "COMP-002": { id: "COMP-002", companyName: "Acme Construction", companyType: "Main Contractor", industry: "Commercial", accountOwnerBdmId: "BDM-002", accountOwnerBdmName: "Sarah Chen", status: "Active Customer", domain: "acme.com", phone: "07555 234 567", registeredAddress: "456 Main Avenue, Dallas, TX 75201", createdAt: "2023-04-10" },
 };
 
 const mockSites: Site[] = [
-    { id: "SITE-001", accountId: "ACC-001", name: "Main Office", address: "123 Oak Street, Austin, TX 78701", status: "active", projectsCount: 5 },
-    { id: "SITE-002", accountId: "ACC-001", name: "Warehouse Facility", address: "456 Industrial Blvd, Austin, TX 78702", status: "active", projectsCount: 3 },
-    { id: "SITE-003", accountId: "ACC-001", name: "Branch Office - North", address: "789 North Ave, Round Rock, TX 78664", status: "active", projectsCount: 2 },
+    { id: "SITE-001", siteName: "Main Office", fullAddress: "123 Oak Street, Austin, TX 78701", siteStatus: "Active", systemType: "Hardwired CCTV", assignedBdmName: "John Smith", installationDate: "2023-06-20", totalContractValue: 45000 },
+    { id: "SITE-002", siteName: "Warehouse Facility", fullAddress: "456 Industrial Blvd, Austin, TX 78702", siteStatus: "Active", systemType: "Wireless CCTV (Ajax)", assignedBdmName: "John Smith", installationDate: "2023-08-15", totalContractValue: 32000 },
+    { id: "SITE-003", siteName: "Branch Office - North", fullAddress: "789 North Ave, Round Rock, TX 78664", siteStatus: "Pending Install", systemType: "Tower System", assignedBdmName: "Mike Johnson", totalContractValue: 28000 },
+    { id: "SITE-004", siteName: "Distribution Center", fullAddress: "321 Logistics Way, Austin, TX 78703", siteStatus: "Quote Sent", systemType: "Mixed", assignedBdmName: "John Smith", totalContractValue: 55000 },
 ];
 
-const mockProjects: Project[] = [
-    { id: "P-2024-001", accountId: "ACC-001", name: "Roof Replacement - Main Office", status: "in_progress", budget: 45000, spent: 28000, progress: 62, manager: "John Doe" },
-    { id: "P-2024-002", accountId: "ACC-001", name: "Warehouse Roof Inspection", status: "completed", budget: 5000, spent: 4800, progress: 100, manager: "Mike Johnson" },
-    { id: "P-2024-003", accountId: "ACC-001", name: "Gutter System Upgrade", status: "planning", budget: 12000, spent: 0, progress: 10, manager: "Jane Smith" },
+const mockContacts: Contact[] = [
+    { id: "CONT-001", firstName: "Mike", lastName: "Thompson", jobTitle: "Operations Director", email: "mike@johnsonroofing.com", mobilePhone: "07555 111 222", preferredCommunication: "Email", regionName: "Austin", associatedSitesCount: 3 },
+    { id: "CONT-002", firstName: "Rachel", lastName: "Green", jobTitle: "Site Manager", email: "rachel@johnsonroofing.com", mobilePhone: "07555 222 333", preferredCommunication: "Phone", regionName: "Austin", associatedSitesCount: 1 },
+    { id: "CONT-003", firstName: "David", lastName: "Brown", jobTitle: "Finance Manager", email: "david@johnsonroofing.com", mobilePhone: "07555 333 444", preferredCommunication: "Email", associatedSitesCount: 0 },
 ];
 
-const mockDocuments: Document[] = [
-    { id: "DOC-001", accountId: "ACC-001", name: "Service Agreement 2024", type: "contract", size: "2.4 MB", uploadedBy: "John Doe", uploadedAt: "2024-01-15" },
-    { id: "DOC-002", accountId: "ACC-001", name: "Insurance Certificate", type: "certificate", size: "1.1 MB", uploadedBy: "Jane Smith", uploadedAt: "2024-01-10" },
-    { id: "DOC-003", accountId: "ACC-001", name: "Invoice INV-2024-0045", type: "invoice", size: "156 KB", uploadedBy: "System", uploadedAt: "2024-01-28" },
+const mockRegions: Region[] = [
+    { id: "REG-001", regionName: "Austin Metro", regionOwnerBdmName: "John Smith", status: "Active", contactsCount: 5 },
+    { id: "REG-002", regionName: "North Texas", regionOwnerBdmName: "Sarah Chen", status: "Active", contactsCount: 3 },
+    { id: "REG-003", regionName: "Hill Country", regionOwnerBdmName: "Mike Johnson", status: "Dormant", contactsCount: 1 },
 ];
 
-const mockActivities: Activity[] = [
-    { id: "1", description: "New project created: Roof Replacement - Main Office", date: "2024-01-15", user: "John Doe" },
-    { id: "2", description: "Service Agreement 2024 uploaded", date: "2024-01-15", user: "John Doe" },
-    { id: "3", description: "Payment received: £15,000", date: "2024-01-12", user: "System" },
-    { id: "4", description: "New site added: Branch Office - North", date: "2024-01-05", user: "Jane Smith" },
+const mockActivitiesData: ActivityInterface[] = [
+    { id: "ACT-001", type: "call", description: "Follow-up call regarding warehouse installation", userName: "John Smith", timestamp: "2024-01-28 14:30" },
+    { id: "ACT-002", type: "email_sent", description: "Sent quote for Distribution Center project", userName: "John Smith", timestamp: "2024-01-27 10:15" },
+    { id: "ACT-003", type: "site_visit", description: "Site assessment at Branch Office - North", userName: "Mike Johnson", timestamp: "2024-01-25 09:00" },
+    { id: "ACT-004", type: "meeting", description: "Contract negotiation meeting with Mike Thompson", userName: "John Smith", timestamp: "2024-01-22 11:00" },
+    { id: "ACT-005", type: "quote_sent", description: "K2S-Q-0045 sent to Mike Thompson", userName: "John Smith", timestamp: "2024-01-20 15:45" },
+    { id: "ACT-006", type: "note", description: "Client interested in expanding to 3 more sites in Q2", userName: "Sarah Chen", timestamp: "2024-01-18 16:00" },
 ];
 
-const mockFinancials = {
-    totalRevenue: 450000,
-    invoiced: 320000,
-    paid: 280000,
-    outstanding: 40000,
-    invoices: [
-        { id: "INV-2024-0045", amount: 15000, status: "paid", date: "2024-01-28" },
-        { id: "INV-2024-0032", amount: 25000, status: "pending", date: "2024-01-15" },
-        { id: "INV-2024-0018", amount: 15000, status: "overdue", date: "2024-01-02" },
-    ],
+const mockQuotes: Quote[] = [
+    { id: "QUOTE-001", quoteReference: "K2S-Q-0045", contactName: "Mike Thompson", totalValue: 55000, quoteStatus: "Sent", dateSent: "2024-01-20", bdmName: "John Smith" },
+    { id: "QUOTE-002", quoteReference: "K2S-Q-0038", contactName: "Rachel Green", totalValue: 28000, quoteStatus: "Accepted", dateSent: "2024-01-10", bdmName: "Mike Johnson" },
+    { id: "QUOTE-003", quoteReference: "K2S-Q-0032", contactName: "Mike Thompson", totalValue: 32000, quoteStatus: "Accepted", dateSent: "2023-12-15", bdmName: "John Smith" },
+];
+
+const siteStatusStyles: Record<string, string> = {
+    "Lead/Prospect": STATUS_COLORS.pipeline.new,
+    "Quote Sent": STATUS_COLORS.pipeline.quote_sent,
+    "Contract Signed": STATUS_COLORS.pipeline.site_visit_completed,
+    "Pending Install": STATUS_COLORS.job.scheduled,
+    "Active": STATUS_COLORS.semantic.active,
+    "Under Service": STATUS_COLORS.job.in_progress,
+    "Decommissioned": STATUS_COLORS.semantic.draft,
+    "Archived": STATUS_COLORS.semantic.draft,
 };
 
-const statusStyles: Record<string, string> = {
-    active: "bg-green-50 text-green-700 dark:bg-green-950/50 dark:text-green-400",
-    inactive: "bg-muted text-muted-foreground",
-    on_hold: "bg-amber-50 text-amber-700 dark:bg-amber-950/50 dark:text-amber-400",
+const companyStatusStyles: Record<CompanyStatus, string> = {
+    "Prospect": STATUS_COLORS.semantic.info,
+    "Active Customer": STATUS_COLORS.semantic.active,
+    "Inactive": STATUS_COLORS.semantic.draft,
+    "Archived": STATUS_COLORS.semantic.draft,
 };
 
-const typeStyles: Record<string, string> = {
-    residential: "bg-blue-50 text-blue-700 dark:bg-blue-950/50 dark:text-blue-400",
-    commercial: "bg-purple-50 text-purple-700 dark:bg-purple-950/50 dark:text-purple-400",
-    enterprise: "bg-orange-50 text-orange-700 dark:bg-orange-950/50 dark:text-orange-400",
+const regionStatusStyles: Record<RegionStatus, string> = {
+    "Active": STATUS_COLORS.semantic.active,
+    "Dormant": STATUS_COLORS.semantic.warning,
+    "Not Yet Approached": STATUS_COLORS.semantic.draft,
 };
 
-const projectStatusStyles: Record<string, string> = {
-    planning: "bg-blue-50 text-blue-700 dark:bg-blue-950/50 dark:text-blue-400",
-    in_progress: "bg-purple-50 text-purple-700 dark:bg-purple-950/50 dark:text-purple-400",
-    completed: "bg-green-50 text-green-700 dark:bg-green-950/50 dark:text-green-400",
-    on_hold: "bg-amber-50 text-amber-700 dark:bg-amber-950/50 dark:text-amber-400",
+const quoteStatusStyles: Record<string, string> = {
+    "Draft": STATUS_COLORS.quote.draft,
+    "Sent": STATUS_COLORS.quote.sent,
+    "Awaiting Response": STATUS_COLORS.quote.awaiting_response,
+    "In Negotiation": STATUS_COLORS.quote.in_negotiation,
+    "Accepted": STATUS_COLORS.quote.accepted,
+    "Rejected": STATUS_COLORS.quote.rejected,
+    "Expired": STATUS_COLORS.quote.expired,
 };
 
-const invoiceStatusStyles: Record<string, string> = {
-    paid: "bg-green-50 text-green-700 dark:bg-green-950/50 dark:text-green-400",
-    pending: "bg-amber-50 text-amber-700 dark:bg-amber-950/50 dark:text-amber-400",
-    overdue: "bg-red-50 text-red-700 dark:bg-red-950/50 dark:text-red-400",
+const activityIcons: Record<string, React.ElementType> = {
+    "Call": PhoneCall,
+    "Email Sent": Send,
+    "Email Received": Mail,
+    "Meeting": Users,
+    "Site Visit": MapPin,
+    "Note": MessageSquare,
+    "Quote Sent": FileText,
+    "Contract Sent": FileText,
+    "Contract Signed": CheckCircle2,
+    "Status Change": AlertCircle,
+    "System Notification": AlertCircle,
 };
-
-// Info Row Component
-function InfoRow({ label, value, icon: Icon }: { label: string; value: string | number; icon: React.ElementType }) {
-    return (
-        <div className="flex items-start gap-3">
-            <div className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-muted/50 border">
-                <Icon className="h-4 w-4 text-muted-foreground" />
-            </div>
-            <div className="min-w-0">
-                <p className="text-[11px] font-medium text-muted-foreground uppercase tracking-wider">{label}</p>
-                <p className="text-sm font-medium text-foreground mt-0.5 truncate">{value}</p>
-            </div>
-        </div>
-    );
-}
 
 // Stat Card Component
-function StatCard({ title, value, description, icon: Icon, green }: {
+function StatCard({ title, value, icon: Icon, green }: {
     title: string;
     value: string | number;
-    description?: string;
     icon: React.ElementType;
     green?: boolean;
 }) {
     return (
-        <Card>
-            <CardHeader className="pb-2">
+        <Card className="border-none shadow-sm">
+            <CardContent className="p-5">
                 <div className="flex items-center justify-between">
-                    <CardDescription className="text-xs font-medium uppercase tracking-wider">{title}</CardDescription>
-                    <Icon className="h-4 w-4 text-muted-foreground" />
+                    <div>
+                        <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">{title}</p>
+                        <p className={`text-xl font-black mt-1 ${green ? 'text-green-600' : ''}`}>{value}</p>
+                    </div>
+                    <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary/10">
+                        <Icon className="h-4 w-4 text-primary" />
+                    </div>
                 </div>
-            </CardHeader>
-            <CardContent>
-                <p className={`text-2xl font-bold ${green ? 'text-green-600' : ''}`}>{value}</p>
-                {description && <p className="text-xs text-muted-foreground mt-1">{description}</p>}
             </CardContent>
         </Card>
     );
 }
 
+// Add Region Form
+function AddRegionForm({ onClose }: { onClose?: () => void }) {
+    return (
+        <div className="space-y-4">
+            <div className="space-y-1.5">
+                <Label htmlFor="regionName">Region Name <span className="text-destructive">*</span></Label>
+                <Input id="regionName" placeholder="Enter region name" />
+            </div>
+            <div className="space-y-1.5">
+                <Label htmlFor="ownerBdm">Owner BDM <span className="text-destructive">*</span></Label>
+                <Select>
+                    <SelectTrigger id="ownerBdm">
+                        <SelectValue placeholder="Select BDM" />
+                    </SelectTrigger>
+                    <SelectContent>
+                        {mockBdmUsers.map((user) => (
+                            <SelectItem key={user.id} value={user.id}>
+                                {user.name}
+                            </SelectItem>
+                        ))}
+                    </SelectContent>
+                </Select>
+            </div>
+            <div className="space-y-1.5">
+                <Label htmlFor="regionStatus">Status</Label>
+                <Select defaultValue="Active">
+                    <SelectTrigger id="regionStatus">
+                        <SelectValue placeholder="Select status" />
+                    </SelectTrigger>
+                    <SelectContent>
+                        <SelectItem value="Active">Active</SelectItem>
+                        <SelectItem value="Dormant">Dormant</SelectItem>
+                        <SelectItem value="Not Yet Approached">Not Yet Approached</SelectItem>
+                    </SelectContent>
+                </Select>
+            </div>
+            <div className="space-y-1.5">
+                <Label htmlFor="notes">Notes</Label>
+                <Textarea id="notes" placeholder="Coverage description and notes..." rows={3} />
+            </div>
+            <div className="flex justify-end gap-2 pt-4 border-t">
+                <Button variant="outline" onClick={onClose}>Cancel</Button>
+                <Button>Save Region</Button>
+            </div>
+        </div>
+    );
+}
+
 export default function AccountDetailPage({ params }: { params: Promise<{ id: string }> }) {
     const { id } = use(params);
-    const { openDrawer } = useDrawer();
+    const { openDrawer, closeDrawer } = useDrawer();
     const [activeTab, setActiveTab] = useState("overview");
+    const [siteStatusFilter, setSiteStatusFilter] = useState("all");
+    const [activityTypeFilter, setActivityTypeFilter] = useState("all");
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 10;
 
-    const account = mockAccounts[id] || mockAccounts["ACC-001"];
-    const accountSites = mockSites.filter(s => s.accountId === account.id);
-    const accountProjects = mockProjects.filter(p => p.accountId === account.id);
-    const accountDocuments = mockDocuments.filter(d => d.accountId === account.id);
+    const company = mockCompanies[id] || mockCompanies["COMP-001"];
 
     const formatCurrency = (value: number) => {
         return new Intl.NumberFormat("en-GB", {
@@ -233,19 +328,51 @@ export default function AccountDetailPage({ params }: { params: Promise<{ id: st
         return date.toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" });
     };
 
+    const formatDateTime = (dateTimeString: string) => {
+        const date = new Date(dateTimeString);
+        return date.toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" }) +
+            " at " + date.toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" });
+    };
+
+    // Filter sites
+    const filteredSites = siteStatusFilter === "all"
+        ? mockSites
+        : mockSites.filter(s => s.siteStatus === siteStatusFilter);
+
+    // Filter activities
+    const filteredActivities = activityTypeFilter === "all"
+        ? mockActivitiesData
+        : mockActivitiesData.filter(a => a.type === activityTypeFilter);
+
+    // Calculate stats
+    const activeSitesCount = mockSites.filter(s => s.siteStatus === "Active").length;
+    const totalContractValue = mockSites.reduce((sum, s) => sum + s.totalContractValue, 0);
+    const totalRevenueInvoiced = 280000; // Mock value
+    const totalOutstanding = 40000; // Mock value
+
+    const handleAddRegion = () => {
+        openDrawer({
+            title: "Add New Region",
+            description: "Create a new region for this company",
+            content: <AddRegionForm onClose={closeDrawer} />,
+        });
+    };
+
     return (
         <>
-            <Topbar title="Account Management" />
-            <main className="flex-1 overflow-y-auto bg-muted/40 p-6">
+            <Topbar title="Company Details" />
+            <main className="flex-1 overflow-y-auto bg-muted/20 p-6">
+                {/* Back Button */}
                 <div className="mb-4">
                     <Link href="/accounts">
                         <Button variant="ghost" size="sm" className="h-8 text-muted-foreground hover:text-foreground -ml-2">
                             <ArrowLeft className="mr-1.5 h-4 w-4" />
-                            Back to Accounts
+                            Back to Companies
                         </Button>
                     </Link>
                 </div>
 
+                {/* Header */}
                 <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                     <div className="flex items-center gap-4">
                         <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 text-primary">
@@ -253,24 +380,21 @@ export default function AccountDetailPage({ params }: { params: Promise<{ id: st
                         </div>
                         <div>
                             <div className="flex items-center gap-2.5">
-                                <h1 className="text-xl font-semibold leading-none">{account.name}</h1>
-                                <Badge variant="secondary" className={`${statusStyles[account.status]} font-normal h-5`}>
-                                    {account.status.charAt(0).toUpperCase() + account.status.slice(1)}
-                                </Badge>
-                                <Badge variant="secondary" className={`${typeStyles[account.type]} font-normal h-5`}>
-                                    {account.type.charAt(0).toUpperCase() + account.type.slice(1)}
+                                <h1 className="text-xl font-bold leading-none">{company.companyName}</h1>
+                                <Badge variant="secondary" className={cn("border-none font-bold text-[10px] uppercase h-5", companyStatusStyles[company.status])}>
+                                    {company.status}
                                 </Badge>
                             </div>
                             <p className="text-sm text-muted-foreground mt-1.5 flex items-center gap-1.5">
-                                <MapPin className="h-3.5 w-3.5" />
-                                {account.location}
+                                <User className="h-3.5 w-3.5" />
+                                Primary BDM: <span className="font-medium text-foreground">{company.accountOwnerBdmName}</span>
                             </p>
                         </div>
                     </div>
                     <div className="flex items-center gap-2">
                         <Button variant="outline" size="sm" className="h-9">
                             <Edit className="mr-1.5 h-4 w-4" />
-                            Edit Account
+                            Edit Company
                         </Button>
                         <DropdownMenu>
                             <DropdownMenuTrigger asChild>
@@ -281,342 +405,334 @@ export default function AccountDetailPage({ params }: { params: Promise<{ id: st
                             <DropdownMenuContent align="end" className="w-48">
                                 <DropdownMenuItem>
                                     <Plus className="mr-2 h-4 w-4" />
-                                    New Project
+                                    Add Site
                                 </DropdownMenuItem>
                                 <DropdownMenuItem>
-                                    <Upload className="mr-2 h-4 w-4" />
-                                    Upload Document
+                                    <Users className="mr-2 h-4 w-4" />
+                                    Add Contact
+                                </DropdownMenuItem>
+                                <DropdownMenuItem>
+                                    <FileText className="mr-2 h-4 w-4" />
+                                    Create Quote
                                 </DropdownMenuItem>
                                 <DropdownMenuSeparator />
                                 <DropdownMenuItem className="text-destructive focus:text-destructive">
                                     <Trash2 className="mr-2 h-4 w-4" />
-                                    Delete Account
+                                    Delete Company
                                 </DropdownMenuItem>
                             </DropdownMenuContent>
                         </DropdownMenu>
                     </div>
                 </div>
 
-                <div className="grid gap-6 lg:grid-cols-4">
-                    {/* Left Column: Account Info (1/4) */}
-                    <div className="lg:col-span-1 space-y-6">
-                        <Card>
-                            <CardHeader className="pb-4">
-                                <CardTitle className="text-sm font-medium text-muted-foreground">General Information</CardTitle>
-                            </CardHeader>
-                            <CardContent className="space-y-6">
-                                <InfoRow label="Primary Contact" value={account.contactName} icon={User} />
-                                <InfoRow label="Email" value={account.contactEmail} icon={Mail} />
-                                <InfoRow label="Phone" value={account.contactPhone} icon={Phone} />
-                                <InfoRow label="Address" value={account.address} icon={MapPin} />
-                                <InfoRow label="Member Since" value={formatDate(account.createdAt)} icon={Clock} />
-                            </CardContent>
-                        </Card>
-
-                        <Card>
-                            <CardHeader className="pb-4">
-                                <CardTitle className="text-sm font-medium text-muted-foreground">Stats Overview</CardTitle>
-                            </CardHeader>
-                            <CardContent className="space-y-4">
-                                <div className="flex justify-between items-center text-sm">
-                                    <span className="text-muted-foreground">Total Projects</span>
-                                    <span className="font-semibold">{account.totalProjects}</span>
-                                </div>
-                                <div className="flex justify-between items-center text-sm">
-                                    <span className="text-muted-foreground">Active Sites</span>
-                                    <span className="font-semibold">{accountSites.length}</span>
-                                </div>
-                                <div className="flex justify-between items-center text-sm">
-                                    <span className="text-muted-foreground">Total Revenue</span>
-                                    <span className="font-semibold text-green-600">{formatCurrency(account.revenue)}</span>
-                                </div>
-                            </CardContent>
-                        </Card>
-                    </div>
-
-                    {/* Right Column: Content + Tabs (3/4) */}
-                    <div className="lg:col-span-3 space-y-6">
-                        <Tabs value={activeTab} onValueChange={setActiveTab}>
-                            <TabsList className="bg-transparent h-auto p-0 gap-6 border-b rounded-none w-full justify-start overflow-x-auto no-scrollbar">
-                                <TabsTrigger
-                                    value="overview"
-                                    className="data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-primary rounded-none px-0 pb-3 text-sm font-medium transition-none"
-                                >
-                                    Overview
-                                </TabsTrigger>
-                                <TabsTrigger
-                                    value="sites"
-                                    className="data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-primary rounded-none px-0 pb-3 text-sm font-medium transition-none"
-                                >
-                                    Sites
-                                </TabsTrigger>
-                                <TabsTrigger
-                                    value="projects"
-                                    className="data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-primary rounded-none px-0 pb-3 text-sm font-medium transition-none"
-                                >
-                                    Projects
-                                </TabsTrigger>
-                                <TabsTrigger
-                                    value="documents"
-                                    className="data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-primary rounded-none px-0 pb-3 text-sm font-medium transition-none"
-                                >
-                                    Documents
-                                </TabsTrigger>
-                                <TabsTrigger
-                                    value="financials"
-                                    className="data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-primary rounded-none px-0 pb-3 text-sm font-medium transition-none"
-                                >
-                                    Financials
-                                </TabsTrigger>
-                            </TabsList>
-
-                            {/* Overview Content */}
-                            <TabsContent value="overview" className="mt-6 space-y-6">
-                                <div className="grid gap-4 sm:grid-cols-3">
-                                    <StatCard title="Total Revenue" value={formatCurrency(account.revenue)} icon={TrendingUp} green />
-                                    <StatCard title="Projects" value={account.totalProjects} icon={FolderKanban} />
-                                    <StatCard title="Active Sites" value={accountSites.length} icon={MapPin} />
-                                </div>
-
-                                <Card>
-                                    <CardHeader className="pb-3 border-b flex flex-row items-center justify-between">
-                                        <CardTitle className="text-base font-medium">Recent Activity</CardTitle>
-                                        <Button variant="ghost" size="sm" className="h-8 text-xs">View All</Button>
-                                    </CardHeader>
-                                    <CardContent className="pt-6">
-                                        <div className="relative space-y-0 pb-2">
-                                            {/* Vertical Line */}
-                                            <div className="absolute left-[17px] top-2 h-[calc(100%-16px)] w-0.5 bg-muted" />
-
-                                            {mockActivities.map((activity, index) => (
-                                                <div key={activity.id} className="relative flex gap-4 pb-8 last:pb-0">
-                                                    <div className="mt-1 flex h-9 w-9 shrink-0 items-center justify-center rounded-full border bg-background shadow-sm z-10">
-                                                        <Clock className="h-4 w-4 text-muted-foreground" />
-                                                    </div>
-                                                    <div className="flex-1 pt-1.5">
-                                                        <div className="flex items-center justify-between">
-                                                            <p className="text-sm font-medium leading-none">{activity.description}</p>
-                                                            <span className="text-xs text-muted-foreground">{formatDate(activity.date)}</span>
-                                                        </div>
-                                                        <p className="text-xs text-muted-foreground mt-1.5">
-                                                            Actioned by <span className="font-medium text-foreground">{activity.user}</span>
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                            ))}
-                                        </div>
-                                    </CardContent>
-                                </Card>
-                            </TabsContent>
-
-                            {/* Sites Content */}
-                            <TabsContent value="sites" className="mt-6">
-                                <Card>
-                                    <CardHeader className="pb-3 border-b flex flex-row items-center justify-between">
-                                        <CardTitle className="text-base font-medium">Associated Sites</CardTitle>
-                                        <Button size="sm" variant="outline" className="h-8">
-                                            <Plus className="mr-1.5 h-3.5 w-3.5" />
-                                            Add Site
-                                        </Button>
-                                    </CardHeader>
-                                    <CardContent className="p-0">
-                                        <Table>
-                                            <TableHeader>
-                                                <TableRow className="hover:bg-transparent">
-                                                    <TableHead className="pl-6 font-medium">Site Name</TableHead>
-                                                    <TableHead className="font-medium">Status</TableHead>
-                                                    <TableHead className="font-medium">Projects</TableHead>
-                                                    <TableHead className="font-medium">Address</TableHead>
-                                                    <TableHead className="w-[44px] pr-6"></TableHead>
-                                                </TableRow>
-                                            </TableHeader>
-                                            <TableBody>
-                                                {accountSites.map((site) => (
-                                                    <TableRow key={site.id} className="group">
-                                                        <TableCell className="pl-6 font-medium text-sm">{site.name}</TableCell>
-                                                        <TableCell>
-                                                            <Badge variant="secondary" className={`${statusStyles[site.status]} font-normal h-5`}>
-                                                                {site.status.charAt(0).toUpperCase() + site.status.slice(1)}
-                                                            </Badge>
-                                                        </TableCell>
-                                                        <TableCell className="text-sm font-medium">{site.projectsCount}</TableCell>
-                                                        <TableCell className="text-sm text-muted-foreground truncate max-w-[200px]">{site.address}</TableCell>
-                                                        <TableCell className="pr-6">
-                                                            <Button variant="ghost" size="icon" className="h-8 w-8 opacity-0 group-hover:opacity-100 transition-opacity">
-                                                                <ChevronRight className="h-4 w-4" />
-                                                            </Button>
-                                                        </TableCell>
-                                                    </TableRow>
-                                                ))}
-                                            </TableBody>
-                                        </Table>
-                                    </CardContent>
-                                </Card>
-                            </TabsContent>
-
-                            {/* Projects Content */}
-                            <TabsContent value="projects" className="mt-6">
-                                <Card>
-                                    <CardHeader className="pb-3 border-b flex flex-row items-center justify-between">
-                                        <CardTitle className="text-base font-medium">Active Projects</CardTitle>
-                                        <Button size="sm" className="h-8">
-                                            <Plus className="mr-1.5 h-3.5 w-3.5" />
-                                            New Project
-                                        </Button>
-                                    </CardHeader>
-                                    <CardContent className="p-0">
-                                        <Table>
-                                            <TableHeader>
-                                                <TableRow className="hover:bg-transparent">
-                                                    <TableHead className="pl-6 font-medium">Project</TableHead>
-                                                    <TableHead className="font-medium">Status</TableHead>
-                                                    <TableHead className="font-medium">Budget</TableHead>
-                                                    <TableHead className="font-medium">Progress</TableHead>
-                                                    <TableHead className="w-[44px] pr-6"></TableHead>
-                                                </TableRow>
-                                            </TableHeader>
-                                            <TableBody>
-                                                {accountProjects.map((project) => (
-                                                    <TableRow key={project.id} className="group">
-                                                        <TableCell className="pl-6">
-                                                            <Link href={`/projects/${project.id}`} className="font-medium text-sm hover:underline">
-                                                                {project.name}
-                                                            </Link>
-                                                            <p className="text-[12px] text-muted-foreground mt-0.5">{project.manager}</p>
-                                                        </TableCell>
-                                                        <TableCell>
-                                                            <Badge variant="secondary" className={`${projectStatusStyles[project.status]} font-normal h-5`}>
-                                                                {project.status.replace("_", " ").toUpperCase()}
-                                                            </Badge>
-                                                        </TableCell>
-                                                        <TableCell className="text-sm font-medium">{formatCurrency(project.budget)}</TableCell>
-                                                        <TableCell>
-                                                            <div className="flex items-center gap-2">
-                                                                <div className="h-1.5 w-20 rounded-full bg-muted overflow-hidden">
-                                                                    <div
-                                                                        className="h-full bg-primary"
-                                                                        style={{ width: `${project.progress}%` }}
-                                                                    />
-                                                                </div>
-                                                                <span className="text-[11px] font-medium text-muted-foreground">{project.progress}%</span>
-                                                            </div>
-                                                        </TableCell>
-                                                        <TableCell className="pr-6">
-                                                            <Button variant="ghost" size="icon" className="h-8 w-8 opacity-0 group-hover:opacity-100 transition-opacity" asChild>
-                                                                <Link href={`/projects/${project.id}`}>
-                                                                    <Eye className="h-4 w-4" />
-                                                                </Link>
-                                                            </Button>
-                                                        </TableCell>
-                                                    </TableRow>
-                                                ))}
-                                            </TableBody>
-                                        </Table>
-                                    </CardContent>
-                                </Card>
-                            </TabsContent>
-
-                            {/* Documents Content */}
-                            <TabsContent value="documents" className="mt-6">
-                                <Card>
-                                    <CardHeader className="pb-3 border-b flex flex-row items-center justify-between">
-                                        <CardTitle className="text-base font-medium">Documents</CardTitle>
-                                        <Button size="sm" variant="outline" className="h-8">
-                                            <Upload className="mr-1.5 h-3.5 w-3.5" />
-                                            Upload
-                                        </Button>
-                                    </CardHeader>
-                                    <CardContent className="p-0">
-                                        <Table>
-                                            <TableHeader>
-                                                <TableRow className="hover:bg-transparent">
-                                                    <TableHead className="pl-6 font-medium">Name</TableHead>
-                                                    <TableHead className="font-medium">Type</TableHead>
-                                                    <TableHead className="font-medium">Date</TableHead>
-                                                    <TableHead className="font-medium">Size</TableHead>
-                                                    <TableHead className="w-[44px] pr-6"></TableHead>
-                                                </TableRow>
-                                            </TableHeader>
-                                            <TableBody>
-                                                {accountDocuments.map((doc) => (
-                                                    <TableRow key={doc.id} className="group">
-                                                        <TableCell className="pl-6">
-                                                            <div className="flex items-center gap-2">
-                                                                <File className="h-4 w-4 text-muted-foreground" />
-                                                                <span className="font-medium text-sm">{doc.name}</span>
-                                                            </div>
-                                                        </TableCell>
-                                                        <TableCell>
-                                                            <Badge variant="outline" className="font-normal text-[11px] h-5 px-1.5 uppercase">
-                                                                {doc.type}
-                                                            </Badge>
-                                                        </TableCell>
-                                                        <TableCell className="text-sm text-muted-foreground">{formatDate(doc.uploadedAt)}</TableCell>
-                                                        <TableCell className="text-sm text-muted-foreground">{doc.size}</TableCell>
-                                                        <TableCell className="pr-6">
-                                                            <Button variant="ghost" size="icon" className="h-8 w-8 opacity-0 group-hover:opacity-100 transition-opacity">
-                                                                <Download className="h-4 w-4" />
-                                                            </Button>
-                                                        </TableCell>
-                                                    </TableRow>
-                                                ))}
-                                            </TableBody>
-                                        </Table>
-                                    </CardContent>
-                                </Card>
-                            </TabsContent>
-
-                            {/* Financials Content */}
-                            <TabsContent value="financials" className="mt-6 space-y-6">
-                                <div className="grid gap-4 sm:grid-cols-4">
-                                    <StatCard title="Invoiced" value={formatCurrency(mockFinancials.invoiced)} icon={Receipt} />
-                                    <StatCard title="Paid" value={formatCurrency(mockFinancials.paid)} icon={CheckCircle} green />
-                                    <StatCard title="Outstanding" value={formatCurrency(mockFinancials.outstanding)} icon={CreditCard} />
-                                    <StatCard title="Pending" value={formatCurrency(15000)} icon={Clock} />
-                                </div>
-
-                                <Card>
-                                    <CardHeader className="pb-3 border-b flex flex-row items-center justify-between">
-                                        <CardTitle className="text-base font-medium">Recent Invoices</CardTitle>
-                                        <Button size="sm" variant="outline" className="h-8">View All</Button>
-                                    </CardHeader>
-                                    <CardContent className="p-0">
-                                        <Table>
-                                            <TableHeader>
-                                                <TableRow className="hover:bg-transparent">
-                                                    <TableHead className="pl-6 font-medium">Invoice ID</TableHead>
-                                                    <TableHead className="font-medium">Amount</TableHead>
-                                                    <TableHead className="font-medium">Status</TableHead>
-                                                    <TableHead className="font-medium">Date</TableHead>
-                                                    <TableHead className="w-[44px] pr-6"></TableHead>
-                                                </TableRow>
-                                            </TableHeader>
-                                            <TableBody>
-                                                {mockFinancials.invoices.map((invoice) => (
-                                                    <TableRow key={invoice.id} className="group">
-                                                        <TableCell className="pl-6 font-medium text-sm">{invoice.id}</TableCell>
-                                                        <TableCell className="text-sm font-medium">{formatCurrency(invoice.amount)}</TableCell>
-                                                        <TableCell>
-                                                            <Badge variant="secondary" className={`${invoiceStatusStyles[invoice.status]} font-normal h-5`}>
-                                                                {invoice.status.toUpperCase()}
-                                                            </Badge>
-                                                        </TableCell>
-                                                        <TableCell className="text-sm text-muted-foreground">{formatDate(invoice.date)}</TableCell>
-                                                        <TableCell className="pr-6">
-                                                            <Button variant="ghost" size="icon" className="h-8 w-8 opacity-0 group-hover:opacity-100 transition-opacity">
-                                                                <FileText className="h-4 w-4" />
-                                                            </Button>
-                                                        </TableCell>
-                                                    </TableRow>
-                                                ))}
-                                            </TableBody>
-                                        </Table>
-                                    </CardContent>
-                                </Card>
-                            </TabsContent>
-                        </Tabs>
-                    </div>
+                {/* Summary Stats */}
+                <div className="grid gap-4 sm:grid-cols-4 mb-6">
+                    <StatCard title="Active Sites" value={activeSitesCount} icon={MapPin} />
+                    <StatCard title="Total Contract Value" value={formatCurrency(totalContractValue)} icon={PoundSterling} />
+                    <StatCard title="Revenue Invoiced" value={formatCurrency(totalRevenueInvoiced)} icon={TrendingUp} green />
+                    <StatCard title="Outstanding" value={formatCurrency(totalOutstanding)} icon={CreditCard} />
                 </div>
+
+                {/* Tabs */}
+                <Tabs value={activeTab} onValueChange={setActiveTab}>
+                    <TabsList className="bg-transparent h-auto p-0 gap-6 border-b rounded-none w-full justify-start overflow-x-auto no-scrollbar">
+                        {["overview", "sites", "contacts", "regions", "activity", "quotes", "finance"].map((tab) => (
+                            <TabsTrigger
+                                key={tab}
+                                value={tab}
+                                className="data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-primary rounded-none px-4 pb-3 text-[10px] font-bold uppercase tracking-widest transition-none capitalize"
+                            >
+                                {tab}
+                            </TabsTrigger>
+                        ))}
+                    </TabsList>
+
+                    {/* Tab 1: Overview */}
+                    <TabsContent value="overview" className="mt-6 space-y-6">
+                        <div className="grid gap-6 lg:grid-cols-2">
+                            {/* Active Sites */}
+                            <Card className="border-none shadow-sm">
+                                <CardHeader className="pb-3 border-b flex flex-row items-center justify-between">
+                                    <CardTitle className="text-sm font-bold uppercase tracking-widest text-muted-foreground">Active Sites</CardTitle>
+                                    <Button variant="ghost" size="sm" className="h-7 text-xs" onClick={() => setActiveTab("sites")}>View All</Button>
+                                </CardHeader>
+                                <CardContent className="pt-4 space-y-3">
+                                    {mockSites.filter(s => s.siteStatus === "Active").slice(0, 3).map((site) => (
+                                        <Link key={site.id} href={`/sites/${site.id}`} className="flex items-center justify-between p-3 rounded-lg hover:bg-muted/50 transition-colors">
+                                            <div className="flex items-center gap-3">
+                                                <div className="h-8 w-8 rounded-lg bg-primary/10 flex items-center justify-center">
+                                                    <MapPin className="h-4 w-4 text-primary" />
+                                                </div>
+                                                <div>
+                                                    <p className="text-sm font-medium">{site.siteName}</p>
+                                                    <p className="text-[11px] text-muted-foreground">{site.systemType}</p>
+                                                </div>
+                                            </div>
+                                            <Badge className={cn("border-none text-[10px] font-bold uppercase", siteStatusStyles[site.siteStatus])}>
+                                                {site.siteStatus}
+                                            </Badge>
+                                        </Link>
+                                    ))}
+                                </CardContent>
+                            </Card>
+
+                            {/* Key Contacts */}
+                            <Card className="border-none shadow-sm">
+                                <CardHeader className="pb-3 border-b flex flex-row items-center justify-between">
+                                    <CardTitle className="text-sm font-bold uppercase tracking-widest text-muted-foreground">Key Contacts</CardTitle>
+                                    <Button variant="ghost" size="sm" className="h-7 text-xs" onClick={() => setActiveTab("contacts")}>View All</Button>
+                                </CardHeader>
+                                <CardContent className="pt-4 space-y-3">
+                                    {mockContacts.slice(0, 3).map((contact) => (
+                                        <Link key={contact.id} href={`/contacts/${contact.id}`} className="flex items-center justify-between p-3 rounded-lg hover:bg-muted/50 transition-colors">
+                                            <div className="flex items-center gap-3">
+                                                <div className="h-8 w-8 rounded-full bg-slate-100 flex items-center justify-center">
+                                                    <span className="text-xs font-bold text-slate-600">{contact.firstName[0]}{contact.lastName[0]}</span>
+                                                </div>
+                                                <div>
+                                                    <p className="text-sm font-medium">{contact.firstName} {contact.lastName}</p>
+                                                    <p className="text-[11px] text-muted-foreground">{contact.jobTitle}</p>
+                                                </div>
+                                            </div>
+                                            <ChevronRight className="h-4 w-4 text-muted-foreground" />
+                                        </Link>
+                                    ))}
+                                </CardContent>
+                            </Card>
+                        </div>
+                    </TabsContent>
+
+                    {/* Tab 2: Sites */}
+                    <TabsContent value="sites" className="mt-6">
+                        <Card className="border-none shadow-sm overflow-hidden">
+                            <CardHeader className="pb-3 border-b flex flex-row items-center justify-between">
+                                <CardTitle className="text-sm font-bold uppercase tracking-widest text-muted-foreground">All Sites</CardTitle>
+                                <div className="flex items-center gap-2">
+                                    <Select value={siteStatusFilter} onValueChange={setSiteStatusFilter}>
+                                        <SelectTrigger className="h-8 w-[140px] text-xs">
+                                            <Filter className="h-3 w-3 mr-1" />
+                                            <SelectValue placeholder="Filter status" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            <SelectItem value="all"><span className="text-xs">All Statuses</span></SelectItem>
+                                            {Object.keys(siteStatusStyles).map((status) => (
+                                                <SelectItem key={status} value={status}><span className="text-xs">{status}</span></SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
+                                    <Button size="sm" className="h-8">
+                                        <Plus className="mr-1.5 h-3.5 w-3.5" />
+                                        Add Site
+                                    </Button>
+                                </div>
+                            </CardHeader>
+                            <CardContent className="p-0">
+                                <Table>
+                                    <TableHeader className="bg-muted/30">
+                                        <TableRow className="hover:bg-transparent border-none">
+                                            <TableHead className="pl-6 font-medium">Site Name</TableHead>
+                                            <TableHead className="font-medium">Address</TableHead>
+                                            <TableHead className="font-medium">Status</TableHead>
+                                            <TableHead className="font-medium">System Type</TableHead>
+                                            <TableHead className="font-medium">BDM</TableHead>
+                                            <TableHead className="font-medium">Install Date</TableHead>
+                                            <TableHead className="font-medium text-right">Contract Value</TableHead>
+                                            <TableHead className="w-[44px] pr-6"></TableHead>
+                                        </TableRow>
+                                    </TableHeader>
+                                    <TableBody>
+                                        {filteredSites.map((site) => (
+                                            <TableRow key={site.id} className="group cursor-pointer hover:bg-primary/[0.02]" onClick={() => window.location.href = `/sites/${site.id}`}>
+                                                <TableCell className="pl-6 font-medium text-sm">{site.siteName}</TableCell>
+                                                <TableCell className="text-sm text-muted-foreground max-w-[200px] truncate">{site.fullAddress}</TableCell>
+                                                <TableCell>
+                                                    <Badge className={cn("border-none text-[10px] font-bold uppercase", siteStatusStyles[site.siteStatus])}>
+                                                        {site.siteStatus}
+                                                    </Badge>
+                                                </TableCell>
+                                                <TableCell className="text-sm">{site.systemType}</TableCell>
+                                                <TableCell className="text-sm">{site.assignedBdmName}</TableCell>
+                                                <TableCell className="text-sm text-muted-foreground">{site.installationDate ? formatDate(site.installationDate) : "—"}</TableCell>
+                                                <TableCell className="text-sm font-medium text-right">{formatCurrency(site.totalContractValue)}</TableCell>
+                                                <TableCell className="pr-6">
+                                                    <ChevronRight className="h-4 w-4 text-muted-foreground opacity-0 group-hover:opacity-100" />
+                                                </TableCell>
+                                            </TableRow>
+                                        ))}
+                                    </TableBody>
+                                </Table>
+                            </CardContent>
+                        </Card>
+                    </TabsContent>
+
+                    {/* Tab 3: Contacts */}
+                    <TabsContent value="contacts" className="mt-6">
+                        <Card className="border-none shadow-sm overflow-hidden">
+                            <CardHeader className="pb-3 border-b flex flex-row items-center justify-between">
+                                <CardTitle className="text-sm font-bold uppercase tracking-widest text-muted-foreground">All Contacts</CardTitle>
+                                <Button size="sm" className="h-8">
+                                    <Plus className="mr-1.5 h-3.5 w-3.5" />
+                                    Add Contact
+                                </Button>
+                            </CardHeader>
+                            <CardContent className="p-0">
+                                <Table>
+                                    <TableHeader className="bg-muted/30">
+                                        <TableRow className="hover:bg-transparent border-none">
+                                            <TableHead className="pl-6 font-medium">Name</TableHead>
+                                            <TableHead className="font-medium">Position</TableHead>
+                                            <TableHead className="font-medium">Email</TableHead>
+                                            <TableHead className="font-medium">Phone</TableHead>
+                                            <TableHead className="font-medium">Preferred Comm.</TableHead>
+                                            <TableHead className="font-medium">Region</TableHead>
+                                            <TableHead className="font-medium">Sites</TableHead>
+                                            <TableHead className="w-[44px] pr-6"></TableHead>
+                                        </TableRow>
+                                    </TableHeader>
+                                    <TableBody>
+                                        {mockContacts.map((contact) => (
+                                            <TableRow key={contact.id} className="group cursor-pointer hover:bg-primary/[0.02]" onClick={() => window.location.href = `/contacts/${contact.id}`}>
+                                                <TableCell className="pl-6">
+                                                    <div className="flex items-center gap-2">
+                                                        <div className="h-7 w-7 rounded-full bg-slate-100 flex items-center justify-center">
+                                                            <span className="text-[10px] font-bold text-slate-600">{contact.firstName[0]}{contact.lastName[0]}</span>
+                                                        </div>
+                                                        <span className="font-medium text-sm">{contact.firstName} {contact.lastName}</span>
+                                                    </div>
+                                                </TableCell>
+                                                <TableCell className="text-sm">{contact.jobTitle || "—"}</TableCell>
+                                                <TableCell className="text-sm text-muted-foreground">{contact.email}</TableCell>
+                                                <TableCell className="text-sm text-muted-foreground">{contact.mobilePhone || "—"}</TableCell>
+                                                <TableCell className="text-sm">{contact.preferredCommunication}</TableCell>
+                                                <TableCell className="text-sm">{contact.regionName || "—"}</TableCell>
+                                                <TableCell className="text-sm font-medium">{contact.associatedSitesCount}</TableCell>
+                                                <TableCell className="pr-6">
+                                                    <ChevronRight className="h-4 w-4 text-muted-foreground opacity-0 group-hover:opacity-100" />
+                                                </TableCell>
+                                            </TableRow>
+                                        ))}
+                                    </TableBody>
+                                </Table>
+                            </CardContent>
+                        </Card>
+                    </TabsContent>
+
+                    {/* Tab 4: Regions */}
+                    <TabsContent value="regions" className="mt-6">
+                        <Card className="border-none shadow-sm overflow-hidden">
+                            <CardHeader className="pb-3 border-b flex flex-row items-center justify-between">
+                                <CardTitle className="text-sm font-bold uppercase tracking-widest text-muted-foreground">Regions</CardTitle>
+                                <Button size="sm" className="h-8" onClick={handleAddRegion}>
+                                    <Plus className="mr-1.5 h-3.5 w-3.5" />
+                                    Add Region
+                                </Button>
+                            </CardHeader>
+                            <CardContent className="p-0">
+                                <Table>
+                                    <TableHeader className="bg-muted/30">
+                                        <TableRow className="hover:bg-transparent border-none">
+                                            <TableHead className="pl-6 font-medium">Region Name</TableHead>
+                                            <TableHead className="font-medium">Owner BDM</TableHead>
+                                            <TableHead className="font-medium">Status</TableHead>
+                                            <TableHead className="font-medium">Contacts</TableHead>
+                                            <TableHead className="w-[44px] pr-6"></TableHead>
+                                        </TableRow>
+                                    </TableHeader>
+                                    <TableBody>
+                                        {mockRegions.map((region) => (
+                                            <TableRow key={region.id} className="group hover:bg-primary/[0.02]">
+                                                <TableCell className="pl-6 font-medium text-sm">{region.regionName}</TableCell>
+                                                <TableCell className="text-sm">{region.regionOwnerBdmName}</TableCell>
+                                                <TableCell>
+                                                    <Badge className={cn("border-none text-[10px] font-bold uppercase", regionStatusStyles[region.status])}>
+                                                        {region.status}
+                                                    </Badge>
+                                                </TableCell>
+                                                <TableCell className="text-sm font-medium">{region.contactsCount}</TableCell>
+                                                <TableCell className="pr-6">
+                                                    <Button variant="ghost" size="icon" className="h-8 w-8 opacity-0 group-hover:opacity-100">
+                                                        <Eye className="h-4 w-4" />
+                                                    </Button>
+                                                </TableCell>
+                                            </TableRow>
+                                        ))}
+                                    </TableBody>
+                                </Table>
+                            </CardContent>
+                        </Card>
+                    </TabsContent>
+
+                    {/* Tab 5: Activity */}
+                    <TabsContent value="activity" className="mt-6">
+                        <ActivityTimeline activities={mockActivitiesData} />
+                    </TabsContent>
+
+                    {/* Tab 6: Quotes */}
+                    <TabsContent value="quotes" className="mt-6">
+                        <Card className="border-none shadow-sm overflow-hidden">
+                            <CardHeader className="pb-3 border-b flex flex-row items-center justify-between">
+                                <CardTitle className="text-sm font-bold uppercase tracking-widest text-muted-foreground">Quotes</CardTitle>
+                                <Button size="sm" className="h-8">
+                                    <Plus className="mr-1.5 h-3.5 w-3.5" />
+                                    Create Quote
+                                </Button>
+                            </CardHeader>
+                            <CardContent className="p-0">
+                                <Table>
+                                    <TableHeader className="bg-muted/30">
+                                        <TableRow className="hover:bg-transparent border-none">
+                                            <TableHead className="pl-6 font-medium">Quote Ref</TableHead>
+                                            <TableHead className="font-medium">Contact</TableHead>
+                                            <TableHead className="font-medium text-right">Value</TableHead>
+                                            <TableHead className="font-medium">Status</TableHead>
+                                            <TableHead className="font-medium">Date Sent</TableHead>
+                                            <TableHead className="font-medium">BDM</TableHead>
+                                            <TableHead className="w-[44px] pr-6"></TableHead>
+                                        </TableRow>
+                                    </TableHeader>
+                                    <TableBody>
+                                        {mockQuotes.map((quote) => (
+                                            <TableRow key={quote.id} className="group cursor-pointer hover:bg-primary/[0.02]" onClick={() => window.location.href = `/quotes/${quote.id}`}>
+                                                <TableCell className="pl-6 font-bold text-sm text-primary">{quote.quoteReference}</TableCell>
+                                                <TableCell className="text-sm">{quote.contactName}</TableCell>
+                                                <TableCell className="text-sm font-medium text-right">{formatCurrency(quote.totalValue)}</TableCell>
+                                                <TableCell>
+                                                    <Badge className={cn("border-none text-[10px] font-bold uppercase", quoteStatusStyles[quote.quoteStatus] || STATUS_COLORS.semantic.draft)}>
+                                                        {quote.quoteStatus}
+                                                    </Badge>
+                                                </TableCell>
+                                                <TableCell className="text-sm text-muted-foreground">{quote.dateSent ? formatDate(quote.dateSent) : "—"}</TableCell>
+                                                <TableCell className="text-sm">{quote.bdmName}</TableCell>
+                                                <TableCell className="pr-6">
+                                                    <ChevronRight className="h-4 w-4 text-muted-foreground opacity-0 group-hover:opacity-100" />
+                                                </TableCell>
+                                            </TableRow>
+                                        ))}
+                                    </TableBody>
+                                </Table>
+                            </CardContent>
+                        </Card>
+                    </TabsContent>
+
+                    {/* Tab 7: Finance */}
+                    <TabsContent value="finance" className="mt-6">
+                        <Card className="border-none shadow-sm">
+                            <CardContent className="py-16">
+                                <div className="flex flex-col items-center justify-center text-center">
+                                    <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-muted">
+                                        <Receipt className="h-8 w-8 text-muted-foreground" />
+                                    </div>
+                                    <h3 className="text-lg font-semibold">Financial Reporting Coming Soon</h3>
+                                    <p className="mt-2 text-sm text-muted-foreground max-w-md">
+                                        Financial reporting will be available once Sage integration is live.
+                                        This will include invoices, payments, and revenue analytics for this company.
+                                    </p>
+                                    <Badge variant="outline" className="mt-4 text-xs">Phase 3</Badge>
+                                </div>
+                            </CardContent>
+                        </Card>
+                    </TabsContent>
+                </Tabs>
             </main>
         </>
     );

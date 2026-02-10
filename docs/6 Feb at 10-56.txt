@@ -1,0 +1,518 @@
+
+Correctly. Don't bother. We'll literally just go through it. Like it's a normal. Okay? So when it comes to leaves, I don't. What do you mean? So when I mean I mean, right? Let's let's go through one. As if you are doing your first your first phone call. So from the first stage of where it is.
+
+So like if we use let's use this barber one now. So Lucy's brought this up they've got filters within, are we on recording by the way? Oh yeah, sorry. Do you mind doing a watch? Go to your windows and do a screen record on it. Just show them snipping to.
+
+Okay, love I think, um, Linda's emailed yeah, on that stuff. So if there's everything on the screen, if there's nothing more yeah you want to come up with that plan. Jump on that. Yes, yes, stop. So sure. You don't need to worry about this because it's separate. But for me to gain a contact, I would look at the site, go into the contact information.
+
+Yeah. And for me, the way that I would traditionally use HubStock before being here, Is I would create a go into the company search the company, see if it's on there already and let's just search robots if it's here already.
+
+Yeah. So all right, then, give us five. So we don't currently have Robert scallager as a construction company on here. Yep. So it would create the company. Right. This is all the wrong way around. I feel like we need details. Differently, because company domain name doesn't really matter to me.
+
+Personally, the reason why I asked for the domain name on HubSpot, is so that then it brings through all of their, um, Love goes and shit like that but we're not we're not bothered about having the company logo for. Yep. Then I Sorry, just interpresent. What is good on there?
+
+That we want is a filter system on email. So if Lucy goes in to create a contact That's already in there. It comes up the pop-up straight away saying, this has already been created and who it's been created by always owned by, that makes sense. Yep. Yeah. So I fill this out, construction, whatever, I'm going to ignore, like, we're just doing it.
+
+Goodness. Then this thing comes up. So we took music off only because I'm never going to say Alexa pause. Yeah sorry. Um, yes. Then we've got this company here, which is fine. I would then be the company owner, which that header needs to probably be changed to Business Development manager.
+
+Yep. Um, which is easily done. Um, all of this is sort of, I don't really think we need any of this, which is fine. It's just there whatever. Um, I know this comes with Access and level of account. But for me, notes are really important. We've not really got to that stage of people using notes.
+
+Yep, which is fine. So then after that, I'll then go into contacts. New contact, which is here, obviously, and then create put Tom in there because I've just emailed him. Yep. Um, if there's a way Of. When you send an Outlook email. It was able to create contact like HubSpot does.
+
+You can't do that. It doesn't. Yeah, no. First of all you need to pay for the HubSpot level to integrate Outlook. We can potentially interfere with Office 365 and also with an email address. You don't have any of the details, such as the director, what position they are when you spoke to them.
+
+Yeah, but more more. So then you would be able to fill that info in, wouldn't you? I'm just thinking of a Time point of view of, if that It creates less of Less time of creating raids. But again, give us a costing on that. Yeah. Um, so It is just very lengthy, I think, in any, in any CRM to to create a contact because it's all manual, like, there's no unless you integrated with Baba, which is a completely separate thing, where you could drag and drop details, I don't think it would work.
+
+No, the problem is correct me if I'm wrong, most of the time. The information is wrong, anyway. Well, there you go. So, it's just a Costco like yourself. So like for this, like even because of the different details that we have on a contact level? Yeah, like It is just very manual, it always will be because there's too many different apps that we use to gain information from.
+
+So like, for instance, I've then filled out his basic details, I've then got to go into LinkedIn, find them on LinkedIn, copies LinkedIn, feed put it in. Put all of these details in separately. So I don't think we're going to get away from the manual task of adding details in.
+
+It's more. So what we can do afterwards, I mean, we could to some extent, we could use AI obviously. You'd have to check it. Yeah, because we could use that, so that LinkedIn profiles. We could like suggested LinkedIn profiles and things like that if you wanted. Let's have a an option.
+
+Yeah. Um, it will never be perfect on that. Let's be honest because it's um, well yeah, if you've got a John Smith there's gonna be fucking millions. Yeah, yeah. Um, so from a company name point of view,
+
+Probably seeming have that link double up when Lucy has this dirty, I'm sorry. Uh, when it's assigned, it'll assigned to that company. Yeah, that makes sense the way we need to break it down and this is where again it was difficult with what HubSult was saying is Obviously, you've got, let's say power at homes.
+
+Yep. We can work with Barrett homes, but Barrett homes have 10 different regions in the UK, some of those will be customers with us. Some of them won't be. And then out of that region will have certain Some of them will work but some of them with one so it's how we can have the breakdown.
+
+The I don't want it to be where as soon as Lucy brings on someone from Barrett homes. Our homes is completely huge as a customer. We it is but there's other regions. Yeah, we just need pipeline trauma. That's it. So we don't have access to the pipeline format and HubSpot at this time because we use the most basic version but traditionally if you created a contact it's like the task list almost.
+
+So There are tasks on here. So this is sort of like a pipeline format where you've got all of your tasks due today and then they fill them down but we don't use this. So then eventually how it would sort of look, is that if I had my own pipeline, then you could go all pipelines all tasks.
+
+You then add a view. So, like I've already created one here. Leaves. The Joyce BDM, all my tasks will be in there. And then you can organise those as as and when you'd like. So for instance I could have task type. I could put all of these filters in Such as Coles and then that would bring up and integrate my diary.
+
+So all my calls will be in there for this week. Yep. I think what we need to do for ease is the contact thing will always be a little bit more manual than we would. Like unless we're going to integrate, which is impossible with every single software. We use contact creation shouldn't be difficult nor hard, and it shouldn't take too much time.
+
+Because you should just be able to get into a flow of it. Once you create the contact, you should, then be able to attach it to a company which would then sort of like filter it down to like, say for instance, Tom I've created Tom there. Then you go ad company, as like a button.
+
+You can type in the start of the customer, the company name, if it's already added into the system like Roberts Gallagher and then just print tick. Then it's Tom Robert Gallagher. So then you've got the company name here. Contact list here for instance? Yeah. Click into the contacts then you've got the BDM contact details what site?
+
+They're currently working on how what percentage of the sites in progress of things like that? You've got your activity, you've got your notes. You've got recent calls emails, integration to Outlook, and you're saying that'll appear. That will appear Tom, the contact for Tom, the contacts at the moment. Exactly.
+
+But when you come out of that it's Robert Skelliger Construction limited. Yeah. And then it's like the overall all the contacts in there. So it's becomes sort of like a like a domino effect. Yeah. So then you've got the overall company, you've got Robert, Skeleton construction. All of the information about that then you click into a contact, it tells you all of the information that that particular bdm's working on but we won or one a gap in between from regions, as well.
+
+Yeah, just so that we can acknowledge the difference between them, because the way it'll work, is if Lucy brings on Barra Yorkshire. That is going to be hers and I don't want other people creeping into it, trying to sell to them until Lucy turns around, and says, I can't get on with this certain person.
+
+So, I want a region level as well. I'll show you if that makes sense. Yeah, yeah. You break down would effectively be company regions contacts. We will have contacts. The. Within a region that we are working with and aren't working with I. Guess what? I kind of want to understand from that point of view is how we can.
+
+View it. Is if that makes sense because our customer of ours there's going to be a lot that arm from a region point of view. And I don't want it to kind of get lost in the being viewed as A customer for all the rules that we might have at a company level.
+
+So, yeah, this is something that I built with the CTO, not my last job the job before, and it's essentially, it's a map of locations. So it's similar to three. What, words, whatever what three words. Yeah. And it'll be helpful to have some sort of map, that's very basic that we could almost put a pin on or if we could I don't know, like just have a basic map format like this.
+
+What to see, what to see where we've got sites or what regions are covered? Yeah. So like I could be pink, Nikola could be purple, you could be blue and then you put wherever you're going to put the what three words location on. Then we could have this built in.
+
+You could even add a time frame onto there. What three words. Do you offer an API? So we could actually utilise, their functionality. We even need that because When they become a customer, we'll be putting all their site details in there anyway. Yeah, yeah. But I mean just from a cost of an API when yes, we've got, I suppose words.
+
+Yeah, but I don't mean like necessarily use the API and pay for it. But yeah, I mean make a visual cost-effective version that we can manually do and you have a super admin access to in case, one of us goes on an annual leave in that site with some of these missions.
+
+So we could almost just use like a colour section, you know, when you're a kid and you draw all the scribbles around and then you fill in a colour, something like that, where you could just even just highlight an area or So literally The map is where my customers are.
+
+Yeah yeah. Yeah. That's all it is. And that's just from me putting the address into the exactly because then that's perfect. Exactly. And then, if we are eventually, we will be absolutely hustling for new areas of the really small areas. We can then visually have a meeting and see right.
+
+What areas are we really need some truck down on. Yeah. And from a quick reference point, it's good. If you're ringing John in a site that's in Brighton. Yeah. Scroll along there and say, I already know that we've got. Yeah. In that area. Exactly. That's fun. We can do that.
+
+Um, so yes. From that side, that's kind of talking lead. Or you know before they come on board, the process. Would they? First of all recall. We would then normally either send them some bum for range, a call back or whatever, the way the task system in in HubSpot is exactly what I'd like to keep going with well with regard to that the HubSpot stuff um we can do we can export all your data from HubSpot and import into whatever we build so everything you've got there you won't lose um and but yeah that kind of taxes task system where Lucy goes in, she speaks to someone, she creates the contact and it could be anything from.
+
+We're not starting for three months. Call me back then, so she's arranging a call back. I'm busy right now. You know, arranging meetings. Tasking emails, whatever it is. Yep, within there. I also want the ability for us to be able to set tasks. That aren't necessarily that can be assigned to a customer a lead or can just be a generic task of whether it's a case of I need to say to Nicola to make sure that she sends her a holiday request, or you know what I mean?
+
+Like, uh, we can want that system to basically be what their kind of day-to-day, or at least the start of their day is dictating what they're doing. I know I need to do these. Callbacks these emails, I need to get that admin done. So you actually it's not just for it's literally for everything within the business.
+
+So do you even want like holiday booking to go through it through it? Yeah. Yeah. Eventually with it because again, that takes more happening away from Splenda. Yeah, so yeah, yeah. Eventually I want this to a point of where we don't have to look at Excel or any of that sort of stuff.
+
+Yeah, that's absolutely fine. But Is basically what I've done. We've built a few databases, right? I want to expand it, so I want to integrate. I've told them I want to integrate with SharePoint, so, For example, I've got a industrial painter and when they go on site um obviously sometimes around the car painting in bad rain.
+
+Yeah, yeah. And obviously, they get fined. So they want to have GPS marking so they can record the site. Show that the weather's bad. You can say they're inside, but he's also going to use it. So, ladsworth actually on site, they work just to um, clocking logging in and say that he's not talking.
+
+None. That's the reason. Yeah. So it's all going to be evidence tracked, but also from that front of you, when you go on sites, you might say, have you got, uh, I don't know what card you get, but, you know, you need certain level of cards. Lots probably won't carry them, but what we're going to say you upload, you put me to SharePoint, which you probably already doing to folders, don't you?
+
+This is, yeah, yeah. And that Contact that that person on site will only have access to their own thing but they'll go. Oh yeah. Look that's my card. So that's what I want to do. I want to make it so that it runs smoothly using the Microsoft ecosystem or Google fuse that but Everything's in one place so because you don't want to have to be uploading to your CRM, a document.
+
+You want to just say oh it's linked to that folder. Yeah that's it. That's where it is. Yeah. Sugar, please. Between no sugar. Um if you ask Lee, how to use the coffee machine. Yeah. Yeah. Then he'll he'll teach you.
+
+He's got regrets. So yeah, so yeah I wanted to basically become its own ecosystem eventually. Yeah, I'm conscious to begin with from a costing point of view. It is Sales cycle. Whatever I can do to cut Linda's admin tag. Because the more sites we're bringing on is getting bigger and bigger management of engineer side of things.
+
+I think, in my opinion, the best way of doing these things because you're using lots of different systems is We do build it out in stages. Like you say, I would say you get your sales part of it built. Yeah. Yeah. We make sure you're up with the sales.
+
+We've got all your HubSpot in there. Go right. That's perfect. Next day. We then move on and on yeah, tackling it all at once because we're gonna find problems if we do it once. But if we just work on small bits and break it down. Um, but yeah, we can certainly Do that way.
+
+So, yes. That's kind of the first part of it is the calls and creating your task of, however, you speaking to the customer, the next stage would then be doing quotes. Yep. So at the moment, Stupidly. We're doing the authoring design which is the pain in the fucking ass.
+
+Yes. So I want to have your base template quotes away within the CRM for Lucy to be able to go right? We are quoting them, a eight camera hardwired system. This price and then it will generate the quote in a PDF format. That's a nice brochure equal but it's just populating the certain Fields we need and then we can send out the PDF.
+
+So the the InDesign part of, it's actually just to make it look, nice. You're not. You're no. Yeah. Just just literally at the moment, the only way that I knew how, when we first did it, I created it on InDesign and the only way I knew then how to go.
+
+Right? Well, that's an eight camera. That's the tank was editing InDesign. So it's just a case Sunday's one of your current templates you know in a PDF so I can change that all. Oh, all right. Yeah, that's kind of what I want. Is it for it to be a PDF version where we've got, you know, we've got one for pretty much every service and every type of system that we offer, where the guys are doing a drop down, this is what it is.
+
+That's what the price says. Generates it double check it, send it off on your course. Do your suppliers have um, either apis or do this? Apply you with Excel documents with all the pricing on? No, we create all the price in ourselves. I know. You mark it up but you obviously, you always want me getting margin.
+
+Don't you ours is different because Charging them on a weekly basis for it. And the the kind of the the cost of the kit and everything is irrelevant because sometimes we're using recycled where it's already been out on site before sometimes from the sales point of view. It's irrelevant to them whether they can't be penalised and don't want them penalised because we're having to buy new kit versus using olds.
+
+Oh, I I know you obviously did this. Temporary. So I thought you also did. Do you do parenting? We do permanent stuff as well. We want the ability for that but what I would say kind of right now is Construction is there. This is more about the temporary stuff rather, right, later on.
+
+We'll want the ability to be able to have it where we can add, literally your product details in and the breakdown. But because of how little they are, that can stay with us within InDesign to begin with. Yeah. And then we can kind of build that later on because that's another arm of the business.
+
+We're going to go down is doing more commercials where we aim to be, but just not right now. So this is the main sort of that's fine. I think when you do go to the other bit, then we should definitely link your suppliers because then you can. So you I'm doing it for my own at the moment.
+
+All my suppliers are coming in. I'm just putting a mark up on it and then I just, yeah. See for this for me to create a new quote, the drop down, menus are great. I think we should have. What's this, is this HubSpot still? No, this is our new CRM.
+
+This is our basic CRM. He's created for us. Oh yeah. So in here, I would probably have create new quote, quote template, as a drop down menu because they'll be, you know, save towers or wired or hard or whatever. So there'll be different ones, click on the template and then click on the customer or like, type in the company name, then it should automatically fill out all their details to attach to the BDF.
+
+Yeah. Um, with an option of Other people for it to be sent to. Exactly. Yeah. So you choose, you fill out all your details and then there should be email, sending an email as PDF, bang go. And then, yeah, and then that should automatically link with well, The thing is, is, are we going to be using email within this or are we going to be using Outlook?
+
+Because we can't use. Do you want to link the two? I would like to. Yeah. So that you're anything. That's yeah. Otherwise, we're gonna have to pay for our own email and domain and everything like that. That's a separate cost. So If we integrate that to Outlook and give it an option of send a PDF, just like your camera HubSpot.
+
+You know, when you go on Scotland, it's um, pretty quickly if you're going to continue to choose a random one email there. You can connect your app there, and then it automatically emails from HubSpot, but but the same email compensation comes up into your outlook so if you're using both apps, it's fine.
+
+Yeah. So I'd like that on the CRM. Yep. Then it's just really, really easy. And then if you do need to go back and check on a quote or when they do respond, it comes through onto your outlook. So you've got separate and personal communication with your clients. Then it all getting clogged up in the storage of the CRM.
+
+So, a separate thing that I've just thought of, of how we need to work. Something is from the quote point of view, like we said, we want it to populate and it will populate from A site level. That we will have multiple. You'll have contacts that will have multiple sites.
+
+So it's how we can break that down. That might need to be almost, you know, where we were saying the different levels of company region contact, something underneath The contact where they can be assigned multiple sites. So again you're only having to fill in the site details at a certain place.
+
+Yeah. And you know you go right. It's site a I'm doing the quota on this one. That one's live with them. Now that is still going to be assigned to John Smith the Qs, but he's now got another new site. So it's now site B. Do you know what I mean?
+
+Yeah. Yeah. It depends what sort of format we want to go to because it can either be, it could be reversed. So you could either do company and then an attachment to that subcontractors which could then go into ground workers. Or then, or you could do site company looking after it, people that work for the company, people attach the site.
+
+It, we have to make sure that our format's really clear your subcontractors. Will still technically be our client. So even though you might have an MJ Evans, which is working on the Barrett site, if we have a system for MJ Evans and Barrett, they are still viewed the same as the separate clients.
+
+They would be on there. It's when I mean say, you know, it's effective like an object, isn't it? Yeah. Of course we want to have there just so that we can assign multiple ones to contacts and we're not able to duplicate contacts or anything like that. Yeah you probably go MJ Evans.
+
+Northeast site contacts attached to that and then they're listed there. Yeah, yeah. And then underneath that is a site that can be assigned but then when you click into the contact projects they're working on will be the listed projects for whatever company it is. Yeah yeah yeah. That sounds and that would be We only necessarily need that once they're coming.
+
+Well, a, a quote level, we don't need that beforehand, and then that will stay throughout the whole journey, because that's how Linda views, everything is at a site level. So, from all of her report and point of view, she needs to understand. Whatever size being profitable or not. She means to when she's uploading or pulling from Sage.
+
+She'll view it at a site level on there. She'll obviously also want to be able to report at a company level at what we're doing, but the site level is the most important one for her. With regards to that. We can integrate with surge dogging around. Cheers. Is that a definite?
+
+You're going to stick with Serge? You're potentially moving off this eventually. So that's why I thought you had no Linda will still Linda, or whoever will still be dealing with all of our accounts and happiness going to tell me she wants to stage. I can get last year. Uh, yeah, whatever.
+
+Yeah, I have no intention of spending any time getting involved in any side. The only reason that I measure those because obviously there's a lot more better Integrations for cloud burst, right? So I can't, I would say if, yeah, it's probably going to stay a stage because we want to keep everything on the same plane as where, K2 is and K2, haven't changed the way from it.
+
+So I can't imagine that. We would have any reason to move with regards to Microsoft. Yeah. Obviously you're in the same tenant as curse and K2. Yeah. Would you rather a split carry to us into a separate tenant? Yeah, it makes sense for moving forwards. I do it over the week and I would be prepared for it because there's going to be a bit of A look and double check, how much aggro is going to cause on there.
+
+But I think the cost wise it don't cost you any more. Obviously, it's just it's the ballet for me swapping it out, but it makes sense. It's a, I don't know why they left it that way. Well, I don't want across three companies, isn't it? Because you're not because in the same one as well, aren't you?
+
+Yeah. Yeah, yeah. So I mean it wouldn't stop. Yeah. Do we have any relation to that? Yeah. Well we've we have the internet through them and all stuff stuff that won't be there once we moved on that. I know, but it's because they want to keep it cheap and hidden away and because they've got all their little Stuff going on.
+
+So I know it's now from my, from my point. I can't literally, I can't get sucked by care, too. Because Kerswoman, yeah, from that side. Whatever we need to do but yeah, so we get to that point quote goes out. It's then. The point then, where in between, we want to be able to Add tasks and add something in there for site visits.
+
+So, you know, if Lucer goes out on a site, visit a way to be able to log that and put information in just so she's got it there as a reference and then it's at that point, then it's going to either go one or two ways, they're either going to go with us or they're not.
+
+So we almost want to be able to Killer quote. Lost job, so we can track that side of it as well or They become a customer on that front point the actual site visits them. Um, obviously, I assume you take photos and stuff like ID of the site to some level, but not, not as much as what's needed when the engineer goes.
+
+Right. But that would be good for Caleb. So I think it would be good to have a like, sort of a checklist for Caleb because currently, we have that on a spreadsheet. When he does a job, he has to take off XYZ about the install. And then also, I think it would be beneficial to have some sort of pictures uploaded to sort for us to keep track of say.
+
+For I know that we've got the cameras and monitoring on our phones for what Caleb's doing for Caleb. Yeah, there's going to be, we'll need several things there where he will need to upload. It will need to go out as a DocuSign before you can leave site. For site, managers to sign off and say, You approve of this, you are happy with it, so then if they change their mind a week later and say I want it moving, we go fun, we'll move it.
+
+But we're billing you because last week you said you're happy with it in, Asia proof so yeah, from the site, there's two ways. I view a site visit is a sales site. Visit we're going to maybe go say you need this many cameras. Here's your quote an install or service or well effectively.
+
+Everything that Caleb would do is is kind of a job from that point of view. Um, whereas a visit is a We're going for that or you know nickela and Lucy will have visits where they're just going for catch-ups and things like that. Um but everything that Caleb would do is effective like a job, you know, there's a purpose for him being there.
+
+It's never gonna just be to have a catch up or see if they need anything is CRM available on first on terms. It would be, um, But you'd be better off with your nap for for sight things. Um, It would work, but I just feel that. Yes, I did know, I wasn't going to say, oh, but you said it.
+
+If there's an app for later on down the line, fantastic looks good. If there's a bit cost for app, can we not just have it through Chrome on our phones? Come to start with to start? Yeah,
+
+Yeah. With that then, and on that front, Is there a way? The. So at the moment for all of our clients, when they're viewing cameras and the stuff they have to use Unit views. Yeah, easier. Is it even worth? Is it some undoable where we could have our own k2s app where they can view the cameras?
+
+Potentially? I'm not saying that's not possible, but I'm being honest. You'd have to build your own software within the camera brains. Not necessarily really. Why can't you just But the overlay their software, just put k2s Brandy and I, because they've got two ways of viewing it at the moment to access the cameras.
+
+You can do, uh, P2P connection. Yep, which is We always create that and share it to them. Or obviously, from our monitor, we have to create Dynamic DNS for it. But then I'm thinking, do we want to give them access I mean, are you thinking it from a k2s account level personalised app for them?
+
+Yeah. Just if I'm honest, it just looks better than giving an easy viewer. It does. Yeah. That's that's all it is. They're not to have any functionality apart live viewing. Yeah. Yeah. It just so it looks oh, fucking up. I see it when we view subcontractors and I've looked and gone, they've got their own fucking app.
+
+If I was pricing up and quoting against someone and you saw me again or that one that's brought together. Yeah. You know, we're not, we're not wanting anything that would have any extra abilities. If it's literally just accessing a link, do you have to log into that link? So at the moment you have to create an EZ.
+
+Again, this is there's two ways of accessing at the moment. You create an EZ account account and then we would share, we scan it a QR code in the MVR and we then can share it to them. Through their account, username. But that's on the P2P one where all they need is an active internet connection to get it.
+
+Yeah. Obviously from the monitoring point of view, we have a dynamic DNS set up through the router. We give the monitoring station, the dynamic DNS to dial into it and they will go through Sentinel remix. But it'll also go through the web URL to access it. On the back of this, how many of our current coins actually, watch them monitoring themselves.
+
+There's a lot of them that ask for whether they look at it or not. I agree. Muslim won't look at it like you say, but they'll go off. Yeah, yeah. And again, you know, that's probably something later on down the line because at the moment, we also lose quite a lot of subcontractors for things like towels and things like that.
+
+If I wanted, if I'm gonna do this and pay the money for that, I want it to be for everything. So it's probably a bit later when we're doing our own towels and everything because they weren't, I'm guessing. They won't allow us to have their own app for that.
+
+It's amazing. How many people want that? It's like Bloody Solar ponds in it. Oh yeah. I'm gonna look to how much how much energy I'm doing it. They'll do for about two weeks. Yeah. Like when they first got the panels on, for the central heating, on the people's walls, they're going.
+
+Oh, look at my touch screen. Yeah, exactly. See how much, how many pennies I've spent thinking? Why do you want to look at that? Yeah, and it's mostly, it's the qs's are looking on it to see whether when what time site are leaving and things like but It's just something that looks a bit better.
+
+They're looking at when they've got incidents and things like that, if it's branded it just looks better. Yeah, we can do it. Get to the point of where everything we do. You fucking k2s is in everyone's faces. Yeah. Brandon um, like Elon Musk. Minus the psychopath part of it.
+
+Um, so to go, did you have you seen my notes about this theorem? No. No. Would you be okay if we went? Yeah in sections. So I basically created a different section list of what I would improve just an issue. Now, right now. How much money is being generated?
+
+She needs to care about what money, she's generating. Yeah. And similar to HubSpot when I was sort of, I was in control of creating that, but my last place we set up different views of Uh, the CRM overall. So it wasn't necessarily access I did limit access to each team because managers were getting into each of those pockets and discovering what each everybody was doing wrong.
+
+And it all went horribly wrong. Yeah, because I could see what everybody was doing wrong, but so then I I disabled access to certain teams and almost created a singular dashboard for that individual. So each manager had their own dashboard for their own team and they weren't able to then go into it.
+
+I'm not saying that we should do that, but it would be nice to have sort of a pool where I can individually go in and it separates my leads and my customers and my sites and everything like that especially tats as well going to be relevant to what you need.
+
+Yeah, yeah that dashboard. Yeah, you want we want the option to almost have a Company Department user. Yeah, so from the dashboard, if I was to log on to the CRM, first thing on the morning, I'd then click into my name, which might be here. So it'd be like Ryan, Lucy nifler or whatever click into mine, and then it'll bring up my individual page but it's also nice for all of us because we work really well together to just have a summary of everybody's progress.
+
+I think. Um, personally I work well on numbers and visuals, so sort of like a Target dial, would be helpful. Yeah. I would love something like that. Where it's like, A monthly Target dial that shows where we're at for Revenue and sites systems. However, we break it down. Yeah.
+
+Then you know, it's just Motivational it is. Yeah, definitely. So we can sort of have a meeting on a Monday morning and see. Right. Where are we in the Target? Dial of this particular month at the moment is four sites each per salesperson. So if we had, I don't know 10 to just push the bar out and then we were we sort of third Monday of the month and we're still on six we can like get our heads down and think right?
+
+What we're going to do this week to attack even more um And a meeting section. Would be nice, just over the dashboard. Yeah, for internal. Yeah. Just as like, a team thing like morning huddle on a Monday. For instance, all like you do is a teams group, you mean that sort of thing just more so more like a visual of like, What you've got coming up this week?
+
+Oh so like say if I come in on Monday at 8 30 what you've got coming up this week it would refresh. It'd be like Monday 9 A.M. You've got morning huddle Tuesday or like any like higher deals or high alert meetings. Right? Okay. Okay, so combination almost like an Outlook calendar, where you can see that you've got internal meetings.
+
+Plus you've got two sizes. Yeah. And you want them sinking to your Outlook calendar as well? I would, I would say so just because that's where we put our big group, our group calendar and then on the summary of the dashboard, it could be all the things that we've got together, and then you can, then click into the BDM and see their sort of overall calendar and just as a visual to think, right?
+
+Ryan wants to have a meeting with me on Wednesday afternoon shit. She's out on site. I can't do that. What else can I do? Yeah, yeah that's fine by removing will never be able to remove Outlook from it but we're really having the need to have anything else. Yeah then Outlook can be used strictly for emails rather than like all the calendars and all the different colours and things like that.
+
+Um, then we'll go to Leeds. So each BDM has a designate colour to the leads that easily identifiable per medium of the pipeline. So for instance, then like a drop down menu, say like this, which is great. I like this part of my vision. That's pink, that's pink. That's really different PDM type of different colours.
+
+Yeah. Or it has BDM underneath the name of the client, just a clear visual Clear Vision to leave that alone. Yeah. Because then I know, right? And then you can filter it to. I don't know, instead of contacted it or in addition to this, you could have Lucy and then you could see how many of mine are there just for your purpose, 100, um, and pipeline could do the follow-up status.
+
+So, whilst we've got all these statuses here. You've got like, rather than you know, somewhere in here like contacted, you could have a follow-up section there and then that could lead to your tests. Yeah, I kind of I think you'd almost the way I view it is that you you've kind of got Three sections.
+
+Of your leads and your accounts. You've got your Contact area. Boy no ignore that. Ignore that from the task point of view who wants an invisible like that where loose can see exactly what she's arranged for today to be in that. Yeah. Um, or even just have like a if say Sarah I've got a task for her.
+
+Have an exclamation mark in the top right. And that could indicate that it's a task that needs to do it. So when it's time it well should we oh could we have it? So it changed colour. Yeah. So if it's if these are all green or whatever instead of the colour coordination for BDM, we could have the BDM name underneath the client name and then the colour could all be.
+
+You know, that could be grey that could be blue or or whatever it could all be the same and then as soon as if it's red, it's a higher task that's either due in the next 24 hours or is due this week or is overdue. Yeah, because that would help Nicola.
+
+Yeah. But separate to that, I Like on HubSpot are tasks tasks. Yeah, individuals absolutely I know that is what I have to do these ones for the contact are good but I want a section somewhere where And if you've got a daily of, you know, you need to do, all your callbacks and everything.
+
+You've got something that you click on and it is almost just A list. Oh yeah, going through them, they can mark that task as complete rearrange, it whatever it needs to be so that section on there, but that's relevant to the contact. So, Lucy tries ringing in, they say look, we're not ready to go ahead yet, give me a buzz back in three weeks.
+
+So she can add that on that task or add into the contact and she'll be able to see The notes that she's put in there for it, like on the task form on HubSpot. Are you ready? It's just replicating that tasks. It's like task type. So um there's no tasks.
+
+Let me just create one. Do you actually use this at the moment? No, right. But I want this tape. I want us to have something like this there. To do priority. As I'm too cute. Today. What time is it now? Half eleven. So I'll just do that. No, reminder.
+
+See when we can't use those, but create so, I've then got a task now. So, I go into this task. I would like a reminder option as well first for certain ones. Yeah, how would you want the reminder? Do you want to pop up? Do you want to email you?
+
+What do you want to do? I think the email email we're not going to have anything. So for every morning you want like a a A digest of everything for that day to be emailed here. I'm more thinking that they should just come in and view their tasks. I'm more thinking of an email for ones that are the important ones.
+
+As in like, you know what we were saying that we could assign task like if I'm out, but I know that Nicola needs to get us or Linda needs Nicola to get a PO for something because we're invoicing tomorrow. She's going to get an email saying. You need to get that PO today, right?
+
+Do you know what I mean? Yeah. Yeah stuff. Really we don't need a summary because actually as soon as you click on the task menu, that should be scary. Anyway. Yeah, so if I go on to this task here, I'll just you can associate and everything like that but normally if you have HubSpot set up you have a pipeline of where the task is.
+
+So similar to you saying rearranged or um you know rearrange for this or need to call back or this afternoon for instance or call back on Friday you then so you then rather than an association you put pipeline stage. So the pipeline stage will be similar set up to the leads where you've got new contact qualified proposal.
+
+It will be the task new task. And then all the separate steps of what, what the follow-up is. So whether it be task for today, Task type. Whatever. Say if it was a call for Tom, right, I've got my task this morning, I need to ring Tom, I've run Tom, he wasn't available so call back arranged, I'll be call back then.
+
+I'd ring him again but it's automatically the ultimate but you pushes it along the pipeline. I wouldn't say automatically because if it's Auto and it's the wrong stage, you'll get confused. I would say that you would manually put it into whatever pipeline is relevant. To that task. Is that over complicating?
+
+That's just how I work of if you task, whether your task is to email him. Call him, whatever it might be. You've still got a task there to do. What haven't you? Yeah, I think it's more like if the task in hand, doesn't complete. Where is it going? Because it'll get lost and then you won't do any follow-up.
+
+Would you not just Create a new task forward.
+
+Do you want it to like, have different? Like, it automatically say, you've chased it, once you've chosen it twice three times or whatever. So you've done it. Yeah. Yeah. So it just, we'll have like, different, like markers in one corner. I'll just, uh, workflow. So if it gets to, you know, Lucy's put three times that she's quite tried to call it and it's not answering right afterwards.
+
+The workflow for after the three, third time of trying to contact it. Yeah, a generic sales. Email goes out. Yeah. Yeah. You can automate your marketing and your response? Yeah. Then you're not wasting time going. Hi. I've tried to call you three times. Like a number. Yeah, it can be please, you know, then it can all lay you down the line.
+
+It could be an email that could help a calendly link or a CRM link to book a meeting in. Yeah, yeah. So something like that for a workflow on there. Obviously, we'll have to come up with the rules on certain bits. We will need, I think we will need an option.
+
+It not to be including workflows as well though because you're the approacher. A pitch to a Qs, very differently to how you're going to approach a pitch to the MD of something. Yeah. And one that I'm conscious is I don't want too much generic shit. Emailed out, 100% if it's like me.
+
+You sending too much shit and I'll know. Yeah, sorry. Two seconds matter you've just talked about colour. Yeah, I'm sorry I in your actual Microsoft package. You can see if I can find one of my emails. I've sent out on a second.
+
+Right. Give nickel a call because I cannot find an email. But basically you've got Microsoft bookings. Right. So if you Have you got an email from me? Have you out any from me? I'm not sure. What's your email address? Um, is it too basically? Microsoft bookings is included with Microsoft Office.
+
+And that's got a full booking page, and you can add it onto your email signature. Uh let me just oh I can't find one which because I've got these clearing the game. So give her a call to have a chat with us. They're gonna have to come up with something there, otherwise we're not gonna be able to do it.
+
+Are we? Although he just sent me bloody signature off.
+
+Eyes. Right. So yeah. No, not not. I wouldn't, I wouldn't try to get a few days on that. It's just one that I put in it from the side. I think we can't rely on that. Give Nicole ring and see see what she can work with him. Bike. But basically, even though for some reason, it's not working, you do go, it's not right.
+
+This is included with. Pops it down Microsoft anyway, right. Okay, so you can obviously you can set all your current so you don't need currently because it's all in there. We can, I can set that up for you. Yes this is the book in a meeting if we're rather than generic emails going out it's sort of it'll be nicer if it could like have tried to contact you I understand your time is valuable.
+
+Even when you're ready, please use the following link to arrange and leave a call back. Yeah, and we've already got that in our artwork package. So we wouldn't need sort of Branch out to calendar or anything like that. Cool, really need to change that image by. I took that image.
+
+I had a client, right? And he said, he said I'm gonna propose to my girlfriend in Mexico. So we're in a restaurant. And I'm going to put all the pictures on the screen background of the things we've done together, right. He said, can you edit all these together? Yeah, no problem.
+
+So I had it all together and then I put that picture of me part way through going like that, right? So he's there about fours and I pop up on screen group. Don't ask me to say.
+
+I hope you said. Yeah, she did actually. So yeah we can that I can configure that when we got we just need this but you you're working ours in there and you can decide oh one one you want your meetings to be how far and or whatever. Yeah. And then I also use what's called exclaimer, which you don't have a more exclaimer, does it, don't matter.
+
+What device you email through, it automatically adds, you see signature onto it. Um, as you'll get more employees, you don't need to set the signatures up because it pulls it from Microsoft. So, I've moved over to a new Outlook. My signatures have gone to complete shit. Yeah. On the other one, it's a pain in the ass with it.
+
+Everyone complains about the new Outlook, I really like I've gone back to the old one and there's other things you can do like these and my three, most recent posts on LinkedIn and it automatically pulls them into signatures. Oh, that's cool. And I'm just generic stuff that again. We can absolute fuck all marketing at the moment.
+
+That's going to be a big thing over the next 12 months. So that will be uh I can introduce to my marketer if you'd like we do so Firstly, I work with someone called Kelly. She's a PR And recent she got with me customers on BBC, website on the because The Apprentice, obviously the right reasons, I think they are for the wrong for the right reasons, I'd like to get myself.
+
+So basically there's a I believe there's a more mature contestant on the apprentice. So, They were looking for. Older entrepreneurs. Yeah. So she said, oh, that'd be perfect for you Chris. He's got a Workwear company in Bradford. Yeah, so she got him on the BBC website on the back of that.
+
+So he's Trey has gone through roof, just on the back because you can't advertise on BBC, obviously. Yeah, but getting it right places. Yeah. Also, with this exclaimer thing, you can put marketing banners to different in different types of customers, so it will automatically change the value. You can obviously.
+
+Yeah, and stuff like that. Yeah, yeah. Because we will need to look at an element of, like we said from The customer point of view. As we Branch out more and away from the construction side of things, we'll have to look at that because it will change. On just how we work with them, how we contact them.
+
+Yeah, we need to think about that, but that's one for thinking about later on. Yeah, let's say, I'll introduce you to her whenever you're ready. Yeah, yeah, we'll do it better now, right. It's next. So next is quotes. Need a section for big deals. Uh, could these be automatically more urgent and have a, regular follow-up notification, or task created integrated from diary, which?
+
+Yeah. Yeah, well, I'm not sure this is just, I don't know. So we've got Like Nicola once had a 16 camera site or something like that. Right. Okay. Yeah or something that's like a big deal. Like M J Evans. It's like okay she's landed. 16 sites in a row.
+
+But that's a big deal. Have we cross them all off and then we could sort of have a task, like a task list for all of them to be live. Yeah. So supposing your big deal from. Would you have like You could do it in two ways and you could also do both ways at the same time, you could have like VIP client in the sense that they're yeah.
+
+So they're there. Yeah. And then, you could also do set of, um, in the back end, you can have it. So if it's above, I don't know, 16, cameras, or whatever it, it tags. That as a That's a big deal. I think almost instead of having it on System basis just a value based?
+
+Yeah, right well on that because again you know, if you're picking one up where you're getting X amount of systems or x amount of size and would tie them in for three years. That's better than picking up 32 one, that's for six months. So, even just a value on there that would be good, but yeah, we almost want another.
+
+Pipeline view here. So I want Lucy to be able to look and see like this. How many quotes she's got at the moment? Um, Almost a status point of view that she'll control on there that's for you. So she knows that she's got three but she's waiting for feedback on two that are due anytime.
+
+So what the values are that's I like the way that this is laid out at the moment. Um, Sort of like just like take expand this into a pipeline format. So like you've got you should say more. Visualism more visually. Yeah. So you've got your statuses. I like the different colours of there.
+
+Um and the ability to be able to filter this. So if Lucy wants to look back and see how many quotes she's had this month, have been rejected. Yeah. Or that have been approved and yeah, we can then start to look at them. Yeah, then that's great. It's a task of Alan just a singular task rather than clogging it saying.
+
+You know, renegotiate rejected quotes or something like that. Yeah. And also it's a good reference point for you to be able to look back on if then in six months time, you're tendering for another job with the same client that you can go back and go. Well, actually. I can see that we lost that one.
+
+Yeah. So maybe under-rejected can we have something where you have a pop-up that comes up for them to be able to enter in nose rejected? We lost out on price. Other companies memory. Yeah menu. Yeah. Just you know, we 20 quid, more expensive start collecting data. Yeah. So you want to be able to do a lot of reports out of this as well.
+
+Yeah, data is a massive, massive, massive part of everything I do without it, I don't think anything works, right? That's fine. Um, While we're on there, obviously you're talking about visuals. Are you happy with the visual appearance? Because I I, when I looked at what he'd done, I thought it's a bit too white and grey in the sense of You want to differentiate between your categories a bit more.
+
+And yeah, yeah. What you mean is in from this point, just everything about it. I just started. Just yeah. Yeah, I know this is obviously in a bestie um, We're gonna get me. Um, my designer on it as in the visual designer. Yeah, on it to make it, but I just want to see what your opinions on the, the current, I like hearing, I like, how they're colour coded on there, maybe it's just a case on these ones that they're just fucking bigger more than anything else, but, yeah, you know, worry about that side of it.
+
+Once we've got the functionality. Yeah, yeah. That's fine. I like the view of that to be able to see what's going on. We want the even the ability for reminders I would say as well. Yeah. If a quote is sitting there for too long, You can just set it that, you know, when she puts a deal in or a quote in, she has something that says, when do you want a reminder about this?
+
+Yeah, you know more. So because Nicola will do it where Nicole put quotes out and I'll say to a week later where we up to with that one, I should have forgotten about it. You know, so just something that is setting a reminder to chase up on the the order or on the quote.
+
+Yeah. Yeah. And also put a filter as to when you can visual when you can see quotes from this state to this date. Yeah, yeah. Yep, absolutely, that's fine. Um, Let's have a look. Yeah, and also when you're creating a quote. So here We've already gone through this, but, like, quote, type for the template situation, um, and things like that.
+
+That's everything I have on quotes. I'm gonna go to accounts. Yes. So Sorry, yes, we're wrong quotes. Yeah. What is the process on this at the moment? What turns, a lead to an account? What turns him up a lead to an account? So once it goes to accepted that then converts Tony Williams into a customer.
+
+So I think what we would do is normally how I would sort of from a workflow perspective would be you create your lead, you'd then be able to from your lead to say, if I click into Tom, I'm creating his lead attachable create quote would be up here that would then automatically send on an email and then Tom would then go into.
+
+Quote sent on here as a pipeline view. Yeah. And then so sent like that, that'll be sent. And then you could also visualise this on quotes and then, as whatever happens with Tom, he then moves along this line and then ultimately, when it's negotiation when it's well, I don't think this is the wrong way around, but when it's sort of, when it's been won which I don't know where it is.
+
+To be fair. I don't know. I think you go back and tell them I'm sure there was a convert. Oh, you've got one there as well. Yeah. I think it was a convert with it, wasn't it? Yeah. So that that was more my question there. So what you click on convert convert and then come, then go from a lead to another?
+
+Yes, yeah. So Tom goes to an account. Yeah. From that point of view, then. We need. The page. On certain points. You say the same but it will expand out then because this is where it kind of goes. Three ways it goes from an engineer where a sales way, and a Linda way.
+
+On there of what things need to be done, what things need to be seen. Yeah, so this is when, if say, if this is Tom, so he's he works for Johnson Roofing. This is what I've put on the account level, so you've got your general information here. Key thing you need is Expedia or account manager there.
+
+Yeah. Um, you also need the position of the primary contact so who you've sent the quote to quantity Qs or whatever or director or whatever. Yeah. Um the site that's currently active. Yeah, the size is a big one. Um, preferred method of communication is massive for me because if they are always out of the office, there's no point of spending your time, trying to ring them.
+
+Um, so if you email them or whatever, or if you ask that question, Um, and Keynotes there's no notes section on here. So, you can put Your keynots in solving your Middle East. Yeah. So so Tom, Tom accepted the quote today is now an account and the answer I'm gonna contact.
+
+I'm gonna arrange a installation with Caleb and still waiting on dates. Go tick noted. Then when I've arranged the installation with Caleb that could either come into and naturally fall into recent activity, as Caleb arranged insulation or booked in. And then I can put a note on saying insulation arranged for this date.
+
+And then it is like it shows the activity of the notes there, but also falls into the recent activity. And where your emails are integrated. Somebody something where a PDF contract will automatically go out to the client, you know, you mentioned DocuSign, does it have to be DocuSign it can be any e-sign software.
+
+Yeah, we need, we need something there that will then generate and send out for that site. So it's got the values on there. What we're doing, um, Side details. And I want that to be automatic but reminders to come back to these guys. John still hasn't signed his DocuSign because we're we're not installing unless John gets that signed.
+
+Yeah, unquote sent That could be. An automatic notification from DocuSign integrated into this to say document signed or obviously. DocuSign sends you an email. Doesn't it say that it's been signed by the relevant person? Yeah. Yeah. But how that integrates to that because that could be an automation of if if the DocuSign notification has been signed it could then automatically transfer the lead to an account.
+
+Yeah, we need to we'd need the ability to be able to go both ways. Yeah, of course. Just because I'm not trying to get documents. You know, from an e-signature you would have thought it's a piece of piss but oh they're suddenly on the high amounts of Everest. Yeah, sign anything.
+
+So we need the ability either way. But yeah, we need something there so that we're not going to go ahead with it until that point so I actually quite like this breakdown. Yeah, the problem is is that this is this this is viewing an account as a company. Yes, we need company and contacts, it needs to be and this is where that breakdown we need to think about how that's going to work.
+
+Yeah, because I don't want to see I don't really want to see Johnson Roofing as a, a customer. It is but it isn't. I need, I want it to be more Specific on. So you've got, that's why I was saying before, you've got your companies and then you've got your contractors, but they'll all be integrated somehow it's the layout.
+
+That's important. No, I don't. It's not, not, not sort of from subcontractor's point of view. I mean, from an MJ Evans point of view, Mj Evans are a customer of ours, but We need it just to be companies and contacts. But how we attach them to the sides, is the middle middle Edge?
+
+Yeah. Or how the sites get attached to them. Yeah, yeah that's the thing with it. See like if this was account management, I would want Mike Thompson to be the account. Personally, And then it would be his company. And then the site, But it's not him. That's the direct customer.
+
+Yeah, he works because if Johnson Roofing was our MJ Evans, we'd then have to have a breakdown of All the different contacts, so it would be Johnson's Roofing, Mike's the Qs, and then you click into that. And then it brings you up the site that he's connected to. And then all of this, do you want to go into accounts and then have the option of going to companies?
+
+People or whatever. Yeah, it has got it there, which does kind of help in regards to size, I think we need to. We need to come up with some really clear definitions Yeah. Moving forwards on how a we will view things and be We will report and work on things with it because like I said, it's viewed differently from different people.
+
+Yeah, the the most important thing is A site site level because The size of where we're putting the systems, that's what differentiates everything that we're doing from one customer to another or within one customer. Um,
+
+It's just If we look at this now how what, what is being defined as a lead? Is a lead of contact. Is it an account? Is it something completely separate? Yeah. That's the thing, the lead is ultimately an opportunity for a site. So the site is uh, essentially like the top of the pyramid, because that's our biggest concern.
+
+The people that lead it or or the Qs of that site, or the director is the net, is the next best thing for that because they're in control of installing our equipment, on that particular site, then I would say it was the company that they work underneath because they then expand to further opportunities, but they might not be the relevant contact for any other projects that they've got.
+
+So so that last bit of good. So the company yeah, then be the third thing that then has all the other contacts that are only relevant to other sites and opportunities that they have Yeah. So you've got like, I don't know, let's choose rexim, M and J. Is the is the Emma J.
+
+Rexim is the site. Then you've got, I don't know, Tom Jones who's the Qs. And Tom Jones works for m j. And then, you've got Tom Dick and Harry that do Newcastle Midlands and Leeds, but it's how we visualise that on an overall view for us to all not get confused specifically.
+
+Because so many different roles in these companies can control certain factors of it. Yeah. And they all call each other different things. It's like the lingo with cameras. Yeah. Yeah. Yeah, no, I no, I'm fairness. Actually I think the accounts the accounts is right to have the company name at the top because All refer.
+
+To a company to begin with, even in the one drive of the breakdown of sites. Yeah, the company is a customer. I think I'm over complicating things from that point of view. Yeah. It's I guess my definition. Needs to be. Kind of make a suggestion. Yeah. Johnson Roofing sites.
+
+All the sites that we have. Exactly what would happen if we clicked there now? Yeah, so click on site. So, fuck, all this information off to start with the only thing that you can visually see is associated sites. Then you've got the sites like the 16 up there, for MJ Evans, you click into the site name.
+
+I'm sorry then it brings up all the relevant people. Yeah, all the person, all the contacts and the recent activity. And what's been going on in the installation date and everything like that? Yeah. Because that will separate all of this jargon relating to all of the things we're doing to one particular company.
+
+Yeah, I like, yeah. I think my company sites individuals. Yeah, yeah, yeah. I like, I like the layout of certain bits of this, again, more airstevenly for later on. I think we need to kind of remove certain bits off from the top level on there. Yeah, I know this is more.
+
+Just about actually getting the functionality nailed on. I know we're kind of adding bits in left, right? And Centre, but yeah, That makes sense that we have it at the top level. I mean, the other thing I would say is these are these will all be widgets. Yeah. So you'll be able to if some if you prefer it a certain way to what Nicola does you can.
+
+But also I think a good thing would be to have to see progress of a company and how much we can expand on. It is like the total revenue, the projects we've got on the active sites. Yeah. Summary then you click into active sites and then you click and then that gives you the information.
+
+Yes. I mean that this is actually quite a good layout of it. Yeah, fairness on there. Again, we can go back to all this on what we actually want in these bits later on. Um, I guess. Next Focus point, I want to be So now it's in a cow how that actually works because like I said, Lucy is going to have certain things that she does that creates a knock-on effect, that creates information and jobs for Linda, from the admin side of things, the invoice inside of things from Caleb's, point of view, from the install side of things.
+
+So it's then, actually how we how we break that down. Yeah. And how it's done. So for instance, like For quotes. If I then, Create the lead, send a quote, they're happy. Once that quotes signed that DocuSign then registers for a task for Linda. To follow up or would it be earlier than that?
+
+Um, well again this is a thing because hopefully most of this removes the work away from Linda. So if we're saying you've created that, actually the next thing that would happen when they say yes, go ahead. Is you creating the site sheet, isn't it? Yeah. Now most of that information is already in there.
+
+Yeah, you would email that to Linda and then at the same time, you are now having to arrange. For the install. So really what it would then do from there is yeah, um, It then creates I, I think from a Sales point of view. And from a admin point of view, everything needs to be referred to as tasks anything to do with klib is referred to as a job.
+
+So, it creates a task for you to basically say, you need to get all the information now so that Caleb knows a where he's going, what he's doing when he's doing it. Yeah. So it would then be After a quote, It's viewed as a job for the site that Lucy is Creating the information for Caleb to then have and also a task for Linda to make sure that the invoice is paid.
+
+Yeah, the invoice and everything. So in the same sort of section, when you get to the sorry, to interrupt you there, just if I don't say this, I'll forget about it. Can we get to the point of where I don't know how the integration works? So Lucy's putting the value, the billing dates, whatever else there might be.
+
+I want then a section of where it has to go, to Linda to approve, just to make sure that nothing has been missed off or anything like that. But then would that, then get to a point of where this would automatically Because Lucy's put the terms in now that this would then automatically generate that invoice on a monthly basis.
+
+Yeah, we can do that. I think what it generally does, is it puts into draughts in search and Linda will be responsible Linda, then check it and then, yeah. Um, I'm not really asked about, that's what Linda needs to do with. Our accountant and those ones. So it's more if it gives Linda everything that she needs and she's not having to create four different Excel documents for everything happy days.
+
+So yeah. So Lucy would do something, it goes over to Linda from the app inside of things and then I set it as a separate tree that comes out that's creating then the job for Caleb on there. I think one thing we might have to do, we have to now to give a lender access as well.
+
+So that Because obviously, she'll need to confirm it's being paid or whatever works. Yeah, yeah, no. Because yeah, admin access. But I want Linda to what I mean is she needs to be an in-between to confirm everything is right before it actually generates any of the invoices or anything?
+
+Yeah but the whole point of this is actually To not have Linda having to create everything manually. It does it all for us. She still needs to confirm it and everything, but it takes a hell of a lot of time away from the manual process she's doing at the moment.
+
+Yep. So from a site point of view, then Are we saying that once it becomes a, what I'd like is once it becomes an account. You still have tasks. Caleb has jobs that are either automatically assigned to him based on a certain period of time I.E. After six months or 12 months, he's automatically generated service and maintenance visits.
+
+But the most important one is to generate is the install. So, Lucy will have selected when she did the quote, the type of equipment that's going on there. Yep. But that might change. So maybe actually now there's a section now where you're filling in exactly what we're going to be doing there.
+
+So you're selecting that it's going to be an eight camera hardwired system. Yeah this is the install dates for it. Um, I don't you don't necessarily need to have to individually select the equipment but you're selecting that job there. And then does that, then go into sort of fall in between scheduling and field Ops.
+
+Yeah, yeah, you so, you know, each each individual engineer would have their own calendar Etc. In there you, you drop it into those wouldn't you, I guess And how's that there? Yeah, let's start with then go into here. So this is effectively Yeah. So I mean what you might want to do, dude?
+
+I mean, would you sort of like I know in there. It's all in one location. Would you rather have like a sales scheduling an engineer scheduling? So Seen as a separently. I do want it all in one. Um, well, To not complicate things Engineers. Don't necessarily need to see sales scheduling.
+
+The sales will need the engineer scheduling to make sure. Yeah, I get that. But I mean obviously the sales. Do you want it all sales and Engineers all in one place? No, but ngis will definitely only see you there even. Yeah, I don't even think it needs to be a This this is almost just a calendar in it.
+
+Yeah, yeah. Yeah. I think yeah, you just won almost a A sales calendar that can be broken down by a user and a a jobs calendar. Yeah, one on there that. Obviously as we bring on more and more Engineers will be able to see what they've got on because this is what you would use to tell your client.
+
+What are you going to do the install on? Yeah and work it from that point of view. So yeah, so Loose puts in the information, it then generates this appointment here, And then that's this tab done, then isn't it? So if we go to field Ops, So this is Caleb section yes.
+
+What's the difference between field Ops and scheduling then? Sorry. It's because it's breaking down. Obviously, that would be your individual. I think that's what they're trying to tell you. And obviously, you can, this is saying what the actual job is. Yeah, yeah, so if Caleb clicks on that, in fact, I haven't looked at that.
+
+Have you looked at the map view? It's actually similar to it. Does it not work? Yeah. There's a few things. That's what I thought we could do for the regions, for the EMS. Yeah, that makes A lot of sense, I think it would also help to have something like that under scheduling.
+
+So that if loose is looking at it, it's a quick reference to be able to look on a map and see that. Caleb is actually a Manchester on Thursday doing a service. So we can fit in a camera change around, or something like that. Yeah, absolutely. On the scheduling point.
+
+So would you like like a slider so you could actually move the deers along on the map view? So you can see where they're moving around? Yeah, that'd be really good. Um, so yes, if we click on roof inspection, or does it not do, anything doesn't do it. So, really, in my mind, this would open up.
+
+To actually detail what the job is. So, from Caleb's point of view, he can click on there and go, right? I can see Lucy's books is an a camera install on the fifth, that's the address. This is the kit that I need to get sorted for it. Relating to the kit in inventory.
+
+I've got a few notes on there. Like we need to be able to reserve stock and allocated to a job. So based on what we have for recycled kit and what we need to order for you to know. Would be relevant of the stock control would be kept in here.
+
+So if I was to create a job for Caleb, or to book it in, it would give me the option of what kit we have and what kit that we need for that particular job. Does that make sense? How are you booking your kit? Because what I'm thinking is, could you Put some barcodes on your cape and then usually cut your phone camera to be barcodes on there.
+
+The only thing I think it should be automatic. As in when you put in an 8 camera, install it automatically just goes your stock level drops by that amount. Yeah, of course because I think if we're leaving the potential for a new salesperson coming in to not click the right things on there but yeah it should, but it should always have jobs.
+
+It should go, right? You now don't have 10, you've got nine. Yeah, yes. Yeah. From that point of view, um, and then low stock will alert you of course area of stock that's all relevant to you. And also, D, we need a decommission area So, obviously, that'll be included in the jobs for Caleb, but once that decommission is completed by Caleb and he interacts with this same decommissioned that stock, then goes back into the inventory, that's where he'd effectively rescan it on the QR code, wouldn't it?
+
+Yeah. Yeah. So in simple terms Caleb would have an app or something that he is just going to literally click and say, put in stock. Take out stock. Yeah, yeah. Um, is there any way shape or form that, you know, of that is cheap for us to be able to Have GPS on our kit.
+
+I've asked this before. And I'm pretty sure he did find me. Some GPS units that were really cheap in India that he could. Uh, so yeah, I'm pretty sure we get it at the moment and it's, you know, it's not a big issue, but it's something that we come across more and more, especially with our age arts kit.
+
+That's Wireless where they move stuff around on site. Something goes missing, we Hound them for ages. And then lo and behold four weeks later we fucking find shit like this. The could have been avoided if we could turn around to him and say, I know where it is, or we have a break-in, and someone next cameras, I mean, just stop so similar to another but without the price.
+
+Yeah, yeah. You've been able to track it and again, because the fact that before we weren't using Caleb, and we had sub A's, there was times where the kit that I thought was out on site at site, one is actually a site five. Just an easy, quick way to be able to know where that kit is.
+
+Yep. I can. I'll see what I can find for that. I'm pretty sure I've looked it because I've got an app called tripped like monitors kids, but yeah, not all of my phone, so we're looking for GPS for that. Well, absolutely difficult speaking to you about that as well, and it's fucking terrifying there.
+
+Um, so yeah, I think that that's a good level from the Infantry. I think we can drill down on that more in the future. Um, but it gives us what we need at the moment. Um, Finance again, that that's obviously really more breaking down or I view that in two sections.
+
+No I don't I don't think sales I think really, that's Linda. Yeah that's why I've left. Yeah I don't think anything needs to be viewed from a finance point of view because all the information from a finance point of view that you would want to know. Section. Um, I mean, from a finance perspective, she can pull all the stats off, it's January.
+
+So you're probably duplicating work on that one. I know you need it for you can do because I think that's why we're having to create a lot of Excel documents at the moment, really drills down, she when she's importing Invoices. We've got about three Excel documents that Linda has to put each invoice in relation to a site.
+
+And this is where I want the admin. Should I speak to him? Before I go there and see what she does? Yeah, effectively we want something in there that From Linda's side. This is broken down on a site basis. We can see Trauma site. A, what's obviously getting invoiced out.
+
+B, what's getting invoiced in simple p, l's on them. Um,
+
+I want that to be able to break back upwards again so that we can view it at a site or Account point of view. If I'm saying Taylor wimpy, that's an account, isn't it? Yeah. Yeah. You want to be able to break back up once again so we can look at profitable companies versus non-profitable and track that side of it, Linda can kind of go into the nitty-gritty of that but that's At the moment, it's one of the biggest things of I want to get sales on something where we're all, just doing one stuff.
+
+But Linda's, the biggest one, where you know you think we've got what 70 sites at the moment if we're getting five invoices per site per week is taking up so much of her time so we can get it to a point of where she's putting it in one place and it's going to everywhere she needs.
+
+Perfect. Um but yeah breaking it down by sight is key. That's what we need because To as a job is a site. We need to know whether that site has made us any money or not. Yeah, I'd also like within the inventory section. Something to track whether it's new or old kit.
+
+So whether we've had to purchase it for this job or whether it's something that's come off, an old site and used on a new one. Because again, from a sales point of view, it's irrelevant to these guys, whether it's new or old kit and they shouldn't be penalised, either way.
+
+But from our point of view, I want to kind of look at how long our kit is lasting. Where it's going again, if there's certain companies that we are constantly getting damaged kit back from and stuff like that. Really that, I guess that kind of falls into the reports field as well.
+
+Everything that we've just spoken about there. Yeah, reports would be good later down the line where we've got more data just to sort of understand. I think we've got with reports, you don't need to know everything now because I appreciate that. You'll think actually I'd like a report on this and then we can start building those out later on because you won't know what you want until you actually think.
+
+That's, that be useful with it RMS. I do like I do like the idea of These guys having a list, it's not a necessity because let's be honest. You're gonna be looking on Ajax or on either your size But I like the idea of them just having the ability there to be able to do it.
+
+The only thing is is that I don't want The sales guys to have the ability to, Hey, fuck about with any of the systems when you're viewing it through. How do you view this working? Do you view it as just being where they go through the dynamic DNS and they can access the system on the web URL?
+
+Yeah, but also, like there will link in it. So you could you can see you're up and down stairs so that people in the information off them. Yeah. I like that. I think we need to have something like that for Caleb, but it's from two points of view. It's from the mvr's point of view and the other important one is the ruthless point of view.
+
+So at the moment, we use teletonica's RMS. Yep. Um, so if we can integrate into the ez one for there and that and then Ajax, which is our wireless ones. Yeah, absolutely brilliant. With any of these sections, we can have restriction levels at different things, you know, you have some of the admins and then everyone else is just like whatever Department.
+
+I like the idea of from a sales guy's point of view that they can pop on there. I think the only thing is we'll need to have an auto end connection or something like that. Because if that's left on It can really slow down the streams for monitoring at night, kind of thing.
+
+And, but I really will be really key. Actually from Caleb's point of view to know, probably from actually sales and Kayla's point of view. But more importantly from Caleb's point of view, that he knows that system's down. Really, it should be Caleb seeing that. He should then be telling Lucy, the system's down.
+
+Can you check with the client? Whether it's a case of they're moving things around the cabin, which happens often or have they unplug someone they shouldn't have done, or it's something that code needs to get down there and find out what's going on. So I really like that and like I said, I really I only use a router point of view at the moment, right?
+
+Um, because RMS sent me automated emails for when a root was going up and down on that, right? Very enough. So if there's a way of integrating that in, and we don't have to other emails coming from Yeah. Yeah, you could literally well simple as you could actually say.
+
+So the email is rather than going to you. It's notified to the system and then you just that, that's pretty simple. Perfect way of doing it? Yeah, yeah. Nothing really good on that. Um, because that's, that's something that a lot of security companies are shit at and normally it's a client and bringing them up going, why can't I access my system?
+
+And they then go. Oh yeah, yeah, we're on it. We know about it, we're just sorting out for you. Whereas, I want our guys to be ringing saying, just to let you know. System's gone down. If you try to get into it Engineers will be later on today. Kind of thing.
+
+Related to that. But unrelated to the derbyss you know, we're on about multi-network Sims well and you said it would just want viable. Yeah, I actually found out how they get multi-network Sims. You know how they do it. Cool. It goes the other man and they buy an ordinary freaking SIM card.
+
+Because I'll admit then when it's like you're going to Europe and you're roaming. Yeah, yeah. So it just acts as Romans, you buy him from Isle of Man and then you bring him over here, it's fine. Yeah. That just that's the Roman sin then. I mean, like I said, if we can get, we can get Roman Sims at the same price as what we're paying, which is between five to ten pound a month for unlimited data.
+
+Happy days, free of actions. How much data are you actually using per device? It ranges. You know, you have certain sites where like we said they don't look on the live feed so it's just monitoring. You have other ones where they're running it constantly, but I think the unlimited data I get I think it's a terabyte a month can you And that's for all of you.
+
+No, as a person. Yeah. But I mean, how much are you actually using that, though? They're so shit from that side of things. They wouldn't be able to tell me, because it's not, it's not on a pot basis. It's sin person. I could literally put you free of only just created a business account, a business web portal six months ago.
+
+Yeah. They're so behind the times. It's unbelievable. Because honestly I could just put if we could find it roughly how much dirtier we could just put you on a shared bundle. I could give you as many Sims as you wanted. Obviously just pressing. You do it like that. Yeah.
+
+And then we could just put on the share plan and then if you look, I could go right. Ryan, we're topping our Exmark gig, we need to up here. It's what that's what CSL used to do and where I used to work, they had that in place, but they were, they were spent what I'm spending on that Sim.
+
+They were spending the equipment of 35 quid a person. How many seems if you get out at the moment. And you pay 510 quid the same. Right? Because we have to use them for tell Tonica for the hardwired and then we use them for the Ajax as well. Because again, the SIM cards that we were offered on the Ajax were more expensive.
+
+Yeah. Subscription is so expensive. It's like ring doorbell. Yeah. Could you not? Bullshit, three. And Uh we think we might be go, we shouldn't be on unlimited, we probably should lower the amount. Can you give sure they must be able to give you the stats potentially Yeah. All I mean is for me, it's not I'm pretty sure we could reduce that cost massively.
+
+Really massively. Absolutely not. Maybe not going on to the like Multi-networks homes, but just by going with, A another provider. On a shared shared bundle. The only thing to remember is that there's not many out there that do the static IPS that we need Vodafone which obviously seems yeah.
+
+Yeah. Hey, can't do. X has spoken with I can get. Vodafone e8 and R2 plus multi-network. Um I'm pretty sure I can get started with all three of them. And actually, you know what, I don't think Vodafone even do it because when they started doing the swap overs of the mass, that's when I was getting the issues, wasn't it?
+
+Uh, we need to look at it because I need a backup because it was some point three do make changes. I've got 80 sites that are gonna Ah, like I said, he's, it's

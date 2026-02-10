@@ -1,0 +1,53 @@
+{
+    "syncHistory": [
+        {
+            "id": "1",
+            "status": "success",
+            "timestamp": "2024-01-29 14:30",
+            "items": 12
+        },
+        {
+            "id": "2",
+            "status": "success",
+            "timestamp": "2024-01-29 10:00",
+            "items": 5
+        },
+        {
+            "id": "3",
+            "status": "error",
+            "timestamp": "2024-01-28 12:00",
+            "items": 0,
+            "error": "Connection timeout"
+        }
+    ],
+    "pl": {
+        "income": [
+            {
+                "category": "Roofing Services",
+                "amount": 185000
+            },
+            {
+                "category": "Repairs & Maintenance",
+                "amount": 45000
+            },
+            {
+                "category": "Materials Markup",
+                "amount": 28000
+            }
+        ],
+        "expenses": [
+            {
+                "category": "Labour Costs",
+                "amount": 95000
+            },
+            {
+                "category": "Materials",
+                "amount": 62000
+            },
+            {
+                "category": "Vehicle & Transport",
+                "amount": 18000
+            }
+        ]
+    }
+}

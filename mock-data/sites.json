@@ -2,46 +2,145 @@
     {
         "id": "SITE-001",
         "accountId": "ACC-001",
+        "companyId": "COMP-001",
+        "companyName": "Johnson Roofing Holdings",
+        "regionId": "REG-001",
+        "regionName": "North Texas",
         "name": "Main Office",
         "address": "123 Oak Street, Austin, TX 78701",
         "status": "active",
         "projectsCount": 5,
+        "coordinates": {
+            "x": 42,
+            "y": 38
+        },
+        "bdm": "John Smith",
         "createdAt": "2023-06-15"
     },
     {
         "id": "SITE-002",
         "accountId": "ACC-001",
+        "companyId": "COMP-001",
+        "companyName": "Johnson Roofing Holdings",
+        "regionId": "REG-001",
+        "regionName": "North Texas",
         "name": "Warehouse Facility",
         "address": "456 Industrial Blvd, Austin, TX 78702",
         "status": "active",
         "projectsCount": 3,
+        "coordinates": {
+            "x": 44,
+            "y": 36
+        },
+        "bdm": "John Smith",
         "createdAt": "2023-08-20"
     },
     {
         "id": "SITE-003",
         "accountId": "ACC-001",
+        "companyId": "COMP-001",
+        "companyName": "Johnson Roofing Holdings",
+        "regionId": "REG-002",
+        "regionName": "Central Texas",
         "name": "Branch Office - North",
         "address": "789 North Ave, Round Rock, TX 78664",
         "status": "active",
         "projectsCount": 2,
+        "coordinates": {
+            "x": 48,
+            "y": 52
+        },
+        "bdm": "Mike Johnson",
         "createdAt": "2024-01-05"
     },
     {
         "id": "SITE-004",
         "accountId": "ACC-002",
+        "companyId": "COMP-002",
+        "companyName": "Acme Construction Group",
+        "regionId": "REG-003",
+        "regionName": "Dallas Metro",
         "name": "Headquarters",
         "address": "456 Main Avenue, Dallas, TX 75201",
         "status": "active",
         "projectsCount": 15,
+        "coordinates": {
+            "x": 50,
+            "y": 28
+        },
+        "bdm": "Jane Wilson",
         "createdAt": "2023-04-10"
     },
     {
         "id": "SITE-005",
         "accountId": "ACC-002",
+        "companyId": "COMP-002",
+        "companyName": "Acme Construction Group",
+        "regionId": "REG-003",
+        "regionName": "Dallas Metro",
         "name": "Distribution Centre",
         "address": "100 Logistics Way, Dallas, TX 75202",
         "status": "active",
         "projectsCount": 8,
+        "coordinates": {
+            "x": 52,
+            "y": 32
+        },
+        "bdm": "Jane Wilson",
         "createdAt": "2023-06-01"
+    },
+    {
+        "id": "SITE-006",
+        "accountId": "ACC-002",
+        "companyId": "COMP-002",
+        "companyName": "Acme Construction Group",
+        "regionId": "REG-004",
+        "regionName": "Houston Metro",
+        "name": "South Branch",
+        "address": "200 Commerce Dr, Houston, TX 77001",
+        "status": "active",
+        "projectsCount": 4,
+        "coordinates": {
+            "x": 62,
+            "y": 68
+        },
+        "bdm": "Tom Williams",
+        "createdAt": "2023-09-15"
+    },
+    {
+        "id": "SITE-007",
+        "accountId": "ACC-003",
+        "companyId": "COMP-003",
+        "companyName": "Metro Property Partners",
+        "regionId": "REG-006",
+        "regionName": "Greater Austin",
+        "name": "Downtown Complex",
+        "address": "500 Congress Ave, Austin, TX 78701",
+        "status": "active",
+        "projectsCount": 6,
+        "coordinates": {
+            "x": 38,
+            "y": 50
+        },
+        "bdm": "John Smith",
+        "createdAt": "2023-07-20"
+    },
+    {
+        "id": "SITE-008",
+        "accountId": "ACC-003",
+        "companyId": "COMP-003",
+        "companyName": "Metro Property Partners",
+        "regionId": "REG-007",
+        "regionName": "San Antonio",
+        "name": "Riverwalk Properties",
+        "address": "300 River Walk, San Antonio, TX 78205",
+        "status": "active",
+        "projectsCount": 3,
+        "coordinates": {
+            "x": 32,
+            "y": 72
+        },
+        "bdm": "David Brown",
+        "createdAt": "2023-11-01"
     }
 ]

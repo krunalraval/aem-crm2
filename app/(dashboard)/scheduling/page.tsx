@@ -1,15 +1,18 @@
 "use client";
 
-import React, { useState, useMemo, useCallback, useEffect } from "react";
+import React, { useState, useMemo, useCallback, useEffect, Suspense } from "react";
 import Link from "next/link";
+import dynamic from "next/dynamic";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Topbar } from "@/components/layout";
 import { useDrawer } from "@/components/layout/drawer-provider";
-import { useModal } from "@/components/layout/modal-provider";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
-import { Separator } from "@/components/ui/separator";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
     Select,
     SelectContent,
@@ -18,633 +21,764 @@ import {
     SelectValue,
 } from "@/components/ui/select";
 import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuSeparator,
-    DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+} from "@/components/ui/popover";
+import { toast } from "sonner";
 import {
-    ChevronLeft,
-    ChevronRight,
+    Plus,
     Calendar as CalendarIcon,
     Clock,
     MapPin,
     User,
     Users,
-    MoreHorizontal,
-    Eye,
-    UserPlus,
-    CalendarClock,
     Building2,
-    Inbox,
-    GripVertical,
     ExternalLink,
-    Search,
-    Edit,
+    Phone,
+    Wrench,
+    Settings,
+    MapPinned,
+    LayoutGrid,
+    ChevronLeft,
+    ChevronRight,
 } from "lucide-react";
-import {
-    DndContext,
-    DragOverlay,
-    closestCorners,
-    KeyboardSensor,
-    PointerSensor,
-    useSensor,
-    useSensors,
-    DragStartEvent,
-    DragOverEvent,
-    DragEndEvent,
-    useDroppable,
-    defaultDropAnimationSideEffects,
-} from "@dnd-kit/core";
-import {
-    arrayMove,
-    SortableContext,
-    sortableKeyboardCoordinates,
-    verticalListSortingStrategy,
-    useSortable,
-} from "@dnd-kit/sortable";
-import { CSS } from "@dnd-kit/utilities";
+import { PermissionGuard } from "@/components/auth/permission-guard";
+import { useAuth } from "@/context/auth-context";
+import { STATUS_COLORS, getStatusStyle } from "@/lib/status-utils";
+import { cn } from "@/lib/utils";
+import { EmptyState as SharedEmptyState } from "@/components/ui/empty-state";
+import FullCalendar from "@fullcalendar/react";
+import dayGridPlugin from "@fullcalendar/daygrid";
+import timeGridPlugin from "@fullcalendar/timegrid";
+import interactionPlugin from "@fullcalendar/interaction";
+import type { EventClickArg, DateSelectArg, EventContentArg } from "@fullcalendar/core";
+
+// Dynamic import for map (SSR issue)
+const MapContainer = dynamic(
+    () => import("react-leaflet").then(mod => mod.MapContainer),
+    { ssr: false }
+);
+const TileLayer = dynamic(
+    () => import("react-leaflet").then(mod => mod.TileLayer),
+    { ssr: false }
+);
+const Marker = dynamic(
+    () => import("react-leaflet").then(mod => mod.Marker),
+    { ssr: false }
+);
+const Popup = dynamic(
+    () => import("react-leaflet").then(mod => mod.Popup),
+    { ssr: false }
+);
 
 // Types
-interface ScheduledJob {
+interface SalesEvent {
     id: string;
-    projectId: string;
-    customerId: string;
-    customerName: string;
     title: string;
-    address: string;
+    type: "meeting" | "site_visit" | "callback" | "other";
     date: string;
     startTime: string;
     endTime: string;
-    engineers: string[];
-    status: string;
-    notes: string;
+    bdmId: string;
+    bdmName: string;
+    bdmColor: string;
+    contactId?: string;
+    contactName?: string;
+    siteId?: string;
+    siteName?: string;
+    notes?: string;
+    isOutlook?: boolean;
 }
 
-// Mock Data
-const mockJobs: ScheduledJob[] = [
-    { id: "J-001", projectId: "P-2024-001", customerId: "ACC-001", customerName: "Johnson Roofing LLC", title: "Roof Inspection", address: "123 Oak Street, Austin, TX", date: "2024-01-29", startTime: "09:00", endTime: "11:00", engineers: ["Mike Johnson"], status: "scheduled", notes: "Annual inspection" },
-    { id: "J-002", projectId: "P-2024-001", customerId: "ACC-001", customerName: "Johnson Roofing LLC", title: "Tile Replacement", address: "123 Oak Street, Austin, TX", date: "2024-01-29", startTime: "13:00", endTime: "17:00", engineers: ["Mike Johnson", "David Brown"], status: "scheduled", notes: "West section tiles" },
-    { id: "J-003", projectId: "P-2024-004", customerId: "ACC-002", customerName: "Acme Construction", title: "Emergency Leak Repair", address: "456 Main Avenue, Dallas, TX", date: "2024-01-29", startTime: "08:00", endTime: "12:00", engineers: ["Tom Williams"], status: "in_progress", notes: "Urgent - water damage" },
-    { id: "J-004", projectId: "P-2024-005", customerId: "ACC-002", customerName: "Acme Construction", title: "Flat Roof Membrane", address: "100 Logistics Way, Dallas, TX", date: "2024-01-30", startTime: "07:00", endTime: "15:00", engineers: ["Mike Johnson", "Tom Williams"], status: "scheduled", notes: "Phase 1 installation" },
-    { id: "J-005", projectId: "P-2024-002", customerId: "ACC-001", customerName: "Johnson Roofing LLC", title: "Final Inspection", address: "456 Industrial Blvd, Austin, TX", date: "2024-01-30", startTime: "10:00", endTime: "11:30", engineers: ["David Brown"], status: "completed", notes: "Sign-off required" },
-    { id: "J-006", projectId: "P-2024-003", customerId: "ACC-001", customerName: "Johnson Roofing LLC", title: "Gutter Assessment", address: "123 Oak Street, Austin, TX", date: "2024-01-31", startTime: "09:00", endTime: "12:00", engineers: ["David Brown"], status: "scheduled", notes: "Pre-work assessment" },
+interface EngineerJob {
+    id: string;
+    title: string;
+    jobType: "installation" | "service" | "maintenance" | "decommission" | "repair";
+    siteId: string;
+    siteName: string;
+    siteAddress: string;
+    lat: number;
+    lng: number;
+    date: string;
+    startTime: string;
+    endTime: string;
+    engineerId: string;
+    engineerName: string;
+    notes?: string;
+}
+
+// Constants
+const TODAY = new Date().toISOString().split("T")[0];
+
+const mockBDMs = [
+    { id: "BDM-001", name: "John Smith", color: "#3B82F6" },
+    { id: "BDM-002", name: "Sarah Chen", color: "#10B981" },
+    { id: "BDM-003", name: "Mike Johnson", color: "#F59E0B" },
 ];
 
-const allEngineers = ["Mike Johnson", "David Brown", "Tom Williams"];
+const mockEngineers = [
+    { id: "ENG-001", name: "David Brown" },
+    { id: "ENG-002", name: "Tom Williams" },
+    { id: "ENG-003", name: "Chris Martin" },
+];
 
-const statusStyles: Record<string, string> = {
-    scheduled: "bg-blue-50 text-blue-700 dark:bg-blue-950/50 dark:text-blue-400",
-    in_progress: "bg-purple-50 text-purple-700 dark:bg-purple-950/50 dark:text-purple-400",
-    completed: "bg-green-50 text-green-700 dark:bg-green-950/50 dark:text-green-400",
-    cancelled: "bg-red-50 text-red-700 dark:bg-red-950/50 dark:text-red-400",
+const jobTypeStyles: Record<string, string> = {
+    installation: STATUS_COLORS.job.scheduled,
+    service: STATUS_COLORS.job.in_progress,
+    maintenance: STATUS_COLORS.job.complete,
+    decommission: STATUS_COLORS.semantic.warning,
+    repair: STATUS_COLORS.semantic.error,
+};
+const jobTypeColors = jobTypeStyles;
+
+const jobTypeLabels: Record<string, string> = {
+    installation: "Installation",
+    service: "Service",
+    maintenance: "Maintenance",
+    decommission: "Decommission",
+    repair: "Repair",
 };
 
-const jobCardStyles: Record<string, string> = {
-    scheduled: "border-l-blue-400 bg-blue-50/30",
-    in_progress: "border-l-purple-400 bg-purple-50/30",
-    completed: "border-l-green-400 bg-green-50/30",
-    cancelled: "border-l-red-400 bg-red-50/30",
+const eventTypeLabels: Record<string, string> = {
+    meeting: "Meeting",
+    site_visit: "Site Visit",
+    callback: "Callback",
+    other: "Other",
 };
 
-// Helper functions
-function getWeekDates(date: Date): Date[] {
-    const week: Date[] = [];
-    const startOfWeek = new Date(date);
-    const day = startOfWeek.getDay();
-    const diff = startOfWeek.getDate() - day + (day === 0 ? -6 : 1);
-    startOfWeek.setDate(diff);
+// Mock Sales Events
+const initialSalesEvents: SalesEvent[] = [
+    { id: "SE-001", title: "Client Meeting - Johnson Roofing", type: "meeting", date: TODAY, startTime: "09:00", endTime: "10:00", bdmId: "BDM-001", bdmName: "John Smith", bdmColor: "#3B82F6", contactId: "CON-001", contactName: "Mike Thompson", notes: "Discuss new CCTV requirements" },
+    { id: "SE-002", title: "Site Visit - Acme Construction", type: "site_visit", date: TODAY, startTime: "14:00", endTime: "15:30", bdmId: "BDM-002", bdmName: "Sarah Chen", bdmColor: "#10B981", siteId: "SITE-002", siteName: "Acme HQ" },
+    { id: "SE-003", title: "Callback - Premier Builders", type: "callback", date: TODAY, startTime: "11:00", endTime: "11:30", bdmId: "BDM-001", bdmName: "John Smith", bdmColor: "#3B82F6", contactId: "CON-003", contactName: "Tom Williams" },
+    { id: "SE-004", title: "Team Sync (Outlook)", type: "other", date: TODAY, startTime: "16:00", endTime: "16:30", bdmId: "BDM-001", bdmName: "John Smith", bdmColor: "#3B82F6", isOutlook: true },
+];
 
-    for (let i = 0; i < 7; i++) {
-        const d = new Date(startOfWeek);
-        d.setDate(startOfWeek.getDate() + i);
-        week.push(d);
-    }
-    return week;
-}
+// Mock Engineer Jobs
+const initialEngineerJobs: EngineerJob[] = [
+    { id: "JOB-001", title: "CCTV Installation - Johnson Roofing", jobType: "installation", siteId: "SITE-001", siteName: "Johnson Roofing HQ", siteAddress: "123 Main St, Austin, TX", lat: 30.2672, lng: -97.7431, date: TODAY, startTime: "08:00", endTime: "12:00", engineerId: "ENG-001", engineerName: "David Brown" },
+    { id: "JOB-002", title: "Service Call - Acme Construction", jobType: "service", siteId: "SITE-002", siteName: "Acme Construction Site", siteAddress: "456 Oak Ave, Austin, TX", lat: 30.2750, lng: -97.7500, date: TODAY, startTime: "13:00", endTime: "15:00", engineerId: "ENG-001", engineerName: "David Brown" },
+    { id: "JOB-003", title: "Maintenance - Premier Builders", jobType: "maintenance", siteId: "SITE-003", siteName: "Premier Builders Office", siteAddress: "789 Elm Rd, Austin, TX", lat: 30.2600, lng: -97.7350, date: TODAY, startTime: "09:00", endTime: "11:00", engineerId: "ENG-002", engineerName: "Tom Williams" },
+    { id: "JOB-004", title: "Decommission - Old Site", jobType: "decommission", siteId: "SITE-004", siteName: "Legacy Warehouse", siteAddress: "321 Pine St, Austin, TX", lat: 30.2800, lng: -97.7600, date: TODAY, startTime: "14:00", endTime: "17:00", engineerId: "ENG-003", engineerName: "Chris Martin" },
+];
 
-function formatDateKey(date: Date): string {
-    return date.toISOString().split("T")[0];
-}
+// Helpers
+const formatTime = (time: string) => time;
 
-function formatDayName(date: Date): string {
-    return date.toLocaleDateString("en-GB", { weekday: "short" });
-}
+// Create Sales Event Form
+function CreateSalesEventForm({ date, onClose, onSave }: { date?: string; onClose?: () => void; onSave?: (event: Partial<SalesEvent>) => void }) {
+    const [title, setTitle] = useState("");
+    const [type, setType] = useState<"meeting" | "site_visit" | "callback" | "other">("meeting");
+    const [eventDate, setEventDate] = useState(date || TODAY);
+    const [startTime, setStartTime] = useState("09:00");
+    const [duration, setDuration] = useState("60");
+    const [bdmId, setBdmId] = useState(mockBDMs[0].id);
+    const [contactName, setContactName] = useState("");
+    const [siteName, setSiteName] = useState("");
+    const [notes, setNotes] = useState("");
 
-function isToday(date: Date): boolean {
-    const today = new Date("2024-01-29");
-    return formatDateKey(date) === formatDateKey(today);
-}
+    const selectedBDM = mockBDMs.find(b => b.id === bdmId);
 
-// Info Row Component for Drawer
-function InfoRow({ label, value, icon: Icon }: { label: string; value: string | React.ReactNode; icon: React.ElementType }) {
-    return (
-        <div className="flex items-start gap-4">
-            <div className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-muted/50 border border-slate-100 shadow-sm">
-                <Icon className="h-4 w-4 text-muted-foreground" />
-            </div>
-            <div className="min-w-0">
-                <p className="text-[11px] font-bold text-muted-foreground uppercase tracking-widest">{label}</p>
-                <div className="text-sm font-bold text-foreground mt-0.5 leading-snug">
-                    {value}
-                </div>
-            </div>
-        </div>
-    );
-}
-
-function JobDetailDrawer({ job }: { job: ScheduledJob }) {
-    return (
-        <div className="space-y-8">
-            <div className="space-y-6">
-                <div>
-                    <h3 className="text-base font-black tracking-tight">{job.title}</h3>
-                    <p className="text-sm text-muted-foreground mt-2 leading-relaxed font-medium">{job.notes}</p>
-                </div>
-
-                <Separator className="bg-slate-100/50" />
-
-                <div className="space-y-5 px-1">
-                    <InfoRow label="Operational Status" value={
-                        <Badge className={`${jobCardStyles[job.status]} border-none font-black text-[10px] uppercase tracking-widest h-5 px-2`}>
-                            {job.status}
-                        </Badge>
-                    } icon={Clock} />
-                    <InfoRow label="Customer Asset" value={job.customerName} icon={Building2} />
-                    <InfoRow label="Operational Address" value={job.address} icon={MapPin} />
-                    <InfoRow
-                        label="Deployment Window"
-                        value={`${new Date(job.date).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" })} • ${job.startTime} - ${job.endTime}`}
-                        icon={CalendarIcon}
-                    />
-                    <InfoRow
-                        label="Assigned Crew"
-                        value={
-                            <div className="flex flex-wrap gap-1.5 mt-1">
-                                {job.engineers.map((eng) => (
-                                    <Badge key={eng} variant="outline" className="text-[10px] font-black uppercase tracking-tighter bg-background border-slate-200 h-5">
-                                        {eng}
-                                    </Badge>
-                                ))}
-                            </div>
-                        }
-                        icon={Users}
-                    />
-                </div>
-            </div>
-
-            <Separator className="bg-slate-100" />
-
-            <div className="flex gap-3">
-                <Button asChild className="flex-1 h-10 font-bold text-xs" size="sm">
-                    <Link href={`/projects/${job.projectId}`}>
-                        <ExternalLink className="mr-2 h-4 w-4" />
-                        Project Dossier
-                    </Link>
-                </Button>
-                <Button variant="outline" size="sm" className="h-10 w-10 p-0 border-none shadow-sm bg-background hover:bg-muted/50">
-                    <Edit className="h-4 w-4" />
-                </Button>
-            </div>
-        </div>
-    );
-}
-
-// Sortable Job Card Component
-const SortableJobCard = React.memo(({ job, onClick }: { job: ScheduledJob; onClick: () => void }) => {
-    const {
-        attributes,
-        listeners,
-        setNodeRef,
-        transform,
-        transition,
-        isDragging,
-    } = useSortable({
-        id: job.id,
-        data: {
-            type: "Job",
-            job,
-        },
-    });
-
-    const style = {
-        transform: CSS.Translate.toString(transform),
-        transition,
+    const handleSave = () => {
+        if (!title) {
+            toast.error("Title is required");
+            return;
+        }
+        const endHour = parseInt(startTime.split(":")[0]) + Math.floor(parseInt(duration) / 60);
+        const endMin = (parseInt(startTime.split(":")[1]) + parseInt(duration) % 60) % 60;
+        onSave?.({
+            id: `SE-${Date.now()}`,
+            title,
+            type,
+            date: eventDate,
+            startTime,
+            endTime: `${String(endHour).padStart(2, "0")}:${String(endMin).padStart(2, "0")}`,
+            bdmId,
+            bdmName: selectedBDM?.name || "",
+            bdmColor: selectedBDM?.color || "#3B82F6",
+            contactName: contactName || undefined,
+            siteName: siteName || undefined,
+            notes: notes || undefined,
+        });
+        toast.success("Event created");
+        onClose?.();
     };
 
-    if (isDragging) {
-        return (
-            <div
-                ref={setNodeRef}
-                style={style}
-                className="p-4 bg-muted/20 rounded-lg border border-dashed border-slate-300 dark:border-slate-700 h-[80px]"
-            />
-        );
-    }
-
     return (
-        <div
-            ref={setNodeRef}
-            style={style}
-            {...attributes}
-            {...listeners}
-            onClick={onClick}
-            className={`group relative rounded-md border-l-4 p-2.5 text-xs shadow-sm cursor-grab active:cursor-grabbing hover:shadow-md transition-all active:scale-[0.98] ${jobCardStyles[job.status]}`}
-        >
-            <div className="flex items-start justify-between gap-2">
-                <div className="min-w-0 flex-1">
-                    <p className="font-semibold truncate">{job.title}</p>
-                    <p className="text-muted-foreground truncate mt-0.5">{job.customerName}</p>
-                    <div className="flex items-center gap-1.5 mt-2 text-[10px] font-medium text-muted-foreground">
-                        <Clock className="h-3 w-3" />
-                        <span>{job.startTime} - {job.endTime}</span>
-                    </div>
+        <div className="space-y-4">
+            <div className="space-y-1.5">
+                <Label>Title <span className="text-destructive">*</span></Label>
+                <Input value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Meeting with..." />
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-1.5">
+                    <Label>Type</Label>
+                    <Select value={type} onValueChange={(v) => setType(v as typeof type)}>
+                        <SelectTrigger><SelectValue /></SelectTrigger>
+                        <SelectContent>
+                            <SelectItem value="meeting">Meeting</SelectItem>
+                            <SelectItem value="site_visit">Site Visit</SelectItem>
+                            <SelectItem value="callback">Callback</SelectItem>
+                            <SelectItem value="other">Other</SelectItem>
+                        </SelectContent>
+                    </Select>
                 </div>
+                <div className="space-y-1.5">
+                    <Label>BDM</Label>
+                    <Select value={bdmId} onValueChange={setBdmId}>
+                        <SelectTrigger><SelectValue /></SelectTrigger>
+                        <SelectContent>
+                            {mockBDMs.map(b => (
+                                <SelectItem key={b.id} value={b.id}>{b.name}</SelectItem>
+                            ))}
+                        </SelectContent>
+                    </Select>
+                </div>
+            </div>
+            <div className="grid grid-cols-3 gap-4">
+                <div className="space-y-1.5">
+                    <Label>Date</Label>
+                    <Input type="date" value={eventDate} onChange={(e) => setEventDate(e.target.value)} />
+                </div>
+                <div className="space-y-1.5">
+                    <Label>Start Time</Label>
+                    <Input type="time" value={startTime} onChange={(e) => setStartTime(e.target.value)} />
+                </div>
+                <div className="space-y-1.5">
+                    <Label>Duration (min)</Label>
+                    <Select value={duration} onValueChange={setDuration}>
+                        <SelectTrigger><SelectValue /></SelectTrigger>
+                        <SelectContent>
+                            <SelectItem value="15">15 min</SelectItem>
+                            <SelectItem value="30">30 min</SelectItem>
+                            <SelectItem value="60">1 hour</SelectItem>
+                            <SelectItem value="90">1.5 hours</SelectItem>
+                            <SelectItem value="120">2 hours</SelectItem>
+                        </SelectContent>
+                    </Select>
+                </div>
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-1.5">
+                    <Label>Contact Name</Label>
+                    <Input value={contactName} onChange={(e) => setContactName(e.target.value)} placeholder="Optional" />
+                </div>
+                <div className="space-y-1.5">
+                    <Label>Site Name</Label>
+                    <Input value={siteName} onChange={(e) => setSiteName(e.target.value)} placeholder="Optional" />
+                </div>
+            </div>
+            <div className="space-y-1.5">
+                <Label>Notes</Label>
+                <Textarea value={notes} onChange={(e) => setNotes(e.target.value)} rows={2} />
+            </div>
+            <div className="flex justify-end gap-2 pt-4 border-t">
+                <Button variant="outline" onClick={onClose}>Cancel</Button>
+                <Button onClick={handleSave}>Create Event</Button>
             </div>
         </div>
     );
-});
+}
 
-// Droppable Day Component
-function DroppableDay({ dateKey, label, dayNumber, jobs, isToday, onClickJob }: {
-    dateKey: string,
-    label: string,
-    dayNumber: number,
-    jobs: ScheduledJob[],
-    isToday: boolean,
-    onClickJob: (job: ScheduledJob) => void
-}) {
-    const { setNodeRef, isOver } = useDroppable({
-        id: dateKey,
-        data: {
-            type: "Day",
-        },
-    });
+// Create Engineer Job Form
+function CreateJobForm({ date, onClose, onSave }: { date?: string; onClose?: () => void; onSave?: (job: Partial<EngineerJob>) => void }) {
+    const [title, setTitle] = useState("");
+    const [jobType, setJobType] = useState<EngineerJob["jobType"]>("installation");
+    const [jobDate, setJobDate] = useState(date || TODAY);
+    const [startTime, setStartTime] = useState("08:00");
+    const [endTime, setEndTime] = useState("12:00");
+    const [engineerId, setEngineerId] = useState(mockEngineers[0].id);
+    const [siteName, setSiteName] = useState("");
+    const [siteAddress, setSiteAddress] = useState("");
+    const [notes, setNotes] = useState("");
+
+    const selectedEngineer = mockEngineers.find(e => e.id === engineerId);
+
+    const handleSave = () => {
+        if (!title || !siteName) {
+            toast.error("Title and Site Name are required");
+            return;
+        }
+        onSave?.({
+            id: `JOB-${Date.now()}`,
+            title,
+            jobType,
+            siteId: `SITE-${Date.now()}`,
+            siteName,
+            siteAddress,
+            lat: 30.27 + Math.random() * 0.02,
+            lng: -97.74 + Math.random() * 0.02,
+            date: jobDate,
+            startTime,
+            endTime,
+            engineerId,
+            engineerName: selectedEngineer?.name || "",
+            notes: notes || undefined,
+        });
+        toast.success("Job scheduled");
+        onClose?.();
+    };
 
     return (
-        <div
-            ref={setNodeRef}
-            className={`min-h-[450px] rounded-xl border bg-background/50 p-2.5 transition-all ${isToday ? "ring-2 ring-primary ring-offset-2 ring-offset-muted/40" : ""} ${isOver ? "bg-primary/5 ring-1 ring-primary/20" : ""}`}
-        >
-            <div className="text-center pb-3 border-b mb-3">
-                <p className={`text-[11px] font-bold uppercase tracking-widest ${isToday ? "text-primary" : "text-muted-foreground"}`}>
-                    {label}
-                </p>
-                <div className={`mt-1.5 flex h-8 w-8 items-center justify-center rounded-full mx-auto text-sm font-bold ${isToday ? "bg-primary text-white shadow-sm" : "text-foreground"}`}>
-                    {dayNumber}
+        <div className="space-y-4">
+            <div className="space-y-1.5">
+                <Label>Job Title <span className="text-destructive">*</span></Label>
+                <Input value={title} onChange={(e) => setTitle(e.target.value)} placeholder="CCTV Installation..." />
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-1.5">
+                    <Label>Job Type</Label>
+                    <Select value={jobType} onValueChange={(v) => setJobType(v as EngineerJob["jobType"])}>
+                        <SelectTrigger><SelectValue /></SelectTrigger>
+                        <SelectContent>
+                            {Object.entries(jobTypeLabels).map(([k, v]) => (
+                                <SelectItem key={k} value={k}>{v}</SelectItem>
+                            ))}
+                        </SelectContent>
+                    </Select>
+                </div>
+                <div className="space-y-1.5">
+                    <Label>Engineer</Label>
+                    <Select value={engineerId} onValueChange={setEngineerId}>
+                        <SelectTrigger><SelectValue /></SelectTrigger>
+                        <SelectContent>
+                            {mockEngineers.map(e => (
+                                <SelectItem key={e.id} value={e.id}>{e.name}</SelectItem>
+                            ))}
+                        </SelectContent>
+                    </Select>
                 </div>
             </div>
+            <div className="grid grid-cols-3 gap-4">
+                <div className="space-y-1.5">
+                    <Label>Date</Label>
+                    <Input type="date" value={jobDate} onChange={(e) => setJobDate(e.target.value)} />
+                </div>
+                <div className="space-y-1.5">
+                    <Label>Start</Label>
+                    <Input type="time" value={startTime} onChange={(e) => setStartTime(e.target.value)} />
+                </div>
+                <div className="space-y-1.5">
+                    <Label>End</Label>
+                    <Input type="time" value={endTime} onChange={(e) => setEndTime(e.target.value)} />
+                </div>
+            </div>
+            <div className="space-y-1.5">
+                <Label>Site Name <span className="text-destructive">*</span></Label>
+                <Input value={siteName} onChange={(e) => setSiteName(e.target.value)} />
+            </div>
+            <div className="space-y-1.5">
+                <Label>Site Address</Label>
+                <Input value={siteAddress} onChange={(e) => setSiteAddress(e.target.value)} />
+            </div>
+            <div className="space-y-1.5">
+                <Label>Notes</Label>
+                <Textarea value={notes} onChange={(e) => setNotes(e.target.value)} rows={2} />
+            </div>
+            <div className="flex justify-end gap-2 pt-4 border-t">
+                <Button variant="outline" onClick={onClose}>Cancel</Button>
+                <Button onClick={handleSave}>Schedule Job</Button>
+            </div>
+        </div>
+    );
+}
 
-            <SortableContext items={jobs.map(j => j.id)} strategy={verticalListSortingStrategy}>
-                <div className="space-y-2.5 min-h-[300px]">
-                    {jobs.length > 0 ? (
-                        jobs.map((job) => (
-                            <SortableJobCard
-                                key={job.id}
-                                job={job}
-                                onClick={() => onClickJob(job)}
-                            />
-                        ))
-                    ) : (
-                        <div className="py-12 flex flex-col items-center justify-center text-center opacity-40">
-                            <Inbox className="h-5 w-5 mb-1.5" />
-                            <span className="text-[10px] uppercase font-bold tracking-tighter">No Jobs</span>
+// Main Page Content
+function SchedulingPageContent() {
+    const router = useRouter();
+    const searchParams = useSearchParams();
+    const { openDrawer, closeDrawer } = useDrawer();
+    const { role, canAccess } = useAuth();
+
+    const viewMode = searchParams.get("view") === "map" ? "map" : "calendar";
+    const [activeTab, setActiveTab] = useState<"sales" | "engineer">(role === "Engineer" ? "engineer" : "sales");
+    const [salesEvents, setSalesEvents] = useState<SalesEvent[]>(initialSalesEvents);
+    const [engineerJobs, setEngineerJobs] = useState<EngineerJob[]>(initialEngineerJobs);
+    const [bdmFilter, setBdmFilter] = useState<string>(role === "BDM" ? "BDM-001" : "all");
+    const [engineerFilter, setEngineerFilter] = useState<string>(role === "Engineer" ? "ENG-001" : "all");
+    const [mapDate, setMapDate] = useState(TODAY);
+    const [isMounted, setIsMounted] = useState(false);
+
+    useEffect(() => { setIsMounted(true); }, []);
+
+    // Convert to FullCalendar events
+    const salesCalendarEvents = useMemo(() => {
+        return salesEvents
+            .filter(e => bdmFilter === "all" || e.bdmId === bdmFilter)
+            .map(e => ({
+                id: e.id,
+                title: e.title,
+                start: `${e.date}T${e.startTime}`,
+                end: `${e.date}T${e.endTime}`,
+                backgroundColor: e.isOutlook ? "#94A3B8" : e.bdmColor,
+                borderColor: e.isOutlook ? "#94A3B8" : e.bdmColor,
+                extendedProps: { ...e },
+            }));
+    }, [salesEvents, bdmFilter]);
+
+    const engineerCalendarEvents = useMemo(() => {
+        return engineerJobs
+            .filter(j => engineerFilter === "all" || j.engineerId === engineerFilter)
+            .map(j => {
+                const style = jobTypeStyles[j.jobType] || STATUS_COLORS.job.scheduled;
+                // FullCalendar event coloring
+                const bgColor = style.split(' ')[0].replace('bg-', ''); // Approximation
+                return {
+                    id: j.id,
+                    title: j.title,
+                    start: `${j.date}T${j.startTime}`,
+                    end: `${j.date}T${j.endTime}`,
+                    backgroundColor: j.jobType === 'installation' ? '#3B82F6' : j.jobType === 'repair' ? '#EF4444' : '#10B981',
+                    borderColor: j.jobType === 'installation' ? '#3B82F6' : j.jobType === 'repair' ? '#EF4444' : '#10B981',
+                    extendedProps: { ...j },
+                };
+            });
+    }, [engineerJobs, engineerFilter]);
+
+    const mapJobs = useMemo(() => {
+        return engineerJobs.filter(j => j.date === mapDate);
+    }, [engineerJobs, mapDate]);
+
+    const handleSalesEventClick = (arg: EventClickArg) => {
+        const event = arg.event.extendedProps as SalesEvent;
+        openDrawer({
+            title: event.title,
+            description: eventTypeLabels[event.type],
+            content: (
+                <div className="space-y-4">
+                    <div className="flex items-center gap-2">
+                        <div className="h-3 w-3 rounded-full" style={{ backgroundColor: event.bdmColor }} />
+                        <span className="text-sm font-medium">{event.bdmName}</span>
+                        {event.isOutlook && <Badge variant="secondary" className="text-[9px]">Outlook</Badge>}
+                    </div>
+                    <div className="grid grid-cols-2 gap-3 text-sm">
+                        <div>
+                            <p className="text-xs text-muted-foreground">Date</p>
+                            <p className="font-medium">{new Date(event.date).toLocaleDateString("en-GB", { weekday: "short", day: "numeric", month: "short" })}</p>
+                        </div>
+                        <div>
+                            <p className="text-xs text-muted-foreground">Time</p>
+                            <p className="font-medium">{event.startTime} - {event.endTime}</p>
+                        </div>
+                    </div>
+                    {event.contactName && (
+                        <div>
+                            <p className="text-xs text-muted-foreground">Contact</p>
+                            <Link href={`/contacts/${event.contactId}`} className="text-primary hover:underline font-medium">{event.contactName}</Link>
+                        </div>
+                    )}
+                    {event.siteName && (
+                        <div>
+                            <p className="text-xs text-muted-foreground">Site</p>
+                            <Link href={`/sites/${event.siteId}`} className="text-primary hover:underline font-medium">{event.siteName}</Link>
+                        </div>
+                    )}
+                    {event.notes && (
+                        <div>
+                            <p className="text-xs text-muted-foreground">Notes</p>
+                            <p className="text-sm">{event.notes}</p>
                         </div>
                     )}
                 </div>
-            </SortableContext>
-        </div>
-    );
-}
+            )
+        });
+    };
 
-// Static Job Card for Drag Overlay
-function JobCardStatic({ job }: { job: ScheduledJob }) {
-    return (
-        <div className={`rounded-md border-l-4 p-2.5 text-xs shadow-xl rotate-[2deg] scale-[1.05] w-[180px] bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 ${jobCardStyles[job.status]}`}>
-            <p className="font-semibold truncate">{job.title}</p>
-            <p className="text-muted-foreground truncate mt-0.5">{job.customerName}</p>
-            <div className="flex items-center gap-1.5 mt-2 text-[10px] font-medium text-muted-foreground">
-                <Clock className="h-3 w-3" />
-                <span>{job.startTime} - {job.endTime}</span>
-            </div>
-        </div>
-    );
-}
-
-// Stat Card Component
-function StatCard({ title, value, icon: Icon, color }: {
-    title: string;
-    value: string | number;
-    icon: React.ElementType;
-    color?: string;
-}) {
-    return (
-        <Card>
-            <CardContent className="pt-6">
-                <div className="flex items-start justify-between">
-                    <div>
-                        <p className="text-sm text-muted-foreground font-medium">{title}</p>
-                        <p className={`text-2xl font-semibold mt-1.5 ${color || ''}`}>{value}</p>
+    const handleEngineerEventClick = (arg: EventClickArg) => {
+        const job = arg.event.extendedProps as EngineerJob;
+        openDrawer({
+            title: job.title,
+            description: jobTypeLabels[job.jobType],
+            content: (
+                <div className="space-y-4">
+                    <Badge className={cn("border-none text-[10px] font-bold uppercase", jobTypeStyles[job.jobType])}>
+                        {jobTypeLabels[job.jobType]}
+                    </Badge>
+                    <div className="grid grid-cols-2 gap-3 text-sm">
+                        <div>
+                            <p className="text-xs text-muted-foreground">Date</p>
+                            <p className="font-medium">{new Date(job.date).toLocaleDateString("en-GB", { weekday: "short", day: "numeric", month: "short" })}</p>
+                        </div>
+                        <div>
+                            <p className="text-xs text-muted-foreground">Time</p>
+                            <p className="font-medium">{job.startTime} - {job.endTime}</p>
+                        </div>
                     </div>
-                    <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-muted/50">
-                        <Icon className="h-4 w-4 text-muted-foreground" />
+                    <div>
+                        <p className="text-xs text-muted-foreground">Engineer</p>
+                        <p className="font-medium">{job.engineerName}</p>
+                    </div>
+                    <div>
+                        <p className="text-xs text-muted-foreground">Site</p>
+                        <Link href={`/sites/${job.siteId}`} className="text-primary hover:underline font-medium">{job.siteName}</Link>
+                        <p className="text-xs text-muted-foreground mt-0.5">{job.siteAddress}</p>
+                    </div>
+                    {job.notes && (
+                        <div>
+                            <p className="text-xs text-muted-foreground">Notes</p>
+                            <p className="text-sm">{job.notes}</p>
+                        </div>
+                    )}
+                    <div className="pt-4 border-t">
+                        <Button asChild className="w-full">
+                            <Link href={`/jobs/${job.id}`}>View Full Job Details</Link>
+                        </Button>
                     </div>
                 </div>
-            </CardContent>
-        </Card>
+            )
+        });
+    };
+
+    const handleDateSelect = (arg: DateSelectArg) => {
+        const selectedDate = arg.startStr.split("T")[0];
+        if (activeTab === "sales") {
+            openDrawer({
+                title: "Create Event",
+                description: `Schedule for ${new Date(selectedDate).toLocaleDateString("en-GB", { weekday: "long", day: "numeric", month: "short" })}`,
+                content: (
+                    <CreateSalesEventForm
+                        date={selectedDate}
+                        onClose={closeDrawer}
+                        onSave={(e) => setSalesEvents(prev => [...prev, e as SalesEvent])}
+                    />
+                )
+            });
+        } else {
+            openDrawer({
+                title: "Schedule Job",
+                description: `Create job for ${new Date(selectedDate).toLocaleDateString("en-GB", { weekday: "long", day: "numeric", month: "short" })}`,
+                content: (
+                    <CreateJobForm
+                        date={selectedDate}
+                        onClose={closeDrawer}
+                        onSave={(j) => setEngineerJobs(prev => [...prev, j as EngineerJob])}
+                    />
+                )
+            });
+        }
+    };
+
+    const handleCreateEvent = () => {
+        if (activeTab === "sales") {
+            openDrawer({
+                title: "Create Event",
+                description: "Schedule a new sales event",
+                content: (
+                    <CreateSalesEventForm
+                        onClose={closeDrawer}
+                        onSave={(e) => setSalesEvents(prev => [...prev, e as SalesEvent])}
+                    />
+                )
+            });
+        } else {
+            openDrawer({
+                title: "Schedule Job",
+                description: "Create a new engineering job",
+                content: (
+                    <CreateJobForm
+                        onClose={closeDrawer}
+                        onSave={(j) => setEngineerJobs(prev => [...prev, j as EngineerJob])}
+                    />
+                )
+            });
+        }
+    };
+
+    const toggleView = () => {
+        router.push(viewMode === "calendar" ? "/scheduling?view=map" : "/scheduling");
+    };
+
+    if (!isMounted) return null;
+
+    return (
+        <>
+            <Topbar title="Scheduling" subtitle="Manage calendars and job schedules" />
+            <main className="flex-1 overflow-hidden bg-muted/20 p-6">
+                {/* Filter Bar */}
+                <div className="mb-4 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between bg-white dark:bg-slate-900 p-4 rounded-2xl shadow-sm border">
+                    <div className="flex flex-1 flex-wrap items-center gap-3">
+                        {viewMode === "calendar" && (
+                            <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as "sales" | "engineer")} className="w-auto">
+                                <TabsList className="h-9">
+                                    {(role === "Super Admin" || role === "BDM") && (
+                                        <TabsTrigger value="sales" className="text-xs px-4">Sales Calendar</TabsTrigger>
+                                    )}
+                                    {(role === "Super Admin" || role === "Engineer") && (
+                                        <TabsTrigger value="engineer" className="text-xs px-4">Engineer Calendar</TabsTrigger>
+                                    )}
+                                </TabsList>
+                            </Tabs>
+                        )}
+                        {viewMode === "calendar" && activeTab === "sales" && (
+                            <Select value={bdmFilter} onValueChange={setBdmFilter}>
+                                <SelectTrigger className="w-[150px] h-9 text-xs bg-muted/30 border-none">
+                                    <SelectValue placeholder="Filter BDM" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="all">All BDMs</SelectItem>
+                                    {mockBDMs.map(b => (
+                                        <SelectItem key={b.id} value={b.id}>
+                                            <div className="flex items-center gap-2">
+                                                <div className="h-2.5 w-2.5 rounded-full" style={{ backgroundColor: b.color }} />
+                                                {b.name}
+                                            </div>
+                                        </SelectItem>
+                                    ))}
+                                </SelectContent>
+                            </Select>
+                        )}
+                        {viewMode === "calendar" && activeTab === "engineer" && (
+                            <Select value={engineerFilter} onValueChange={setEngineerFilter}>
+                                <SelectTrigger className="w-[150px] h-9 text-xs bg-muted/30 border-none">
+                                    <SelectValue placeholder="Filter Engineer" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="all">All Engineers</SelectItem>
+                                    {mockEngineers.map(e => (
+                                        <SelectItem key={e.id} value={e.id}>{e.name}</SelectItem>
+                                    ))}
+                                </SelectContent>
+                            </Select>
+                        )}
+                        {viewMode === "map" && (
+                            <div className="flex items-center gap-2">
+                                <Label className="text-xs">Date:</Label>
+                                <Input type="date" value={mapDate} onChange={(e) => setMapDate(e.target.value)} className="w-[140px] h-9 text-xs" />
+                            </div>
+                        )}
+                        <div className="flex items-center rounded-lg border bg-muted/30 p-1">
+                            <Button
+                                variant={viewMode === "calendar" ? "default" : "ghost"}
+                                size="sm"
+                                className="h-7 px-3 text-xs"
+                                onClick={() => viewMode === "map" && toggleView()}
+                            >
+                                <CalendarIcon className="h-3.5 w-3.5 mr-1" />Calendar
+                            </Button>
+                            <Button
+                                variant={viewMode === "map" ? "default" : "ghost"}
+                                size="sm"
+                                className="h-7 px-3 text-xs"
+                                onClick={() => viewMode === "calendar" && toggleView()}
+                            >
+                                <MapPinned className="h-3.5 w-3.5 mr-1" />Map
+                            </Button>
+                        </div>
+                    </div>
+                    {viewMode === "calendar" && (
+                        <Button id="create-event-btn" onClick={handleCreateEvent} size="sm" className="h-9 px-4 font-bold text-xs uppercase transition-all active:scale-95 shadow-sm">
+                            <Plus className="mr-1.5 h-4 w-4" />
+                            {activeTab === "sales" ? "Create Event" : "Create Job"}
+                        </Button>
+                    )}
+                </div>
+
+                {/* Calendar View */}
+                {viewMode === "calendar" && (
+                    <Card className="border-none shadow-sm overflow-hidden">
+                        <CardContent className="p-4">
+                            <FullCalendar
+                                plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
+                                initialView="timeGridWeek"
+                                headerToolbar={{
+                                    left: "prev,next today",
+                                    center: "title",
+                                    right: "dayGridMonth,timeGridWeek,timeGridDay"
+                                }}
+                                events={activeTab === "sales" ? salesCalendarEvents : engineerCalendarEvents}
+                                eventClick={activeTab === "sales" ? handleSalesEventClick : handleEngineerEventClick}
+                                selectable={true}
+                                select={handleDateSelect}
+                                height="calc(100vh - 280px)"
+                                nowIndicator={true}
+                                slotMinTime="06:00:00"
+                                slotMaxTime="20:00:00"
+                                allDaySlot={false}
+                                weekends={true}
+                                eventTimeFormat={{ hour: "2-digit", minute: "2-digit", hour12: false }}
+                            />
+                        </CardContent>
+                    </Card>
+                )}
+
+                {/* Map View */}
+                {viewMode === "map" && (
+                    <Card className="border-none shadow-sm overflow-hidden">
+                        <CardHeader className="pb-2">
+                            <CardTitle className="text-sm font-bold">
+                                Engineer Schedule - {new Date(mapDate).toLocaleDateString("en-GB", { weekday: "long", day: "numeric", month: "long" })}
+                            </CardTitle>
+                            <p className="text-xs text-muted-foreground">{mapJobs.length} jobs scheduled</p>
+                        </CardHeader>
+                        <CardContent className="p-0">
+                            <div className="h-[calc(100vh-320px)] relative">
+                                <MapContainer
+                                    center={[30.2672, -97.7431]}
+                                    zoom={12}
+                                    style={{ height: "100%", width: "100%" }}
+                                    scrollWheelZoom={true}
+                                >
+                                    <TileLayer
+                                        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+                                        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                                    />
+                                    {mapJobs.map(job => (
+                                        <Marker key={job.id} position={[job.lat, job.lng]}>
+                                            <Popup>
+                                                <div className="text-sm min-w-[200px]">
+                                                    <Badge className={cn("border-none text-white text-[9px] mb-2 uppercase font-bold", jobTypeStyles[job.jobType])}>
+                                                        {jobTypeLabels[job.jobType]}
+                                                    </Badge>
+                                                    <p className="font-bold">{job.siteName}</p>
+                                                    <p className="text-xs text-muted-foreground">{job.siteAddress}</p>
+                                                    <div className="flex items-center gap-2 mt-2 text-xs">
+                                                        <User className="h-3 w-3" />
+                                                        {job.engineerName}
+                                                    </div>
+                                                    <div className="flex items-center gap-2 mt-1 text-xs">
+                                                        <Clock className="h-3 w-3" />
+                                                        {job.startTime} - {job.endTime}
+                                                    </div>
+                                                    <Link href={`/jobs/${job.id}`} className="text-primary text-xs hover:underline mt-2 inline-flex items-center gap-1">
+                                                        View Job<ExternalLink className="h-3 w-3" />
+                                                    </Link>
+                                                </div>
+                                            </Popup>
+                                        </Marker>
+                                    ))}
+                                </MapContainer>
+                            </div>
+                            {/* Legend */}
+                            <div className="p-4 border-t flex flex-wrap gap-3">
+                                {Object.entries(jobTypeColors).map(([type, color]) => (
+                                    <div key={type} className="flex items-center gap-1.5">
+                                        <div className="h-3 w-3 rounded-full" style={{ backgroundColor: color }} />
+                                        <span className="text-xs">{jobTypeLabels[type]}</span>
+                                    </div>
+                                ))}
+                            </div>
+                        </CardContent>
+                    </Card>
+                )}
+            </main>
+        </>
     );
 }
 
 export default function SchedulingPage() {
-    const { openDrawer } = useDrawer();
-    const [jobs, setJobs] = useState<ScheduledJob[]>(mockJobs);
-    const [currentDate, setCurrentDate] = useState(new Date("2024-01-29"));
-    const [view, setView] = useState<"week" | "day" | "month">("week");
-    const [engineerFilter, setEngineerFilter] = useState<string>("all");
-
-    const weekDates = getWeekDates(currentDate);
-
-    // Group jobs by date
-    const jobsByDate = useMemo(() => {
-        return jobs.filter(job => {
-            if (engineerFilter === "all") return true;
-            return job.engineers.includes(engineerFilter);
-        }).reduce<Record<string, ScheduledJob[]>>((acc, job) => {
-            if (!acc[job.date]) acc[job.date] = [];
-            acc[job.date].push(job);
-            return acc;
-        }, {});
-    }, [jobs, engineerFilter]);
-
-    const [isMounted, setIsMounted] = useState(false);
-    const [activeJob, setActiveJob] = useState<ScheduledJob | null>(null);
-
-    useEffect(() => {
-        setIsMounted(true);
-    }, []);
-
-    // DND Sensors
-    const pointerSensor = useSensor(PointerSensor, {
-        activationConstraint: {
-            distance: 8,
-        },
-    });
-    const keyboardSensor = useSensor(KeyboardSensor, {
-        coordinateGetter: sortableKeyboardCoordinates,
-    });
-    const sensors = useSensors(pointerSensor, keyboardSensor);
-
-    // DND Handlers
-    const handleDragStart = useCallback((event: DragStartEvent) => {
-        const { active } = event;
-        if (active.data.current?.type === "Job") {
-            setActiveJob(active.data.current.job);
-        }
-    }, []);
-
-    const handleDragOver = useCallback((event: DragOverEvent) => {
-        const { active, over } = event;
-        if (!over) return;
-
-        const activeId = active.id;
-        const overId = over.id;
-
-        if (activeId === overId) return;
-
-        const isActiveAJob = active.data.current?.type === "Job";
-        const isOverAJob = over.data.current?.type === "Job";
-        const isOverADay = over.data.current?.type === "Day";
-
-        if (!isActiveAJob) return;
-
-        // Moving over another job
-        if (isOverAJob) {
-            setJobs((prevJobs) => {
-                const activeIndex = prevJobs.findIndex(j => j.id === activeId);
-                const overIndex = prevJobs.findIndex(j => j.id === overId);
-
-                if (activeIndex === -1 || overIndex === -1) return prevJobs;
-
-                if (prevJobs[activeIndex].date !== prevJobs[overIndex].date) {
-                    const updatedJobs = [...prevJobs];
-                    updatedJobs[activeIndex] = {
-                        ...prevJobs[activeIndex],
-                        date: prevJobs[overIndex].date,
-                    };
-                    return arrayMove(updatedJobs, activeIndex, overIndex);
-                }
-
-                if (activeIndex === overIndex) return prevJobs;
-                return arrayMove(prevJobs, activeIndex, overIndex);
-            });
-        }
-
-        // Moving over an empty day
-        if (isOverADay) {
-            setJobs((prevJobs) => {
-                const activeIndex = prevJobs.findIndex(j => j.id === activeId);
-                if (activeIndex === -1) return prevJobs;
-
-                const newDate = overId as string;
-                if (prevJobs[activeIndex].date === newDate) return prevJobs;
-
-                const updatedJobs = [...prevJobs];
-                updatedJobs[activeIndex] = {
-                    ...prevJobs[activeIndex],
-                    date: newDate,
-                };
-                return arrayMove(updatedJobs, activeIndex, activeIndex);
-            });
-        }
-    }, []);
-
-    const handleDragEnd = useCallback(() => {
-        setActiveJob(null);
-    }, []);
-
-    // Navigation
-    const goToToday = () => setCurrentDate(new Date("2024-01-29"));
-    const goToPrevWeek = () => {
-        const d = new Date(currentDate);
-        d.setDate(d.getDate() - 7);
-        setCurrentDate(d);
-    };
-    const goToNextWeek = () => {
-        const d = new Date(currentDate);
-        d.setDate(d.getDate() + 7);
-        setCurrentDate(d);
-    };
-
     return (
-        <>
-            <Topbar title="Scheduling" />
-            <main className="flex-1 overflow-y-auto bg-muted/40 p-6">
-                {/* Stats Cards */}
-                <div className="mb-6 grid gap-4 md:grid-cols-4">
-                    <StatCard title="Today's Jobs" value={jobs.filter(j => j.date === "2024-01-29").length} icon={CalendarIcon} />
-                    <StatCard title="This Week" value={jobs.length} icon={CalendarClock} />
-                    <StatCard title="In Progress" value={jobs.filter(j => j.status === 'in_progress').length} icon={Clock} color="text-purple-600" />
-                    <StatCard title="Active Engineers" value={allEngineers.length} icon={Users} color="text-green-600" />
-                </div>
-
-                {/* Controls */}
-                <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-                    <div className="flex items-center gap-2">
-                        <Button variant="outline" size="icon" className="h-9 w-9" onClick={goToPrevWeek}>
-                            <ChevronLeft className="h-4 w-4" />
-                        </Button>
-                        <Button variant="outline" size="sm" className="h-9" onClick={goToToday}>
-                            Today
-                        </Button>
-                        <Button variant="outline" size="icon" className="h-9 w-9" onClick={goToNextWeek}>
-                            <ChevronRight className="h-4 w-4" />
-                        </Button>
-                        <span className="ml-3 text-base font-semibold">
-                            {weekDates[0].toLocaleDateString("en-GB", { month: "long", year: "numeric" })}
-                        </span>
-                    </div>
-
-                    <div className="flex items-center gap-3">
-                        <div className="relative w-48">
-                            <Users className="absolute left-2.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-                            <Select value={engineerFilter} onValueChange={setEngineerFilter}>
-                                <SelectTrigger className="pl-9 h-9">
-                                    <SelectValue placeholder="All Engineers" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    <SelectItem value="all">All Engineers</SelectItem>
-                                    {allEngineers.map((eng) => (
-                                        <SelectItem key={eng} value={eng}>{eng}</SelectItem>
-                                    ))}
-                                </SelectContent>
-                            </Select>
-                        </div>
-
-                        <div className="flex border rounded-md p-1 bg-background shadow-sm">
-                            {(["day", "week", "month"] as const).map((v) => (
-                                <Button
-                                    key={v}
-                                    variant={view === v ? "secondary" : "ghost"}
-                                    size="sm"
-                                    onClick={() => setView(v)}
-                                    className={`h-7 px-3 text-[11px] font-medium uppercase tracking-wider ${view === v ? 'bg-muted' : ''}`}
-                                >
-                                    {v}
-                                </Button>
-                            ))}
-                        </div>
+        <PermissionGuard permission="/scheduling">
+            <Suspense fallback={
+                <div className="flex-1 flex items-center justify-center bg-muted/20">
+                    <div className="text-center">
+                        <CalendarIcon className="h-8 w-8 text-muted-foreground mx-auto mb-2 animate-pulse" />
+                        <p className="text-sm text-muted-foreground">Loading calendar...</p>
                     </div>
                 </div>
-
-                {/* Calendar Grid */}
-                {view === "week" && isMounted ? (
-                    <DndContext
-                        sensors={sensors}
-                        collisionDetection={closestCorners}
-                        onDragStart={handleDragStart}
-                        onDragOver={handleDragOver}
-                        onDragEnd={handleDragEnd}
-                    >
-                        <div className="grid grid-cols-7 gap-3">
-                            {weekDates.map((date) => {
-                                const dateKey = formatDateKey(date);
-                                const dayJobs = jobsByDate[dateKey] || [];
-                                const today = isToday(date);
-
-                                return (
-                                    <DroppableDay
-                                        key={dateKey}
-                                        dateKey={dateKey}
-                                        label={formatDayName(date)}
-                                        dayNumber={date.getDate()}
-                                        jobs={dayJobs}
-                                        isToday={today}
-                                        onClickJob={(job) => openDrawer({ title: job.title, content: <JobDetailDrawer job={job} />, description: `Job ${job.id}` })}
-                                    />
-                                );
-                            })}
-                        </div>
-                        <DragOverlay adjustScale={false} dropAnimation={{
-                            duration: 250,
-                            easing: "cubic-bezier(0.18, 0.67, 0.6, 1.22)",
-                            sideEffects: defaultDropAnimationSideEffects({
-                                styles: {
-                                    active: {
-                                        opacity: "0.5",
-                                    },
-                                },
-                            }),
-                        }}>
-                            {activeJob ? (
-                                <JobCardStatic job={activeJob} />
-                            ) : null}
-                        </DragOverlay>
-                    </DndContext>
-                ) : view === "week" ? (
-                    <div className="grid grid-cols-7 gap-3">
-                        {weekDates.map((date) => {
-                            const dateKey = formatDateKey(date);
-                            const dayJobs = jobsByDate[dateKey] || [];
-                            const today = isToday(date);
-
-                            return (
-                                <div
-                                    key={dateKey}
-                                    className={`min-h-[450px] rounded-xl border bg-background/50 p-2.5 transition-all ${today ? "ring-2 ring-primary ring-offset-2 ring-offset-muted/40" : ""}`}
-                                >
-                                    <div className="text-center pb-3 border-b mb-3">
-                                        <p className={`text-[11px] font-bold uppercase tracking-widest ${today ? "text-primary" : "text-muted-foreground"}`}>
-                                            {formatDayName(date)}
-                                        </p>
-                                        <div className={`mt-1.5 flex h-8 w-8 items-center justify-center rounded-full mx-auto text-sm font-bold ${today ? "bg-primary text-white shadow-sm" : "text-foreground"}`}>
-                                            {date.getDate()}
-                                        </div>
-                                    </div>
-
-                                    <div className="space-y-2.5">
-                                        {dayJobs.map((job) => (
-                                            <div
-                                                key={job.id}
-                                                className={`group relative rounded-md border-l-4 p-2.5 text-xs shadow-sm ${jobCardStyles[job.status]}`}
-                                            >
-                                                <p className="font-semibold truncate">{job.title}</p>
-                                                <p className="text-muted-foreground truncate mt-0.5">{job.customerName}</p>
-                                            </div>
-                                        ))}
-                                    </div>
-                                </div>
-                            );
-                        })}
-                    </div>
-                ) : (
-                    <Card className="min-h-[500px] flex items-center justify-center bg-background/50 border-dashed">
-                        <div className="text-center max-w-xs px-6">
-                            <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-muted mx-auto">
-                                <CalendarIcon className="h-6 w-6 text-muted-foreground" />
-                            </div>
-                            <h3 className="text-sm font-medium">{view.charAt(0).toUpperCase() + view.slice(1)} View Coming Soon</h3>
-                            <p className="mt-2 text-sm text-muted-foreground">We are working on this view. Please use the Week view for now.</p>
-                        </div>
-                    </Card>
-                )}
-
-                {/* Legend */}
-                <div className="mt-8 flex items-center justify-center gap-8 text-[11px] font-medium text-muted-foreground">
-                    <div className="flex items-center gap-2">
-                        <div className="h-2.5 w-2.5 rounded-full bg-blue-400" />
-                        <span>Scheduled</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                        <div className="h-2.5 w-2.5 rounded-full bg-purple-400" />
-                        <span>In Progress</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                        <div className="h-2.5 w-2.5 rounded-full bg-green-400" />
-                        <span>Completed</span>
-                    </div>
-                </div>
-            </main>
-        </>
+            }>
+                <SchedulingPageContent />
+            </Suspense>
+        </PermissionGuard>
     );
 }

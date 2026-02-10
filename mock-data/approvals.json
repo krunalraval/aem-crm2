@@ -1,0 +1,67 @@
+[
+    {
+        "id": "APR-001",
+        "quoteId": "Q-2024-002",
+        "siteName": "Headquarters",
+        "siteId": "SITE-004",
+        "regionName": "Dallas Metro",
+        "companyName": "Acme Construction Group",
+        "quoteValue": 120000,
+        "status": "pending",
+        "submittedBy": "John Smith",
+        "submittedAt": "2024-01-28",
+        "notes": null
+    },
+    {
+        "id": "APR-002",
+        "quoteId": "Q-2024-005",
+        "siteName": "Distribution Centre",
+        "siteId": "SITE-005",
+        "regionName": "Dallas Metro",
+        "companyName": "Acme Construction Group",
+        "quoteValue": 250000,
+        "status": "pending",
+        "submittedBy": "Jane Wilson",
+        "submittedAt": "2024-01-27",
+        "notes": null
+    },
+    {
+        "id": "APR-003",
+        "quoteId": "Q-2024-003",
+        "siteName": "Branch Office - North",
+        "siteId": "SITE-003",
+        "regionName": "Central Texas",
+        "companyName": "Johnson Roofing Holdings",
+        "quoteValue": 78000,
+        "status": "approved",
+        "submittedBy": "John Smith",
+        "submittedAt": "2024-01-25",
+        "notes": null
+    },
+    {
+        "id": "APR-004",
+        "quoteId": "Q-2024-006",
+        "siteName": "Warehouse Facility",
+        "siteId": "SITE-002",
+        "regionName": "North Texas",
+        "companyName": "Johnson Roofing Holdings",
+        "quoteValue": 185000,
+        "status": "approved",
+        "submittedBy": "Mike Johnson",
+        "submittedAt": "2024-01-22",
+        "notes": null
+    },
+    {
+        "id": "APR-005",
+        "quoteId": "Q-2024-008",
+        "siteName": "South Branch",
+        "siteId": "SITE-006",
+        "regionName": "Houston Metro",
+        "companyName": "Acme Construction Group",
+        "quoteValue": 67000,
+        "status": "sent_back",
+        "submittedBy": "Tom Williams",
+        "submittedAt": "2024-01-20",
+        "notes": "Missing line items for materials. Please revise and resubmit."
+    }
+]

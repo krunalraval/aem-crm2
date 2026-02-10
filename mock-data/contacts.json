@@ -1,0 +1,101 @@
+[
+    {
+        "id": "CON-001",
+        "name": "James Wilson",
+        "role": "Director",
+        "email": "james.wilson@acmeroofing.co.uk",
+        "phone": "07700 900123",
+        "company": "Acme Roofing Ltd",
+        "companyId": "COMP-001",
+        "preferredContact": "email",
+        "linkedSites": [
+            "SITE-001",
+            "SITE-002",
+            "SITE-003"
+        ],
+        "notes": "Primary decision maker for all major projects",
+        "createdAt": "2023-06-15"
+    },
+    {
+        "id": "CON-002",
+        "name": "Sarah Thompson",
+        "role": "QS",
+        "email": "sarah.t@constructionplus.com",
+        "phone": "07700 900456",
+        "company": "Construction Plus",
+        "companyId": "COMP-002",
+        "preferredContact": "phone",
+        "linkedSites": [
+            "SITE-004",
+            "SITE-005"
+        ],
+        "notes": "Handles all quantity surveying and cost estimates",
+        "createdAt": "2023-08-22"
+    },
+    {
+        "id": "CON-003",
+        "name": "Michael Brown",
+        "role": "Manager",
+        "email": "m.brown@builditright.co.uk",
+        "phone": "07700 900789",
+        "company": "Build It Right",
+        "companyId": "COMP-003",
+        "preferredContact": "email",
+        "linkedSites": [
+            "SITE-006"
+        ],
+        "notes": "Site manager for northern region projects",
+        "createdAt": "2023-09-10"
+    },
+    {
+        "id": "CON-004",
+        "name": "Emma Davies",
+        "role": "Director",
+        "email": "emma@premiumroofs.com",
+        "phone": "07700 900234",
+        "company": "Premium Roofs",
+        "companyId": "COMP-001",
+        "preferredContact": "phone",
+        "linkedSites": [
+            "SITE-001",
+            "SITE-007",
+            "SITE-008",
+            "SITE-009"
+        ],
+        "notes": "Co-director with James, handles commercial contracts",
+        "createdAt": "2023-05-20"
+    },
+    {
+        "id": "CON-005",
+        "name": "David Chen",
+        "role": "QS",
+        "email": "d.chen@qualitybuilders.co.uk",
+        "phone": "07700 900567",
+        "company": "Quality Builders",
+        "companyId": "COMP-004",
+        "preferredContact": "email",
+        "linkedSites": [
+            "SITE-010",
+            "SITE-011"
+        ],
+        "notes": "Prefers detailed written quotes",
+        "createdAt": "2023-11-05"
+    },
+    {
+        "id": "CON-006",
+        "name": "Lisa Morgan",
+        "role": "Other",
+        "email": "lisa.morgan@citycouncil.gov.uk",
+        "phone": "07700 900890",
+        "company": "City Council",
+        "companyId": "COMP-005",
+        "preferredContact": "email",
+        "linkedSites": [
+            "SITE-012",
+            "SITE-013",
+            "SITE-014"
+        ],
+        "notes": "Public sector liaison, requires formal documentation",
+        "createdAt": "2024-01-08"
+    }
+]

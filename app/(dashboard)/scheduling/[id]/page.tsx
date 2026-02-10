@@ -51,6 +51,9 @@ import {
     Plus,
     Inbox,
 } from "lucide-react";
+import { STATUS_COLORS, getStatusStyle } from "@/lib/status-utils";
+import { cn } from "@/lib/utils";
+import { EmptyState as SharedEmptyState } from "@/components/ui/empty-state";
 
 // Types
 interface ScheduledJob {
@@ -182,20 +185,20 @@ const allEngineers = [
 ];
 
 const statusColors: Record<string, string> = {
-    scheduled: "bg-blue-500/20 text-blue-600 border-blue-500/30",
-    in_progress: "bg-purple-500/20 text-purple-600 border-purple-500/30",
-    completed: "bg-green-500/20 text-green-600 border-green-500/30",
-    cancelled: "bg-red-500/20 text-red-600 border-red-500/30",
-    confirmed: "bg-green-500/20 text-green-600 border-green-500/30",
-    pending: "bg-yellow-500/20 text-yellow-600 border-yellow-500/30",
-    on_site: "bg-purple-500/20 text-purple-600 border-purple-500/30",
+    scheduled: STATUS_COLORS.job.scheduled,
+    in_progress: STATUS_COLORS.job.in_progress,
+    completed: STATUS_COLORS.job.complete,
+    cancelled: STATUS_COLORS.job.cancelled,
+    confirmed: STATUS_COLORS.job.complete,
+    pending: STATUS_COLORS.semantic.pending,
+    on_site: STATUS_COLORS.job.in_progress,
 };
 
 const priorityColors: Record<string, string> = {
-    low: "bg-gray-500/20 text-gray-600 border-gray-500/30",
-    normal: "bg-blue-500/20 text-blue-600 border-blue-500/30",
-    high: "bg-orange-500/20 text-orange-600 border-orange-500/30",
-    urgent: "bg-red-500/20 text-red-600 border-red-500/30",
+    low: STATUS_COLORS.priority.low,
+    normal: STATUS_COLORS.priority.medium,
+    high: STATUS_COLORS.priority.high,
+    urgent: STATUS_COLORS.priority.critical,
 };
 
 const timelineIcons: Record<string, React.ElementType> = {
@@ -246,8 +249,8 @@ function AssignEngineerForm({ job }: { job: ScheduledJob }) {
                         key={eng.id}
                         onClick={() => toggleEngineer(eng.id)}
                         className={`flex items-center gap-3 p-3 rounded-lg border cursor-pointer transition-colors ${selected.includes(eng.id)
-                                ? "border-primary bg-primary/5"
-                                : "border-border hover:bg-muted"
+                            ? "border-primary bg-primary/5"
+                            : "border-border hover:bg-muted"
                             }`}
                     >
                         <div className={`flex h-8 w-8 items-center justify-center rounded-full ${selected.includes(eng.id) ? "bg-primary text-primary-foreground" : "bg-muted"
@@ -424,12 +427,12 @@ export default function JobDetailPage({ params }: { params: Promise<{ id: string
                                 <div>
                                     <div className="flex items-center gap-3">
                                         <h1 className="text-2xl font-bold">{job.title}</h1>
-                                        <Badge variant="outline" className={statusColors[job.status]}>
-                                            {job.status.replace("_", " ").split(" ").map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(" ")}
+                                        <Badge className={cn("border-none text-[10px] font-bold uppercase", statusColors[job.status])}>
+                                            {job.status.replace("_", " ")}
                                         </Badge>
                                         {job.priority !== "normal" && (
-                                            <Badge variant="outline" className={priorityColors[job.priority]}>
-                                                {job.priority.charAt(0).toUpperCase() + job.priority.slice(1)}
+                                            <Badge className={cn("border-none text-[10px] font-bold uppercase", priorityColors[job.priority])}>
+                                                {job.priority}
                                             </Badge>
                                         )}
                                     </div>
@@ -641,8 +644,8 @@ export default function JobDetailPage({ params }: { params: Promise<{ id: string
                                                         <p className="text-sm font-medium">{engineer.name}</p>
                                                         <p className="text-xs text-muted-foreground">{engineer.role}</p>
                                                     </div>
-                                                    <Badge variant="outline" className={statusColors[engineer.status]}>
-                                                        {engineer.status.replace("_", " ").split(" ").map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(" ")}
+                                                    <Badge className={cn("border-none text-[10px] font-bold uppercase", statusColors[engineer.status])}>
+                                                        {engineer.status.replace("_", " ")}
                                                     </Badge>
                                                 </div>
                                             ))}
@@ -763,7 +766,7 @@ export default function JobDetailPage({ params }: { params: Promise<{ id: string
                                         ))}
                                     </div>
                                 ) : (
-                                    <EmptyState
+                                    <SharedEmptyState
                                         icon={Users}
                                         title="No engineers assigned yet."
                                         description="Assign engineers to this job to get started."

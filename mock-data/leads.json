@@ -9,6 +9,12 @@
     "status": "qualified",
     "owner": "John Doe",
     "value": 45000,
+    "siteId": "SITE-001",
+    "siteName": "Main Office",
+    "regionId": "REG-001",
+    "regionName": "North Texas",
+    "companyId": "COMP-001",
+    "companyName": "Johnson Roofing Holdings",
     "lastActivity": "2024-01-30",
     "createdAt": "2024-01-15"
   },

@@ -51,6 +51,11 @@ import {
     User,
     Inbox,
 } from "lucide-react";
+import { STATUS_COLORS, getStatusStyle } from "@/lib/status-utils";
+import { cn } from "@/lib/utils";
+import invoicesData from "@/mock-data/invoices.json";
+import lineItemsData from "@/mock-data/line-items.json";
+import paymentsData from "@/mock-data/payments.json";
 
 // Types
 interface InvoiceDetail {
@@ -98,47 +103,27 @@ interface ActivityRecord {
     timestamp: string;
 }
 
-// Mock Data
-const mockInvoices: Record<string, InvoiceDetail> = {
-    "INV-2024-0001": {
-        id: "INV-2024-0001",
-        date: "2024-01-28",
-        customerId: "ACC-001",
-        customerName: "Johnson Roofing LLC",
-        customerEmail: "accounts@johnsonroofing.co.uk",
-        customerPhone: "(0121) 555-0198",
-        customerAddress: "45 Industrial Estate, Birmingham, B12 0HT",
-        amount: 12500.00,
-        vatAmount: 2500.00,
-        totalAmount: 15000.00,
-        status: "settled",
-        dueDate: "2024-02-11",
-        paidDate: "2024-02-08",
-        projectId: "P-2024-001",
-        projectName: "Commercial Roof Installation",
-        lineItems: [
-            { id: "1", description: "Labour - Roof Installation (5 days)", quantity: 5, unitPrice: 1200.00, total: 6000.00 },
-            { id: "2", description: "Clay Roof Tiles - Terracotta", quantity: 500, unitPrice: 8.50, total: 4250.00 },
-            { id: "3", description: "Breathable Membrane - 50m²", quantity: 2, unitPrice: 450.00, total: 900.00 },
-        ],
-        payments: [
-            { id: "PAY-001", date: "2024-02-08", amount: 15000.00, method: "bank_transfer", reference: "BACS-78542" },
-        ],
-        activity: [
-            { id: "1", type: "payment", description: "Ledger Settlement Received", user: "System (Sage Connect)", timestamp: "2024-02-08 10:30" },
-            { id: "2", type: "reminder", description: "Automated Payment Reminder Dispatched", user: "Sarah Admin", timestamp: "2024-02-05 09:00" },
-            { id: "3", type: "sent", description: "Invoice PDF Dispatch for Customer Review", user: "Sarah Admin", timestamp: "2024-01-28 14:30" },
-            { id: "4", type: "created", description: "Ledger Entry Initialized", user: "John Manager", timestamp: "2024-01-28 11:00" },
-        ],
-    },
-};
+// Extended Invoice Type for detail page
+interface ExtendedInvoice extends InvoiceDetail {
+    lineItems: LineItem[];
+    payments: PaymentRecord[];
+    activity: ActivityRecord[];
+}
+
+// Fallback activity if not in JSON (mocking activity for now since it's not in our JSON schema yet)
+const mockActivity: ActivityRecord[] = [
+    { id: "1", type: "payment", description: "Ledger Settlement Received", user: "System (Sage Connect)", timestamp: "2024-02-08 10:30" },
+    { id: "2", type: "reminder", description: "Automated Payment Reminder Dispatched", user: "Sarah Admin", timestamp: "2024-02-05 09:00" },
+    { id: "3", type: "sent", description: "Invoice PDF Dispatch for Customer Review", user: "Sarah Admin", timestamp: "2024-01-28 14:30" },
+    { id: "4", type: "created", description: "Ledger Entry Initialized", user: "John Manager", timestamp: "2024-01-28 11:00" },
+];
 
 const statusStyles: Record<string, string> = {
-    draft: "bg-slate-50 text-slate-700",
-    sent: "bg-blue-50 text-blue-700",
-    settled: "bg-green-50 text-green-700",
-    overdue: "bg-red-50 text-red-700",
-    cancelled: "bg-slate-50 text-slate-400",
+    draft: STATUS_COLORS.invoice.draft,
+    sent: STATUS_COLORS.invoice.sent,
+    settled: STATUS_COLORS.invoice.paid,
+    overdue: STATUS_COLORS.invoice.overdue,
+    cancelled: STATUS_COLORS.invoice.credited,
 };
 
 const activityIcons: Record<string, React.ElementType> = {
@@ -168,7 +153,32 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
     const { openModal, openConfirmation } = useModal();
     const [activeTab, setActiveTab] = useState("breakdown");
 
-    const invoice = mockInvoices[id] || mockInvoices["INV-2024-0001"];
+    // Find invoice and related data
+    const basicInvoice = (invoicesData as any[]).find(inv => inv.id === id) || (invoicesData as any[])[0];
+    const relatedLineItems = (lineItemsData as any[]).filter(item => item.invoiceId === id || item.quoteId === basicInvoice.projectId); // Fallback logic
+    const relatedPayments = (paymentsData as any[]).filter(pay => pay.invoiceId === id);
+
+    const invoice: ExtendedInvoice = {
+        ...basicInvoice,
+        customerEmail: "accounts@johnsonroofing.co.uk", // Mocked as not in basic JSON
+        customerPhone: "(0121) 555-0198",
+        customerAddress: "45 Industrial Estate, Birmingham, B12 0HT",
+        vatAmount: basicInvoice.totalAmount * 0.2, // Mocked 20%
+        amount: basicInvoice.totalAmount * 0.8,
+        lineItems: relatedLineItems.length > 0 ? relatedLineItems : [
+            { id: "1", description: "Labour - Roof Installation (5 days)", quantity: 5, unitPrice: 1200.00, total: 6000.00 },
+            { id: "2", description: "Clay Roof Tiles - Terracotta", quantity: 500, unitPrice: 8.50, total: 4250.00 },
+        ],
+        payments: relatedPayments.map(p => ({
+            id: p.id,
+            date: p.date,
+            amount: p.amount,
+            method: p.method,
+            reference: p.id
+        })),
+        activity: mockActivity,
+    };
+
     const amountPaid = invoice.payments.reduce((sum, p) => sum + p.amount, 0);
     const amountDue = invoice.totalAmount - amountPaid;
 
@@ -206,8 +216,8 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
                                 <div className="space-y-1">
                                     <div className="flex items-center gap-3">
                                         <h1 className="text-xl font-semibold tracking-tight">{invoice.id}</h1>
-                                        <Badge variant="secondary" className={`${statusStyles[invoice.status]} font-normal h-5`}>
-                                            {invoice.status.toUpperCase()}
+                                        <Badge className={cn("border-none text-[10px] font-bold uppercase", statusStyles[invoice.status] || STATUS_COLORS.invoice.draft)}>
+                                            {invoice.status}
                                         </Badge>
                                         <div className="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-green-50 text-green-700 border border-green-200">
                                             <div className="h-1.5 w-1.5 rounded-full bg-green-600" />
@@ -215,7 +225,7 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
                                         </div>
                                     </div>
                                     <div className="flex items-center gap-2 text-xs text-muted-foreground font-medium uppercase tracking-wider">
-                                        <span>{invoice.customerName}</span>
+                                        <Link href={`/accounts/${invoice.customerId}`} className="text-primary hover:underline">{invoice.customerName}</Link>
                                         <span>•</span>
                                         <span>Issued {formatDate(invoice.date)}</span>
                                     </div>
@@ -223,7 +233,7 @@ export default function InvoiceDetailPage({ params }: { params: Promise<{ id: st
                             </div>
                             <div className="flex items-center gap-2">
                                 {amountDue > 0 && (
-                                    <Button size="sm" className="h-9 shadow-sm">
+                                    <Button id="settle-funds-btn" size="sm" className="h-9 shadow-sm transition-all active:scale-95">
                                         <CheckCircle2 className="mr-2 h-4 w-4" />
                                         Settle Funds
                                     </Button>

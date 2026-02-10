@@ -1,0 +1,100 @@
+[
+    {
+        "id": "REG-001",
+        "name": "North Texas",
+        "companyId": "COMP-001",
+        "companyName": "Johnson Roofing Holdings",
+        "manager": "John Smith",
+        "sitesCount": 3,
+        "status": "active",
+        "coordinates": {
+            "x": 45,
+            "y": 35
+        },
+        "color": "#3B82F6"
+    },
+    {
+        "id": "REG-002",
+        "name": "Central Texas",
+        "companyId": "COMP-001",
+        "companyName": "Johnson Roofing Holdings",
+        "manager": "Mike Johnson",
+        "sitesCount": 2,
+        "status": "active",
+        "coordinates": {
+            "x": 50,
+            "y": 55
+        },
+        "color": "#8B5CF6"
+    },
+    {
+        "id": "REG-003",
+        "name": "Dallas Metro",
+        "companyId": "COMP-002",
+        "companyName": "Acme Construction Group",
+        "manager": "Jane Wilson",
+        "sitesCount": 5,
+        "status": "active",
+        "coordinates": {
+            "x": 48,
+            "y": 30
+        },
+        "color": "#10B981"
+    },
+    {
+        "id": "REG-004",
+        "name": "Houston Metro",
+        "companyId": "COMP-002",
+        "companyName": "Acme Construction Group",
+        "manager": "Tom Williams",
+        "sitesCount": 4,
+        "status": "active",
+        "coordinates": {
+            "x": 60,
+            "y": 65
+        },
+        "color": "#F59E0B"
+    },
+    {
+        "id": "REG-005",
+        "name": "Austin Area",
+        "companyId": "COMP-002",
+        "companyName": "Acme Construction Group",
+        "manager": "Jane Wilson",
+        "sitesCount": 3,
+        "status": "active",
+        "coordinates": {
+            "x": 42,
+            "y": 58
+        },
+        "color": "#EF4444"
+    },
+    {
+        "id": "REG-006",
+        "name": "Greater Austin",
+        "companyId": "COMP-003",
+        "companyName": "Metro Property Partners",
+        "manager": "John Smith",
+        "sitesCount": 5,
+        "status": "active",
+        "coordinates": {
+            "x": 40,
+            "y": 52
+        },
+        "color": "#06B6D4"
+    },
+    {
+        "id": "REG-007",
+        "name": "San Antonio",
+        "companyId": "COMP-003",
+        "companyName": "Metro Property Partners",
+        "manager": "David Brown",
+        "sitesCount": 3,
+        "status": "active",
+        "coordinates": {
+            "x": 35,
+            "y": 70
+        },
+        "color": "#EC4899"
+    }
+]
