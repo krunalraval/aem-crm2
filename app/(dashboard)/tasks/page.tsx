@@ -261,7 +261,7 @@ const formatTime = (timeString?: string) => {
 };
 
 // Create Task Form Component
-function CreateTaskForm({ onClose, onSave }: { onClose?: () => void; onSave?: (task: Partial<Task>) => void }) {
+export function CreateTaskForm({ onClose, onSave }: { onClose?: () => void; onSave?: (task: Partial<Task>) => void }) {
     const [title, setTitle] = useState("");
     const [taskType, setTaskType] = useState<TaskType>("call");
     const [assigneeId, setAssigneeId] = useState(currentUserId);

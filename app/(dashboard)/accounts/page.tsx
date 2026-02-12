@@ -162,7 +162,7 @@ function EmptyState() {
 }
 
 // Create Company Form Component
-function CreateCompanyForm({ onClose }: { onClose?: () => void }) {
+export function CreateCompanyForm({ onClose }: { onClose?: () => void }) {
     const [companyName, setCompanyName] = useState("");
     const [duplicateWarning, setDuplicateWarning] = useState<string | null>(null);
 

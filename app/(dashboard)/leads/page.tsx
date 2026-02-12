@@ -228,7 +228,7 @@ const urgencyColors: Record<UrgencyStatus, string> = {
 };
 
 // Multi-Step Create Lead Form
-function CreateLeadForm({ onClose }: { onClose?: () => void }) {
+export function CreateLeadForm({ onClose }: { onClose?: () => void }) {
     const [step, setStep] = useState(1);
     const [selectedCompanyId, setSelectedCompanyId] = useState("");
     const [newCompanyName, setNewCompanyName] = useState("");
@@ -878,6 +878,16 @@ function LeadsPageContent() {
                             </Button>
                         </div>
                     </div>
+                    {canAccess("create_lead") && (
+                        <Button
+                            onClick={handleCreateLead}
+                            size="sm"
+                            className="h-9 px-4 font-bold text-xs uppercase transition-all active:scale-95 sm:w-auto w-full"
+                        >
+                            <Plus className="mr-1.5 h-4 w-4" />
+                            New Lead
+                        </Button>
+                    )}
                 </div>
 
                 {/* Kanban Board */}

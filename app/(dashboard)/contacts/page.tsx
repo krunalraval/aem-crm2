@@ -190,7 +190,7 @@ function StatCard({ title, value, icon: Icon }: {
 }
 
 // Create Contact Form Component
-function CreateContactForm({ onClose }: { onClose?: () => void }) {
+export function CreateContactForm({ onClose }: { onClose?: () => void }) {
     const router = useRouter();
     const [email, setEmail] = useState("");
     const [selectedCompanyId, setSelectedCompanyId] = useState("");

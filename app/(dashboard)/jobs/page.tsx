@@ -165,7 +165,7 @@ const initialJobs: Job[] = [
 const formatDate = (dateString: string) => new Date(dateString).toLocaleDateString("en-GB", { day: "numeric", month: "short" });
 
 // Create Job Form
-function CreateJobForm({ onClose, onSave }: { onClose?: () => void; onSave?: (job: Partial<Job>) => void }) {
+export function CreateJobForm({ onClose, onSave }: { onClose?: () => void; onSave?: (job: Partial<Job>) => void }) {
     const [jobType, setJobType] = useState<JobType>("installation");
     const [siteId, setSiteId] = useState("");
     const [engineerId, setEngineerId] = useState("");

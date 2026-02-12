@@ -215,7 +215,7 @@ const getExpiryWarning = (expiresAt: string, status: QuoteStatus): "expired" | "
 };
 
 // Create Quote Form Component (Multi-step)
-function CreateQuoteForm({ onClose, onSave }: { onClose?: () => void; onSave?: (quote: Partial<Quote>) => void }) {
+export function CreateQuoteForm({ onClose, onSave }: { onClose?: () => void; onSave?: (quote: Partial<Quote>) => void }) {
     const [step, setStep] = useState(1);
     const [templateId, setTemplateId] = useState("");
     const [companyId, setCompanyId] = useState("");

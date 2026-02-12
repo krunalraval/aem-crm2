@@ -16,6 +16,12 @@ import {
 import { useDrawer } from "@/components/layout/drawer-provider";
 import { useAuth, Role } from "@/context/auth-context";
 import { NotificationDropdown } from "@/components/notifications/notification-dropdown";
+import { CreateLeadForm } from "@/app/(dashboard)/leads/page";
+import { CreateContactForm } from "@/app/(dashboard)/contacts/page";
+import { CreateCompanyForm } from "@/app/(dashboard)/accounts/page";
+import { CreateTaskForm } from "@/app/(dashboard)/tasks/page";
+import { CreateQuoteForm } from "@/app/(dashboard)/quotes/page";
+import { CreateJobForm } from "@/app/(dashboard)/jobs/page";
 
 interface TopbarProps {
     title?: string;
@@ -24,18 +30,45 @@ interface TopbarProps {
 }
 
 export function Topbar({ title = "Dashboard", subtitle, children }: TopbarProps) {
-    const { openDrawer } = useDrawer();
+    const { openDrawer, closeDrawer } = useDrawer();
     const { role, setRole, canAccess } = useAuth();
 
     const handleCreateNew = (type: string) => {
+        let content;
+        let title = `New ${type}`;
+        let description = `Create a new ${type.toLowerCase()} record`;
+
+        switch (type) {
+            case "Lead":
+                content = <CreateLeadForm onClose={closeDrawer} />;
+                break;
+            case "Contact":
+                content = <CreateContactForm onClose={closeDrawer} />;
+                break;
+            case "Company":
+                content = <CreateCompanyForm onClose={closeDrawer} />;
+                break;
+            case "Task":
+                content = <CreateTaskForm onClose={closeDrawer} />;
+                break;
+            case "Quote":
+                content = <CreateQuoteForm onClose={closeDrawer} />;
+                break;
+            case "Job":
+                content = <CreateJobForm onClose={closeDrawer} />;
+                break;
+            default:
+                content = (
+                    <div className="py-8 text-center text-muted-foreground">
+                        <p className="text-sm">Form for creating a new {type.toLowerCase()} would appear here.</p>
+                    </div>
+                );
+        }
+
         openDrawer({
-            title: `New ${type}`,
-            description: `Create a new ${type.toLowerCase()} record`,
-            content: (
-                <div className="py-8 text-center text-muted-foreground">
-                    <p className="text-sm">Form for creating a new {type.toLowerCase()} would appear here.</p>
-                </div>
-            ),
+            title,
+            description,
+            content,
         });
     };
 
